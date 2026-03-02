@@ -1,468 +1,547 @@
 """
-Portfolio Analyzer v2 — Streamlit Web App
-Run from mobile or browser via Streamlit Cloud.
+Portfolio Analyzer v2 — Streamlit App
+======================================
+Loads pre-computed results from data/portfolio_analysis.csv (saved daily by cron).
+Embeds the full interactive HTML report (with filters, sorting, search) inside Streamlit.
+Also provides a CSV download button.
 """
 
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import numpy as np
+import json
+import os
 from datetime import datetime
-import time
-import sys
-import io
-import warnings
-warnings.filterwarnings("ignore")
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="📊 Portfolio Analyzer v2",
     page_icon="📊",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
-# ── Import the core logic from the original script ────────────────────────────
-# We import only what we need — all the heavy lifting stays in portfolio_analyzer_v2.py
-from portfolio_analyzer_v2 import (
-    PORTFOLIO_TICKERS,
-    fetch_all_parallel,
-    compute_sector_medians,
-    calculate_weighted_score,
-    get_recommendation,
-    assign_composite_flag,
-    generate_top10_recommendations,
-    _is_nan,
-)
-
-# ── Custom CSS (dark theme matching original HTML report) ─────────────────────
+# ── Minimal outer CSS ─────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-    .main { background-color: #0d1117; }
-    .stApp { background-color: #0d1117; color: #c9d1d9; }
-    
-    /* Metric cards */
-    [data-testid="metric-container"] {
+    .stApp { background-color: #0d1117; }
+    .block-container { padding-top: 1rem; padding-bottom: 0rem; }
+    .stDownloadButton > button {
+        background: #238636 !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 6px !important;
+        font-weight: 600 !important;
+    }
+    .stDownloadButton > button:hover { background: #2ea043 !important; }
+    div[data-testid="metric-container"] {
         background: #161b22;
         border: 1px solid #30363d;
         border-radius: 8px;
-        padding: 10px;
+        padding: 8px 12px;
     }
-    
-    /* Score badges */
-    .badge-strong { background:#1f6feb; color:#fff; padding:3px 8px; border-radius:4px; font-weight:700; font-size:12px; }
-    .badge-buy    { background:#238636; color:#fff; padding:3px 8px; border-radius:4px; font-weight:700; font-size:12px; }
-    .badge-hold   { background:#9e6a03; color:#fff; padding:3px 8px; border-radius:4px; font-weight:700; font-size:12px; }
-    .badge-sell   { background:#b62324; color:#fff; padding:3px 8px; border-radius:4px; font-weight:700; font-size:12px; }
-    
-    /* Progress bar color */
-    .stProgress > div > div { background-color: #1f6feb; }
-    
-    /* Sidebar */
-    [data-testid="stSidebar"] { background-color: #161b22; }
-    
-    /* Buttons */
-    .stButton > button {
-        background: #238636;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        font-weight: 600;
-    }
-    .stButton > button:hover { background: #2ea043; }
-
-    /* Table styling */
-    .dataframe thead th {
-        background-color: #161b22 !important;
-        color: #8b949e !important;
-    }
-    .dataframe tbody tr:hover { background-color: #1f2937 !important; }
 </style>
 """, unsafe_allow_html=True)
 
 
-# ── Helper: colour a score ────────────────────────────────────────────────────
-def score_badge(score):
-    if score is None or (isinstance(score, float) and np.isnan(score)):
-        return "-"
-    if score >= 78:
-        return f'<span class="badge-strong">{score}</span>'
-    if score >= 62:
-        return f'<span class="badge-buy">{score}</span>'
-    if score >= 44:
-        return f'<span class="badge-hold">{score}</span>'
-    return f'<span class="badge-sell">{score}</span>'
+# ── Data paths ────────────────────────────────────────────────────────────────
+DATA_DIR      = "data"
+CSV_PATH      = os.path.join(DATA_DIR, "portfolio_analysis.csv")
+RUN_INFO_PATH = os.path.join(DATA_DIR, "run_info.json")
+TOP10_PATH    = os.path.join(DATA_DIR, "top10.json")
 
 
-def action_badge(action):
-    colors = {
-        "STRONG BUY": "badge-strong",
-        "BUY": "badge-buy",
-        "HOLD": "badge-hold",
-        "SELL": "badge-sell",
-    }
-    cls = colors.get(action, "badge-hold")
-    return f'<span class="{cls}">{action}</span>'
+# ── Load data (cached, re-reads from disk every hour) ────────────────────────
+@st.cache_data(ttl=3600)
+def load_data():
+    if not os.path.exists(CSV_PATH):
+        return None, {}, []
+    df = pd.read_csv(CSV_PATH)
+    run_info = {}
+    if os.path.exists(RUN_INFO_PATH):
+        with open(RUN_INFO_PATH) as f:
+            run_info = json.load(f)
+    top10 = []
+    if os.path.exists(TOP10_PATH):
+        with open(TOP10_PATH) as f:
+            top10 = json.load(f)
+    return df, run_info, top10
 
 
-def fmt_pct(v, plus=True):
-    if v is None or (isinstance(v, float) and np.isnan(v)):
-        return "-"
-    sign = "+" if plus and v > 0 else ""
-    return f"{sign}{v:.1f}%"
+# ── Build the embedded interactive HTML report ────────────────────────────────
+def build_html_report(df: pd.DataFrame, run_ts: str) -> str:
 
+    # ── Cell helpers ──────────────────────────────────────────────────────
+    def _nan(v):
+        if v is None: return True
+        try:
+            return (isinstance(v, float) and np.isnan(v)) or pd.isna(v)
+        except Exception:
+            return False
 
-def fmt_price(v):
-    if v is None or (isinstance(v, float) and np.isnan(v)):
-        return "-"
-    return f"${v:.2f}"
+    def fmt(v, prefix="", suffix="", decimals=2, na="-"):
+        try:
+            if _nan(v): return na
+            return prefix + "{:.{}f}".format(float(v), decimals) + suffix
+        except Exception:
+            return na
 
+    def _score_cls(s):
+        s = float(s)
+        if s >= 78: return "score-strong"
+        if s >= 62: return "score-buy"
+        if s >= 44: return "score-hold"
+        return "score-sell"
 
-# ── Sidebar ───────────────────────────────────────────────────────────────────
-with st.sidebar:
-    st.title("📊 Portfolio Analyzer")
-    st.caption("v2 — 344 Stocks · Weighted · Sector-Relative")
-    st.divider()
+    def _action(s):
+        s = float(s)
+        if s >= 78: return "STRONG BUY"
+        if s >= 62: return "BUY"
+        if s >= 44: return "HOLD"
+        return "SELL"
 
-    st.subheader("⚙️ Run Analysis")
-    workers = st.slider("Parallel workers", 4, 16, 8, help="Higher = faster but more rate-limit risk")
-    top_n   = st.slider("Top N picks", 5, 20, 10)
+    def _row_cls(s):
+        s = float(s)
+        if s >= 62: return "row-green"
+        if s >= 44: return "row-orange"
+        return "row-red"
 
-    run_btn = st.button("🚀 Run Analysis Now", use_container_width=True)
-    st.caption(f"Will screen {len(PORTFOLIO_TICKERS)} stocks")
+    def _ma_cell(row):
+        ma = row.get("MA200"); vs = row.get("Vs_MA200")
+        if _nan(ma) or _nan(vs): return '<td class="tc" data-sort="">-</td>'
+        ms = "${:.2f}".format(float(ma)); vss = "{:+.1f}%".format(float(vs))
+        sa = ' data-sort="{}"'.format(vs)
+        if   float(vs) < -5: c = "ma-below"
+        elif float(vs) < 0:  c = "ma-near"
+        else:                c = "ma-above"
+        return '<td class="tc {}"{}><span class="ma-val">{}</span><br><small>{}</small></td>'.format(c, sa, ms, vss)
 
-    st.divider()
-    st.subheader("🔍 Filters")
-    filter_action  = st.multiselect("Action", ["STRONG BUY", "BUY", "HOLD", "SELL"],
-                                    default=["STRONG BUY", "BUY"])
-    filter_sectors = st.multiselect("Sectors", [], key="sector_filter")
-    min_score      = st.slider("Min Score", 0, 100, 60)
-    max_de         = st.slider("Max Debt/Equity", 0.0, 10.0, 3.0, step=0.5)
-    only_below_ma  = st.checkbox("Only stocks below 200 DMA")
+    def _analyst_cells(row):
+        tgt = row.get("Analyst_Target"); au = row.get("Analyst_Upside"); ac = row.get("Analyst_Count")
+        if _nan(tgt): return '<td class="tc">-</td>', '<td class="tc">-</td>'
+        ts = "${:.2f}".format(float(tgt))
+        acs = " <small>({} analysts)</small>".format(int(float(ac))) if not _nan(ac) else ""
+        if _nan(au): return '<td class="tc">{}{}</td>'.format(ts, acs), '<td class="tc">-</td>'
+        cls = "analyst-up" if float(au) >= 0 else "analyst-dn"
+        return ('<td class="tc">{}{}</td>'.format(ts, acs),
+                '<td class="tc"><span class="{}">{:+.1f}%</span></td>'.format(cls, float(au)))
 
-    st.divider()
-    st.caption("⚠️ This is a screening tool, not financial advice. Always do your own research.")
+    def _rev_cell(row):
+        rg = row.get("Rev_Growth"); rp = row.get("Rev_Growth_Prev")
+        if _nan(rg): return '<td class="tc">-</td>'
+        s = "{:.1f}%".format(float(rg))
+        if not _nan(rp):
+            a = float(rg) - float(rp)
+            arrow = "▲" if a > 2 else ("▼" if a < -2 else "→")
+            cls   = "accel-up" if a > 2 else ("accel-dn" if a < -2 else "")
+            s += '<br><small class="{}">{} {:.1f}pp</small>'.format(cls, arrow, a)
+        return '<td class="tc">' + s + '</td>'
 
+    # ── Build all row HTML strings ────────────────────────────────────────
+    rows_html_parts = []
+    for _, row in df.iterrows():
+        score = row.get("Score", 0)
+        sc    = _score_cls(score); rec = _action(score); rc = _row_cls(score)
+        sv    = str(row.get("Sector") or ""); nv = str(row.get("Name") or row.get("Ticker",""))
+        tv    = str(row.get("Ticker") or ""); fv = str(row.get("Composite_Flag") or "—")
+        flags_data = str(row.get("Composite_Flag") or "")
 
-# ── Main area ─────────────────────────────────────────────────────────────────
-st.title("📊 Stock Portfolio Analyzer v2")
-st.caption("344 stocks · Sector-relative scoring · Analyst consensus targets")
+        sb = '<span class="badge {}">{}</span>'.format(sc, score)
+        ab = '<span class="badge {}">{}</span>'.format(sc, rec)
 
-# ── Session state ─────────────────────────────────────────────────────────────
-if "df" not in st.session_state:
-    st.session_state.df = None
-if "top10" not in st.session_state:
-    st.session_state.top10 = None
-if "run_ts" not in st.session_state:
-    st.session_state.run_ts = None
+        dv = row.get("Div_Yield")
+        dc = ('<td class="tc div-cell">' if (not _nan(dv) and float(dv) > 0) else '<td class="tc">') + fmt(dv, suffix="%") + "</td>"
 
+        es = row.get("EPS_Surprise")
+        es_s = ('{:+.1f}%'.format(float(es)) if not _nan(es) else '-')
+        es_c = "analyst-up" if (not _nan(es) and float(es) > 0) else ("analyst-dn" if (not _nan(es) and float(es) < 0) else "")
+        esc = '<td class="tc"><span class="{}">{}</span></td>'.format(es_c, es_s)
 
-# ── Run analysis ──────────────────────────────────────────────────────────────
-if run_btn:
-    st.session_state.df = None
-    st.session_state.top10 = None
+        atc, auc = _analyst_cells(row)
+        vs200 = row.get("Vs_MA200")
+        mas = "none" if _nan(vs200) else ("below" if float(vs200) < 0 else "above")
+        ib = row.get("Insider_Buy_Pct")
 
-    progress_bar  = st.progress(0, text="Starting...")
-    status_text   = st.empty()
-    log_container = st.empty()
+        cells = (
+            "<td><strong>{}</strong><br><small>{}</small></td>".format(tv, nv)
+            + '<td class="tc">' + sb + "</td>"
+            + '<td class="tc">' + ab + "</td>"
+            + '<td class="tc flag-cell">' + fv + "</td>"
+            + '<td class="tr">'  + fmt(row.get("Price"),        prefix="$")             + "</td>"
+            + _ma_cell(row)
+            + atc + auc
+            + '<td class="tc">'  + str(row.get("Mkt_Cap") or "-")                       + "</td>"
+            + '<td class="tc">'  + fmt(row.get("PEG"))                                  + "</td>"
+            + '<td class="tc">'  + fmt(row.get("PE_Fwd"),       decimals=1)             + "</td>"
+            + '<td class="tc">'  + fmt(row.get("PS"),           decimals=1)             + "</td>"
+            + '<td class="tc">'  + fmt(row.get("EV_EBITDA"),    decimals=1)             + "</td>"
+            + '<td class="tc">'  + fmt(row.get("ROE"),          suffix="%",decimals=1)  + "</td>"
+            + _rev_cell(row)
+            + '<td class="tc">'  + fmt(row.get("Gross_Margin"), suffix="%",decimals=1)  + "</td>"
+            + '<td class="tc">'  + fmt(row.get("FCF_Yield"),    suffix="%",decimals=1)  + "</td>"
+            + esc
+            + '<td class="tc">'  + fmt(row.get("From_Low_Pct"),  suffix="%",decimals=1) + "</td>"
+            + '<td class="tc">'  + fmt(row.get("From_High_Pct"), suffix="%",decimals=1) + "</td>"
+            + '<td class="tc">'  + fmt(row.get("Debt_Equity"))                          + "</td>"
+            + '<td class="tc">'  + fmt(row.get("Beta"))                                 + "</td>"
+            + '<td class="tc">'  + fmt(row.get("Short_Float"),  suffix="%",decimals=1)  + "</td>"
+            + '<td class="tc">'  + fmt(ib,                      suffix="%",decimals=0)  + "</td>"
+            + dc
+            + '<td class="tc">'  + fmt(row.get("Payout_Ratio"), suffix="%",decimals=1)  + "</td>"
+            + '<td class="tc">'  + fmt(row.get("Op_Margin"),    suffix="%",decimals=1)  + "</td>"
+            + '<td class="tc">'  + fmt(row.get("ROA"),          suffix="%",decimals=1)  + "</td>"
+            + '<td class="tc">'  + fmt(row.get("Current_Ratio"),decimals=2)             + "</td>"
+            + '<td class="tc"><small>' + sv + "</small></td>"
+        )
+        rows_html_parts.append(
+            '<tr class="{}" data-action="{}" data-sector="{}" data-ma="{}" data-score="{}" data-flags="{}">'.format(
+                rc, rec, sv, mas, score, flags_data) + cells + "</tr>"
+        )
 
-    total_tickers = len(PORTFOLIO_TICKERS)
+    rows_html = "\n".join(rows_html_parts)
 
-    with st.spinner("Fetching market data for 344 stocks (this takes ~3-6 minutes)..."):
+    # ── Stats ─────────────────────────────────────────────────────────────
+    total = len(df)
+    sb_c  = int((df["Action"] == "STRONG BUY").sum()) if "Action" in df.columns else 0
+    b_c   = int((df["Action"] == "BUY").sum())        if "Action" in df.columns else 0
+    h_c   = int((df["Action"] == "HOLD").sum())       if "Action" in df.columns else 0
+    s_c   = int((df["Action"] == "SELL").sum())       if "Action" in df.columns else 0
+    avg   = round(float(df["Score"].mean()), 1)       if "Score"  in df.columns else 0
 
-        # ── Pass 1: fetch all ──────────────────────────────────────────────
-        status_text.info("📡 Pass 1: Fetching all tickers...")
-        progress_bar.progress(0.05, text="Fetching data (pass 1)...")
+    sectors = sorted(df["Sector"].dropna().unique()) if "Sector" in df.columns else []
+    sec_btns = "".join(
+        '<button class="sec-btn" data-sector="{}" onclick="toggleSector(this)">{}</button>\n'.format(s, s)
+        for s in sectors
+    )
 
-        records = fetch_all_parallel(PORTFOLIO_TICKERS, max_workers=workers)
-        progress_bar.progress(0.55, text="Pass 1 complete. Checking for empty records...")
+    def TH(label, i, cls=""):
+        return '<th onclick="sortCol({})"{}>{}</th>\n'.format(i, ' class="{}"'.format(cls) if cls else "", label)
 
-        # ── Pass 2: retry empties ──────────────────────────────────────────
-        empty_tickers = [r["Ticker"] for r in records if r.get("Price") is None]
-        if empty_tickers:
-            status_text.info(f"🔄 Pass 2: Retrying {len(empty_tickers)} tickers...")
-            progress_bar.progress(0.60, text=f"Retrying {len(empty_tickers)} tickers...")
-            time.sleep(3)
-            retry_records = fetch_all_parallel(empty_tickers, max_workers=max(workers // 2, 4))
-            retry_map = {r["Ticker"]: r for r in retry_records if r.get("Price") is not None}
-            records = [retry_map.get(r["Ticker"], r) for r in records]
+    headers = (
+        TH("Ticker / Name", 0) + TH("Score", 1) + TH("Action", 2)
+        + TH("Signal Flags", 3, "new-col")
+        + TH("Price", 4) + TH("200 DMA", 5, "ma-col")
+        + TH("Analyst Target", 6, "new-col") + TH("Upside %", 7, "new-col")
+        + TH("Mkt Cap", 8) + TH("PEG", 9) + TH("P/E Fwd", 10)
+        + TH("P/S", 11) + TH("EV/EBITDA", 12, "new-col")
+        + TH("ROE %", 13) + TH("Rev Gr %", 14) + TH("Gross Mgn %", 15)
+        + TH("FCF Yld %", 16) + TH("EPS Surp %", 17, "new-col")
+        + TH("From Low %", 18) + TH("From High %", 19)
+        + TH("D/E", 20) + TH("Beta", 21) + TH("Short %", 22)
+        + TH("Insider Buy%", 23, "new-col")
+        + TH("Div Yield %", 24, "div-col") + TH("Payout %", 25, "div-col")
+        + TH("Op Margin %", 26, "div-col") + TH("ROA %", 27, "div-col")
+        + TH("Curr Ratio", 28, "div-col")
+        + TH("Sector", 29)
+    )
 
-        # ── Compute sector medians ─────────────────────────────────────────
-        progress_bar.progress(0.70, text="Computing sector medians...")
-        df = pd.DataFrame(records)
-        sector_medians = compute_sector_medians(df)
+    CSS = """
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0d1117; color: #c9d1d9; font-family: "Segoe UI", sans-serif; font-size: 13px; }
+h2 { font-size: 1.1rem; color: #58a6ff; margin-bottom: 4px; }
+.run-ts { font-size: 11px; color: #8b949e; }
+.legend { font-size: 11px; color: #8b949e; margin: 4px 0 8px; }
+.legend span { margin-right: 14px; }
+.cards { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.stat-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 8px 14px; min-width: 80px; }
+.stat-card .num { font-size: 1.4rem; font-weight: 700; }
+.stat-card .lbl { font-size: .65rem; color: #8b949e; text-transform: uppercase; letter-spacing: .5px; }
+.toolbar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; margin-bottom: 8px; }
+.fg { display: flex; flex-direction: column; gap: 4px; }
+.fl { font-size: .68rem; color: #8b949e; text-transform: uppercase; letter-spacing: .5px; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 5px; }
+.act-btn { background:#161b22; border:1px solid #30363d; color:#8b949e; border-radius:6px; padding:5px 12px; cursor:pointer; font-size:12px; font-weight:600; transition:all .15s; }
+.act-btn:hover { border-color:#58a6ff; color:#c9d1d9; }
+#btnAll.active { background:#30363d; color:#c9d1d9; border-color:#8b949e; }
+.act-btn[data-action="STRONG BUY"].active { background:#1f6feb; color:#fff; border-color:#1f6feb; }
+.act-btn[data-action="BUY"].active        { background:#238636; color:#fff; border-color:#238636; }
+.act-btn[data-action="HOLD"].active       { background:#9e6a03; color:#fff; border-color:#9e6a03; }
+.act-btn[data-action="SELL"].active       { background:#b62324; color:#fff; border-color:#b62324; }
+.sec-btn { background:#161b22; border:1px solid #30363d; color:#8b949e; border-radius:6px; padding:4px 9px; cursor:pointer; font-size:11px; transition:all .15s; }
+.sec-btn:hover { border-color:#58a6ff; color:#c9d1d9; }
+#btnSecAll.active { background:#30363d; color:#c9d1d9; border-color:#8b949e; }
+.sec-btn[data-sector].active { background:#388bfd22; color:#58a6ff; border-color:#388bfd; }
+.flag-filter-btn { background:#161b22; border:1px solid #30363d; color:#8b949e; border-radius:6px; padding:4px 9px; cursor:pointer; font-size:11px; transition:all .15s; }
+.flag-filter-btn:hover { border-color:#bc8cff; color:#bc8cff; }
+.flag-filter-btn.active { background:#bc8cff33; color:#bc8cff; border-color:#bc8cff; }
+.ma-filter-btn { background:#161b22; border:1.5px solid #58a6ff; color:#58a6ff; border-radius:6px; padding:5px 13px; cursor:pointer; font-size:12px; font-weight:700; transition:all .15s; }
+.ma-filter-btn.active { background:#58a6ff; color:#0d1117; }
+input#srch { background:#161b22; border:1px solid #30363d; color:#c9d1d9; border-radius:6px; padding:6px 11px; width:200px; outline:none; font-size:13px; }
+input#srch:focus { border-color:#58a6ff; }
+input#minScore { background:#161b22; border:1px solid #30363d; color:#c9d1d9; border-radius:6px; padding:5px 8px; width:68px; outline:none; font-size:13px; text-align:center; }
+.btn-csv { background:#238636; color:#fff; border:none; border-radius:6px; padding:6px 14px; cursor:pointer; font-size:13px; font-weight:600; }
+.btn-csv:hover { background:#2ea043; }
+.wrap { overflow-x:auto; max-height:72vh; border:1px solid #21262d; border-radius:8px; margin-top:6px; }
+table { border-collapse:collapse; width:100%; white-space:nowrap; }
+thead th { background:#161b22; color:#8b949e; position:sticky; top:0; z-index:9; padding:8px 7px; cursor:pointer; user-select:none; font-weight:600; border-bottom:1px solid #30363d; }
+thead th:hover { color:#58a6ff; }
+thead th.asc::after  { content:" ▲"; font-size:9px; }
+thead th.desc::after { content:" ▼"; font-size:9px; }
+thead th.new-col { color:#bc8cff; }
+thead th.ma-col  { color:#58a6ff; }
+thead th.div-col { color:#e6b450; }
+td { padding:6px 7px; border-bottom:1px solid #21262d; vertical-align:middle; }
+td small { color:#8b949e; font-size:11px; }
+.tc { text-align:center; } .tr { text-align:right; }
+.row-green  { background:#0d1f0f; } .row-green:hover  { background:#0f2a14 !important; }
+.row-orange { background:#1e1600; } .row-orange:hover { background:#2a1f00 !important; }
+.row-red    { background:#1c0707; } .row-red:hover    { background:#2a0d0d !important; }
+.badge { font-size:11px; padding:3px 7px; border-radius:4px; font-weight:600; }
+.score-strong { background:#1f6feb; color:#fff; }
+.score-buy    { background:#238636; color:#fff; }
+.score-hold   { background:#9e6a03; color:#fff; }
+.score-sell   { background:#b62324; color:#fff; }
+.div-cell   { color:#e6b450; font-weight:600; }
+.flag-cell  { font-size:11px; max-width:200px; white-space:normal; line-height:1.4; }
+.analyst-up { color:#3fb950; font-weight:600; }
+.analyst-dn { color:#f85149; font-weight:600; }
+.accel-up   { color:#3fb950; font-size:11px; }
+.accel-dn   { color:#f85149; font-size:11px; }
+.ma-above .ma-val { color:#3fb950; font-weight:600; }
+.ma-above small   { color:#3fb950; }
+.ma-near  .ma-val { color:#d29922; font-weight:600; }
+.ma-near  small   { color:#d29922; }
+.ma-below .ma-val { color:#f85149; font-weight:600; }
+.ma-below small   { color:#f85149; }
+#rowcnt { font-size:12px; color:#8b949e; margin-top:5px; }
+"""
 
-        # ── Score ──────────────────────────────────────────────────────────
-        progress_bar.progress(0.80, text="Scoring stocks...")
-        df["Score"]  = df.apply(lambda r: calculate_weighted_score(r, sector_medians), axis=1)
-        df = df[df["Score"].notna()].copy()
-        df["Action"] = df["Score"].apply(lambda s: get_recommendation(s)[0])
-        df["Target"] = df["Analyst_Target"]
-        df["Upside"]  = df["Analyst_Upside"]
-        df["Composite_Flag"] = df.apply(assign_composite_flag, axis=1)
+    JS = """
+var sortDir = {};
+function toggleAction(b){ b.classList.toggle('active'); var a=document.querySelectorAll('.act-btn[data-action].active').length>0; document.getElementById('btnAll').classList.toggle('active',!a); applyFilters(); }
+function toggleAll(){ document.querySelectorAll('.act-btn[data-action]').forEach(function(b){b.classList.remove('active');}); document.getElementById('btnAll').classList.add('active'); applyFilters(); }
+function toggleSector(b){ b.classList.toggle('active'); var a=document.querySelectorAll('.sec-btn[data-sector].active').length>0; document.getElementById('btnSecAll').classList.toggle('active',!a); applyFilters(); }
+function toggleSecAll(){ document.querySelectorAll('.sec-btn[data-sector]').forEach(function(b){b.classList.remove('active');}); document.getElementById('btnSecAll').classList.add('active'); applyFilters(); }
+function toggleMA(b){ b.classList.toggle('active'); applyFilters(); }
+function toggleFlag(b){ b.classList.toggle('active'); applyFilters(); }
+function applyFilters(){
+    var q=document.getElementById('srch').value.toLowerCase().trim();
+    var ms=parseFloat(document.getElementById('minScore').value)||0;
+    var aa=Array.from(document.querySelectorAll('.act-btn[data-action].active')).map(function(b){return b.getAttribute('data-action');});
+    var allA=document.getElementById('btnAll').classList.contains('active')||aa.length===0;
+    var sa=Array.from(document.querySelectorAll('.sec-btn[data-sector].active')).map(function(b){return b.getAttribute('data-sector');});
+    var allS=document.getElementById('btnSecAll').classList.contains('active')||sa.length===0;
+    var maB=document.getElementById('btnMABelow').classList.contains('active');
+    var fa=Array.from(document.querySelectorAll('.flag-filter-btn.active')).map(function(b){return b.getAttribute('data-flag');});
+    document.querySelectorAll('#tbody tr').forEach(function(r){
+        var ok=((!q||r.innerText.toLowerCase().indexOf(q)!==-1))
+            &&(allA||aa.indexOf(r.getAttribute('data-action')||'')!==-1)
+            &&(allS||sa.indexOf(r.getAttribute('data-sector')||'')!==-1)
+            &&(!maB||(r.getAttribute('data-ma')||'')==='below')
+            &&(parseFloat(r.getAttribute('data-score')||0)>=ms)
+            &&(fa.length===0||fa.some(function(f){return (r.getAttribute('data-flags')||'').indexOf(f)!==-1;}));
+        r.style.display=ok?'':'none';
+    });
+    updateCount();
+}
+function sortCol(c){
+    var tb=document.getElementById('tbody'),rows=Array.from(tb.querySelectorAll('tr'));
+    sortDir[c]=-(sortDir[c]||1); var d=sortDir[c];
+    rows.sort(function(a,b){
+        var ac=a.cells[c],bc=b.cells[c];
+        var av=(ac&&ac.hasAttribute('data-sort'))?ac.getAttribute('data-sort'):(ac?ac.innerText.trim():'');
+        var bv=(bc&&bc.hasAttribute('data-sort'))?bc.getAttribute('data-sort'):(bc?bc.innerText.trim():'');
+        var an=parseFloat(av.replace(/[^\\d.\\-]/g,'')),bn=parseFloat(bv.replace(/[^\\d.\\-]/g,''));
+        return (!isNaN(an)&&!isNaN(bn))?d*(an-bn):d*av.localeCompare(bv);
+    });
+    document.querySelectorAll('thead th').forEach(function(h,i){h.classList.remove('asc','desc');if(i===c)h.classList.add(d===1?'desc':'asc');});
+    rows.forEach(function(r){tb.appendChild(r);});
+    updateCount();
+}
+function updateCount(){
+    var v=0; document.querySelectorAll('#tbody tr').forEach(function(r){if(r.style.display!=='none')v++;});
+    document.getElementById('rowcnt').textContent='Showing '+v+' of TOTAL stocks';
+}
+function exportCSV(){
+    var hdrs=Array.from(document.querySelectorAll('thead th')).map(function(h){return h.innerText.replace(/[▲▼]/g,'').trim();});
+    var rows=Array.from(document.querySelectorAll('#tbody tr')).filter(function(r){return r.style.display!=='none';});
+    var csv=hdrs.join(',')+String.fromCharCode(10);
+    rows.forEach(function(r){csv+=Array.from(r.cells).map(function(c){return '"'+c.innerText.replace(/[\\r\\n]+/g,' ').trim()+'"';}).join(',')+String.fromCharCode(10);});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+    a.download='portfolio_analysis_v2.csv';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+window.onload=function(){updateCount();};
+""".replace("TOTAL", str(total))
 
-        df.sort_values("Score", ascending=False, inplace=True)
-        df.reset_index(drop=True, inplace=True)
+    return """<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>{css}</style></head>
+<body><div style="padding:10px 14px">
 
-        # ── Top N picks ────────────────────────────────────────────────────
-        progress_bar.progress(0.92, text="Generating top picks...")
-        top10 = generate_top10_recommendations(df, n=top_n)
+<h2>📊 Portfolio Analyzer v2 &nbsp;<span class="run-ts">Last run: {run_ts}</span></h2>
+<div class="legend">
+  <span>🟣 Purple = new v2 columns</span>
+  <span>📈 Analyst targets = Wall St consensus</span>
+  <span>⚡ Rev Gr % shows acceleration arrow</span>
+</div>
 
-        st.session_state.df     = df
-        st.session_state.top10  = top10
-        st.session_state.run_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+<div class="cards">
+  <div class="stat-card"><div class="num">{total}</div><div class="lbl">Stocks</div></div>
+  <div class="stat-card" style="border-color:#1f6feb"><div class="num" style="color:#1f6feb">{sb}</div><div class="lbl">Strong Buy</div></div>
+  <div class="stat-card" style="border-color:#238636"><div class="num" style="color:#238636">{b}</div><div class="lbl">Buy</div></div>
+  <div class="stat-card" style="border-color:#9e6a03"><div class="num" style="color:#9e6a03">{h}</div><div class="lbl">Hold</div></div>
+  <div class="stat-card" style="border-color:#b62324"><div class="num" style="color:#b62324">{s}</div><div class="lbl">Sell</div></div>
+  <div class="stat-card"><div class="num">{avg}</div><div class="lbl">Avg Score</div></div>
+</div>
 
-        progress_bar.progress(1.0, text="✅ Done!")
-        time.sleep(0.5)
-        progress_bar.empty()
-        status_text.empty()
-        st.success(f"✅ Analysis complete — {len(df)} stocks scored at {st.session_state.run_ts}")
+<div class="toolbar">
+  <div class="fg"><div class="fl">🔍 Search</div>
+    <input id="srch" type="text" placeholder="Ticker or name…" oninput="applyFilters()">
+  </div>
+  <div class="fg"><div class="fl">Min Score</div>
+    <input id="minScore" type="number" value="0" min="0" max="100" oninput="applyFilters()">
+  </div>
+  <div class="fg"><div class="fl">Action</div><div class="btn-row">
+    <button id="btnAll" class="act-btn active" onclick="toggleAll()">ALL</button>
+    <button class="act-btn" data-action="STRONG BUY" onclick="toggleAction(this)">🟢 STRONG BUY</button>
+    <button class="act-btn" data-action="BUY"        onclick="toggleAction(this)">🔵 BUY</button>
+    <button class="act-btn" data-action="HOLD"       onclick="toggleAction(this)">🟡 HOLD</button>
+    <button class="act-btn" data-action="SELL"       onclick="toggleAction(this)">🔴 SELL</button>
+  </div></div>
+  <div class="fg"><div class="fl">200 DMA</div>
+    <button id="btnMABelow" class="ma-filter-btn" onclick="toggleMA(this)">Below 200 MA</button>
+  </div>
+  <div class="fg"><div class="fl">Signal Flags</div><div class="btn-row">
+    <button class="flag-filter-btn" data-flag="Compounder"         onclick="toggleFlag(this)">⭐ Compounder</button>
+    <button class="flag-filter-btn" data-flag="Accel Growth"       onclick="toggleFlag(this)">🚀 Accel Growth</button>
+    <button class="flag-filter-btn" data-flag="Deep Value"         onclick="toggleFlag(this)">💎 Deep Value</button>
+    <button class="flag-filter-btn" data-flag="Analyst Conviction" onclick="toggleFlag(this)">📈 Analyst Conv.</button>
+    <button class="flag-filter-btn" data-flag="Income"             onclick="toggleFlag(this)">💰 Income</button>
+  </div></div>
+  <div class="fg"><div class="fl">Sector</div><div class="btn-row">
+    <button id="btnSecAll" class="sec-btn active" onclick="toggleSecAll()">ALL</button>
+    {sec_btns}
+  </div></div>
+  <button class="btn-csv" onclick="exportCSV()">⬇ Export CSV</button>
+</div>
 
-
-# ── Display results ───────────────────────────────────────────────────────────
-df = st.session_state.df
-
-if df is None:
-    st.info("👈 Click **Run Analysis Now** in the sidebar to fetch live data and score all 344 stocks.")
-    st.markdown("""
-    ### What this tool does
-    - Fetches live data from Yahoo Finance for 344 stocks
-    - Scores each stock on 20+ weighted factors (FCF yield, ROE, revenue growth, valuation, etc.)
-    - Applies sector-relative scoring (P/E vs sector median, not absolute)
-    - Uses real Wall Street analyst consensus price targets
-    - Generates a ranked table + Top 10 deep-dive report
-
-    ### How to share / update
-    - This app is hosted on **Streamlit Cloud** — share the URL with anyone
-    - To re-run anytime, just click **Run Analysis Now** again
-    - All data is fetched fresh each time (no stale cache)
-    """)
-    st.stop()
-
-
-# ── Summary cards ─────────────────────────────────────────────────────────────
-st.caption(f"Last run: {st.session_state.run_ts}")
-
-col1, col2, col3, col4, col5, col6 = st.columns(6)
-col1.metric("Total Stocks", len(df))
-col2.metric("⭐ Strong Buy", int((df["Action"] == "STRONG BUY").sum()))
-col3.metric("🟢 Buy",        int((df["Action"] == "BUY").sum()))
-col4.metric("🟡 Hold",       int((df["Action"] == "HOLD").sum()))
-col5.metric("🔴 Sell",       int((df["Action"] == "SELL").sum()))
-col6.metric("Avg Score",    f"{df['Score'].mean():.1f}")
-
-
-# ── Update sidebar sector filter dynamically ───────────────────────────────────
-sectors_available = sorted(df["Sector"].dropna().unique().tolist())
-
-
-# ── Tabs ──────────────────────────────────────────────────────────────────────
-tab1, tab2, tab3 = st.tabs(["📋 Full Screener", "⭐ Top Picks", "📥 Export"])
-
-# ── TAB 1: Full Screener ──────────────────────────────────────────────────────
-with tab1:
-    # Apply filters
-    mask = pd.Series([True] * len(df), index=df.index)
-
-    if filter_action:
-        mask &= df["Action"].isin(filter_action)
-
-    chosen_sectors = st.session_state.get("sector_filter", [])
-    if chosen_sectors:
-        mask &= df["Sector"].isin(chosen_sectors)
-
-    mask &= df["Score"] >= min_score
-
-    de_mask = df["Debt_Equity"].isna() | (df["Debt_Equity"] <= max_de)
-    mask &= de_mask
-
-    if only_below_ma:
-        mask &= df["Vs_MA200"].notna() & (df["Vs_MA200"] < 0)
-
-    dff = df[mask].copy()
-    st.caption(f"Showing {len(dff)} of {len(df)} stocks after filters")
-
-    # Search box
-    search = st.text_input("🔍 Search ticker or name", "")
-    if search:
-        s = search.upper()
-        dff = dff[
-            dff["Ticker"].str.upper().str.contains(s, na=False) |
-            dff["Name"].astype(str).str.upper().str.contains(s, na=False)
-        ]
-
-    # Build display table
-    display_cols = {
-        "Ticker": "Ticker",
-        "Name": "Name",
-        "Sector": "Sector",
-        "Score": "Score",
-        "Action": "Action",
-        "Composite_Flag": "Flags",
-        "Price": "Price",
-        "Analyst_Target": "Target",
-        "Analyst_Upside": "Upside%",
-        "Mkt_Cap": "Mkt Cap",
-        "ROE": "ROE%",
-        "Rev_Growth": "Rev Gr%",
-        "FCF_Yield": "FCF Yld%",
-        "Gross_Margin": "Gross Mgn%",
-        "Op_Margin": "Op Mgn%",
-        "PE_Fwd": "P/E Fwd",
-        "PS": "P/S",
-        "PEG": "PEG",
-        "EV_EBITDA": "EV/EBITDA",
-        "Debt_Equity": "D/E",
-        "Beta": "Beta",
-        "Short_Float": "Short%",
-        "Div_Yield": "Div Yld%",
-        "Vs_MA200": "Vs 200MA%",
-        "EPS_Growth": "EPS Gr%",
-        "EPS_Surprise": "EPS Surp%",
-        "From_Low_Pct": "From Low%",
-        "From_High_Pct": "From High%",
-    }
-
-    show_cols = [c for c in display_cols if c in dff.columns]
-    tbl = dff[show_cols].rename(columns=display_cols).reset_index(drop=True)
-
-    # Format numeric columns
-    for col in ["Price", "Target"]:
-        if col in tbl.columns:
-            tbl[col] = tbl[col].apply(lambda v: fmt_price(v) if pd.notna(v) else "-")
-
-    for col in ["Upside%", "ROE%", "Rev Gr%", "FCF Yld%", "Gross Mgn%", "Op Mgn%",
-                "Short%", "Div Yld%", "Vs 200MA%", "EPS Gr%", "EPS Surp%",
-                "From Low%", "From High%"]:
-        if col in tbl.columns:
-            tbl[col] = tbl[col].apply(lambda v: fmt_pct(v) if pd.notna(v) else "-")
-
-    for col in ["P/E Fwd", "P/S", "PEG", "EV/EBITDA", "D/E", "Beta", "Score"]:
-        if col in tbl.columns:
-            tbl[col] = tbl[col].apply(lambda v: f"{v:.1f}" if pd.notna(v) and v is not None else "-")
-
-    st.dataframe(
-        tbl,
-        use_container_width=True,
-        height=600,
-        column_config={
-            "Score": st.column_config.NumberColumn("Score", format="%.1f"),
-            "Action": st.column_config.TextColumn("Action"),
-        }
+<div id="rowcnt"></div>
+<div class="wrap">
+  <table id="tbl">
+    <thead><tr>{headers}</tr></thead>
+    <tbody id="tbody">{rows_html}</tbody>
+  </table>
+</div>
+</div>
+<script>{js}</script>
+</body></html>""".format(
+        css=CSS, js=JS, run_ts=run_ts,
+        total=total, sb=sb_c, b=b_c, h=h_c, s=s_c, avg=avg,
+        sec_btns=sec_btns, headers=headers, rows_html=rows_html,
     )
 
 
-# ── TAB 2: Top Picks ──────────────────────────────────────────────────────────
+# ═══════════════════════════════════════════════════════════════════════════════
+# MAIN
+# ═══════════════════════════════════════════════════════════════════════════════
+df, run_info, top10 = load_data()
+
+# ── Header ────────────────────────────────────────────────────────────────────
+st.markdown(
+    '<h1 style="color:#58a6ff;margin-bottom:2px">📊 Stock Portfolio Analyzer v2</h1>'
+    '<p style="color:#8b949e;font-size:12px;margin-top:0">344 stocks · Sector-relative scoring · Updated daily at 10am by cron job</p>',
+    unsafe_allow_html=True,
+)
+
+if df is None:
+    st.warning("⏳ No results yet — `data/portfolio_analysis.csv` not found.")
+    st.info("Run `python run_analysis.py` manually once to generate the first results.")
+    st.stop()
+
+run_ts  = run_info.get("run_timestamp_utc", "Unknown")
+elapsed = run_info.get("elapsed_minutes", "?")
+st.caption(f"🕐 Last analysis: **{run_ts}** · Completed in {elapsed} min")
+
+# ── Download buttons (Streamlit-native, top of page) ─────────────────────────
+dl1, dl2, _ = st.columns([1.2, 1.2, 7])
+with dl1:
+    st.download_button(
+        "⬇️ Download Full CSV",
+        data=df.to_csv(index=False).encode("utf-8"),
+        file_name=f"portfolio_analysis_{datetime.now().strftime('%Y%m%d')}.csv",
+        mime="text/csv",
+    )
+with dl2:
+    if top10:
+        top10_bytes = pd.DataFrame(top10).to_csv(index=False).encode("utf-8")
+        st.download_button(
+            "⬇️ Top 10 CSV",
+            data=top10_bytes,
+            file_name=f"top10_{datetime.now().strftime('%Y%m%d')}.csv",
+            mime="text/csv",
+        )
+
+# ── Tabs ──────────────────────────────────────────────────────────────────────
+tab1, tab2 = st.tabs(["📋 Full Screener", "⭐ Top 10 Picks"])
+
+with tab1:
+    # Build and embed the full interactive HTML report
+    html_out = build_html_report(df, run_ts)
+    components.html(html_out, height=920, scrolling=False)
+
 with tab2:
-    top10 = st.session_state.top10
     if not top10:
-        st.info("Run the analysis first to see top picks.")
+        st.info("No top picks available.")
     else:
         st.subheader(f"🏆 Top {len(top10)} Recommendations")
         st.caption("Multi-factor conviction scoring · Sector-diversified · Risk-filtered")
 
+        def fp(v, plus=True):
+            if v is None or (isinstance(v, float) and np.isnan(float(v) if v else 0)): return "N/A"
+            try:
+                fv = float(v)
+                sign = "+" if plus and fv > 0 else ""
+                return f"{sign}{fv:.1f}%"
+            except Exception:
+                return "N/A"
+
+        def fpr(v):
+            try:
+                return f"${float(v):.2f}" if v else "N/A"
+            except Exception:
+                return "N/A"
+
         for i, r in enumerate(top10, 1):
-            upside  = r.get("upside")
-            roe     = r.get("roe")
-            fcf     = r.get("fcf")
-            de      = r.get("de")
-            beta    = r.get("beta")
-            rev_g   = r.get("rev_g")
-            op_m    = r.get("op_m")
-            gross_m = r.get("gross_m")
-            eps_s   = r.get("eps_s")
-            accel   = None
+            upside = r.get("upside"); roe = r.get("roe"); fcf = r.get("fcf")
+            de = r.get("de"); beta = r.get("beta"); rev_g = r.get("rev_g")
+            op_m = r.get("op_m"); gross_m = r.get("gross_m"); eps_s = r.get("eps_s")
             rev_prev = r.get("rev_prev")
-            if rev_g is not None and rev_prev is not None:
-                accel = rev_g - rev_prev
+            try:
+                accel = float(rev_g) - float(rev_prev) if (rev_g and rev_prev) else None
+            except Exception:
+                accel = None
 
             with st.expander(
-                f"#{i}  {r['ticker']}  —  {r['name'][:50]}  |  Score: {r['base_score']}  |  {r.get('action','')}",
+                f"#{i}  **{r['ticker']}**  —  {str(r.get('name',''))[:50]}  |  Score: {r['base_score']}  |  {r.get('action','')}",
                 expanded=(i <= 3),
             ):
                 c1, c2, c3 = st.columns(3)
-
                 with c1:
                     st.markdown("**💰 Price & Target**")
-                    st.write(f"Current Price: **{fmt_price(r.get('price'))}**")
-                    st.write(f"Analyst Target: **{fmt_price(r.get('target'))}**  ({r.get('analyst_count') or 'N/A'} analysts)")
-                    upside_str = fmt_pct(upside) if upside is not None else "N/A"
-                    color = "green" if upside and upside > 0 else "red"
-                    st.markdown(f"Upside: **:{color}[{upside_str}]**")
-                    st.write(f"Sector: {r.get('sector')}")
-                    st.write(f"Mkt Cap: {r.get('mkt_cap','N/A')}")
-
+                    st.write(f"Price:  **{fpr(r.get('price'))}**")
+                    st.write(f"Target: **{fpr(r.get('target'))}**  ({r.get('analyst_count') or 'N/A'} analysts)")
+                    color = "green" if upside and float(upside) > 0 else "red"
+                    st.markdown(f"Upside: **:{color}[{fp(upside)}]**")
+                    st.write(f"Sector: {r.get('sector')}  ·  Cap: {r.get('mkt_cap','N/A')}")
                 with c2:
-                    st.markdown("**📊 Quality & Profitability**")
-                    st.write(f"ROE:          {fmt_pct(roe, plus=False)}")
-                    st.write(f"FCF Yield:    {fmt_pct(fcf, plus=False)}")
-                    st.write(f"Operating Mgn:{fmt_pct(op_m, plus=False)}")
-                    st.write(f"Gross Margin: {fmt_pct(gross_m, plus=False)}")
-
+                    st.markdown("**📊 Quality**")
+                    st.write(f"ROE:       {fp(roe, plus=False)}")
+                    st.write(f"FCF Yield: {fp(fcf, plus=False)}")
+                    st.write(f"Op Margin: {fp(op_m, plus=False)}")
+                    st.write(f"Gross Mgn: {fp(gross_m, plus=False)}")
                 with c3:
                     st.markdown("**🚀 Growth & Risk**")
-                    accel_str = f"  ({'▲' if accel and accel > 0 else '▼'} {abs(accel):.1f}pp)" if accel is not None else ""
-                    st.write(f"Rev Growth:  {fmt_pct(rev_g)}{accel_str}")
-                    st.write(f"EPS Surprise: {fmt_pct(eps_s) if eps_s is not None else 'N/A'}")
-                    st.write(f"Debt/Equity: {f'{de:.2f}' if de is not None else 'N/A'}")
-                    st.write(f"Beta:        {f'{beta:.2f}' if beta is not None else 'N/A'}")
-
-                flags = r.get("flags", "")
+                    accel_str = f"  ({'▲' if accel and accel>0 else '▼'} {abs(accel):.1f}pp)" if accel else ""
+                    st.write(f"Rev Growth:   {fp(rev_g)}{accel_str}")
+                    st.write(f"EPS Surprise: {fp(eps_s) if eps_s else 'N/A'}")
+                    st.write(f"Debt/Equity:  {f'{float(de):.2f}' if de else 'N/A'}")
+                    st.write(f"Beta:         {f'{float(beta):.2f}' if beta else 'N/A'}")
+                flags = r.get("flags","")
                 if flags and flags != "—":
-                    st.markdown(f"**🏷️ Signal Flags:** {flags}")
+                    st.markdown(f"**🏷️ Flags:** {flags}")
+                st.caption(f"Base Score: {r['base_score']}  ·  Conviction: {r['conv_score']}")
 
-                st.caption(f"Base Score: {r['base_score']}  |  Conviction Score: {r['conv_score']}")
-
-
-# ── TAB 3: Export ─────────────────────────────────────────────────────────────
-with tab3:
-    st.subheader("📥 Export Results")
-
-    if df is None:
-        st.info("Run analysis first.")
-    else:
-        # CSV export
-        csv_cols = [
-            "Ticker", "Name", "Sector", "Score", "Action", "Composite_Flag",
-            "Price", "Analyst_Target", "Analyst_Upside", "Mkt_Cap",
-            "PE_Fwd", "PS", "PB", "PEG", "EV_EBITDA",
-            "ROE", "Rev_Growth", "Rev_Growth_Prev", "Gross_Margin",
-            "Op_Margin", "Profit_Margin", "FCF_Yield",
-            "EPS_Growth", "EPS_Surprise",
-            "From_Low_Pct", "From_High_Pct", "Debt_Equity",
-            "Beta", "Short_Float", "Inst_Own", "Insider_Buy_Pct",
-            "Div_Yield", "Payout_Ratio", "ROA", "Current_Ratio",
-            "MA200", "Vs_MA200", "Analyst_Count",
-        ]
-        available_cols = [c for c in csv_cols if c in df.columns]
-        csv_data = df[available_cols].to_csv(index=False).encode("utf-8")
-
-        st.download_button(
-            label="⬇️ Download Full CSV",
-            data=csv_data,
-            file_name=f"portfolio_analysis_{datetime.now().strftime('%Y%m%d_%H%M')}.csv",
-            mime="text/csv",
-            use_container_width=True,
-        )
-
-        # Top 10 text export
-        if st.session_state.top10:
-            top10_lines = []
-            for i, r in enumerate(st.session_state.top10, 1):
-                top10_lines.append(f"#{i} {r['ticker']} — {r['name']}")
-                top10_lines.append(f"   Score: {r['base_score']} | Action: {r.get('action')}")
-                top10_lines.append(f"   Price: {fmt_price(r.get('price'))} | Target: {fmt_price(r.get('target'))} | Upside: {fmt_pct(r.get('upside'))}")
-                top10_lines.append(f"   ROE: {fmt_pct(r.get('roe'), plus=False)} | FCF: {fmt_pct(r.get('fcf'), plus=False)} | Rev Gr: {fmt_pct(r.get('rev_g'))}")
-                top10_lines.append(f"   Flags: {r.get('flags','—')}")
-                top10_lines.append("")
-
-            top10_txt = "\n".join(top10_lines).encode("utf-8")
-            st.download_button(
-                label="⬇️ Download Top Picks TXT",
-                data=top10_txt,
-                file_name=f"top_picks_{datetime.now().strftime('%Y%m%d_%H%M')}.txt",
-                mime="text/plain",
-                use_container_width=True,
-            )
-
-        st.markdown("---")
-        st.caption("⚠️ All data sourced from Yahoo Finance via yfinance. This is a screening tool only — not financial advice.")
