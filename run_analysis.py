@@ -20,6 +20,131 @@ BATCH_SIZE   = 50    # fetch 50 tickers at a time
 BATCH_PAUSE  = 20    # seconds to wait between batches (avoids rate limits)
 MAX_WORKERS  = 5     # conservative parallelism for GitHub Actions
 
+def compute_moat_score(row):
+    """
+    Moat Score 0-100: estimates economic moat strength from quantitative signals.
+
+    Moat proxies used:
+      Pricing Power   → Gross Margin vs sector (high GM = pricing power)
+      Capital Returns → ROE sustained high (>20%) = returns above cost of capital
+      Cash Generation → FCF Yield positive = real cash not just accounting profit
+      Financial Fort  → Low Debt/Equity = doesn't need to borrow to survive
+      Stability       → Low Beta = not volatile like a commodity
+      Smart Money     → High Institutional Ownership = professionals hold it
+      Scale/Stickiness→ Operating Margin high = hard to displace
+      Earnings Quality→ ROA high = assets generate real returns
+
+    Each factor scores 0-1, multiplied by its weight, normalised to 0-100.
+    Returns None if fewer than 4 factors have data.
+    """
+    def v(col):
+        val = row.get(col)
+        if val is None: return None
+        try:
+            f = float(val)
+            return None if (f != f) else f   # NaN → None
+        except Exception:
+            return None
+
+    factors = []  # list of (score_0_to_1, weight)
+
+    # 1. Gross Margin — pricing power (weight 20)
+    gm = v("Gross_Margin")
+    if gm is not None:
+        if   gm >= 70: s = 1.0
+        elif gm >= 50: s = 0.8
+        elif gm >= 35: s = 0.5
+        elif gm >= 20: s = 0.2
+        else:          s = 0.0
+        factors.append((s, 20))
+
+    # 2. ROE — returns above cost of capital (weight 20)
+    roe = v("ROE")
+    if roe is not None:
+        if   roe >= 30: s = 1.0
+        elif roe >= 20: s = 0.8
+        elif roe >= 12: s = 0.4
+        elif roe >= 0:  s = 0.1
+        else:           s = 0.0
+        factors.append((s, 20))
+
+    # 3. Operating Margin — operational efficiency / pricing power (weight 15)
+    om = v("Op_Margin")
+    if om is not None:
+        if   om >= 25: s = 1.0
+        elif om >= 15: s = 0.7
+        elif om >= 8:  s = 0.4
+        elif om >= 0:  s = 0.1
+        else:          s = 0.0
+        factors.append((s, 15))
+
+    # 4. FCF Yield — real cash generation (weight 15)
+    fcf = v("FCF_Yield")
+    if fcf is not None:
+        if   fcf >= 8:  s = 1.0
+        elif fcf >= 4:  s = 0.7
+        elif fcf >= 1:  s = 0.4
+        elif fcf >= 0:  s = 0.1
+        else:           s = 0.0
+        factors.append((s, 15))
+
+    # 5. Debt/Equity — financial fortress (weight 10)
+    de = v("Debt_Equity")
+    if de is not None:
+        if   de <= 0.1: s = 1.0
+        elif de <= 0.3: s = 0.8
+        elif de <= 0.7: s = 0.5
+        elif de <= 1.5: s = 0.2
+        else:           s = 0.0
+        factors.append((s, 10))
+
+    # 6. ROA — asset efficiency (weight 10)
+    roa = v("ROA")
+    if roa is not None:
+        if   roa >= 15: s = 1.0
+        elif roa >= 8:  s = 0.7
+        elif roa >= 3:  s = 0.3
+        elif roa >= 0:  s = 0.1
+        else:           s = 0.0
+        factors.append((s, 10))
+
+    # 7. Beta — stability / not a commodity (weight 5)
+    beta = v("Beta")
+    if beta is not None:
+        if   beta <= 0.6: s = 1.0
+        elif beta <= 0.9: s = 0.8
+        elif beta <= 1.2: s = 0.5
+        elif beta <= 1.8: s = 0.2
+        else:             s = 0.0
+        factors.append((s, 5))
+
+    # 8. Institutional Ownership — smart money confidence (weight 5)
+    inst = v("Inst_Own")
+    if inst is not None:
+        if   inst >= 80: s = 1.0
+        elif inst >= 60: s = 0.7
+        elif inst >= 40: s = 0.4
+        elif inst >= 20: s = 0.1
+        else:            s = 0.0
+        factors.append((s, 5))
+
+    if len(factors) < 4:
+        return None   # not enough data
+
+    total_score  = sum(s * w for s, w in factors)
+    total_weight = sum(w for _, w in factors)
+    return round((total_score / total_weight) * 100, 1)
+
+
+def moat_label(score):
+    """Convert numeric moat score to label."""
+    if score is None: return "—"
+    if score >= 75:   return "Wide"
+    if score >= 55:   return "Narrow"
+    if score >= 35:   return "Weak"
+    return "None"
+
+
 def _clean(v):
     if v is None: return None
     try:
@@ -106,12 +231,22 @@ def main():
     df                   = df[df["Score"].notna()].copy()
     df["Action"]         = df["Score"].apply(lambda s: get_recommendation(s)[0])
     df["Composite_Flag"] = df.apply(assign_composite_flag, axis=1)
+
+    # ── Moat Score ────────────────────────────────────────────────────────
+    print("Computing moat scores...")
+    df["Moat_Score"] = df.apply(compute_moat_score, axis=1)
+    df["Moat_Label"] = df["Moat_Score"].apply(moat_label)
+    wide_moat  = int(df["Moat_Label"].eq("Wide").sum())
+    narrow_moat = int(df["Moat_Label"].eq("Narrow").sum())
+    print(f"  Wide moat: {wide_moat}  |  Narrow moat: {narrow_moat}")
+
     df.sort_values("Score", ascending=False, inplace=True)
     df.reset_index(drop=True, inplace=True)
 
     # ── Save CSV ──────────────────────────────────────────────────────────
     cols = [
         "Ticker","Name","Sector","Industry","Score","Action","Composite_Flag",
+        "Moat_Score","Moat_Label",
         "Price","Analyst_Target","Analyst_Upside","Analyst_Count","Mkt_Cap",
         "PE_Fwd","PS","PB","PEG","EV_EBITDA","ROE",
         "Rev_Growth","Rev_Growth_Prev","Gross_Margin","Op_Margin","Profit_Margin","FCF_Yield",
