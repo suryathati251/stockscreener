@@ -163,11 +163,27 @@ def build_html_report(df: pd.DataFrame, run_ts: str) -> str:
         mas = "none" if _nan(vs200) else ("below" if float(vs200) < 0 else "above")
         ib = row.get("Insider_Buy_Pct")
 
+        # Moat cell
+        moat_score = row.get("Moat_Score")
+        moat_label = str(row.get("Moat_Label") or "—")
+        if moat_label == "Wide":
+            moat_cell = '<td class="tc"><span class="badge moat-wide">🏰 Wide</span><br><small>{}</small></td>'.format(
+                fmt(moat_score, decimals=0) if not _nan(moat_score) else "")
+        elif moat_label == "Narrow":
+            moat_cell = '<td class="tc"><span class="badge moat-narrow">〰 Narrow</span><br><small>{}</small></td>'.format(
+                fmt(moat_score, decimals=0) if not _nan(moat_score) else "")
+        elif moat_label == "Weak":
+            moat_cell = '<td class="tc"><span class="badge moat-weak">Weak</span><br><small>{}</small></td>'.format(
+                fmt(moat_score, decimals=0) if not _nan(moat_score) else "")
+        else:
+            moat_cell = '<td class="tc" data-sort="0"><small style="color:#8b949e">—</small></td>'
+
         cells = (
             "<td><strong>{}</strong><br><small>{}</small></td>".format(tv, nv)
             + '<td class="tc">' + sb + "</td>"
             + '<td class="tc">' + ab + "</td>"
             + '<td class="tc flag-cell">' + fv + "</td>"
+            + moat_cell
             + '<td class="tr">'  + fmt(row.get("Price"),        prefix="$")             + "</td>"
             + _ma_cell(row)
             + atc + auc
@@ -195,8 +211,8 @@ def build_html_report(df: pd.DataFrame, run_ts: str) -> str:
             + '<td class="tc"><small>' + sv + "</small></td>"
         )
         rows_html_parts.append(
-            '<tr class="{}" data-action="{}" data-sector="{}" data-ma="{}" data-score="{}" data-flags="{}">'.format(
-                rc, rec, sv, mas, score, flags_data) + cells + "</tr>"
+            '<tr class="{}" data-action="{}" data-sector="{}" data-ma="{}" data-score="{}" data-flags="{}" data-moat="{}">'.format(
+                rc, rec, sv, mas, score, flags_data, moat_label) + cells + "</tr>"
         )
 
     rows_html = "\n".join(rows_html_parts)
@@ -221,19 +237,20 @@ def build_html_report(df: pd.DataFrame, run_ts: str) -> str:
     headers = (
         TH("Ticker / Name", 0) + TH("Score", 1) + TH("Action", 2)
         + TH("Signal Flags", 3, "new-col")
-        + TH("Price", 4) + TH("200 DMA", 5, "ma-col")
-        + TH("Analyst Target", 6, "new-col") + TH("Upside %", 7, "new-col")
-        + TH("Mkt Cap", 8) + TH("PEG", 9) + TH("P/E Fwd", 10)
-        + TH("P/S", 11) + TH("EV/EBITDA", 12, "new-col")
-        + TH("ROE %", 13) + TH("Rev Gr %", 14) + TH("Gross Mgn %", 15)
-        + TH("FCF Yld %", 16) + TH("EPS Surp %", 17, "new-col")
-        + TH("From Low %", 18) + TH("From High %", 19)
-        + TH("D/E", 20) + TH("Beta", 21) + TH("Short %", 22)
-        + TH("Insider Buy%", 23, "new-col")
-        + TH("Div Yield %", 24, "div-col") + TH("Payout %", 25, "div-col")
-        + TH("Op Margin %", 26, "div-col") + TH("ROA %", 27, "div-col")
-        + TH("Curr Ratio", 28, "div-col")
-        + TH("Sector", 29)
+        + TH("Moat", 4, "moat-col")
+        + TH("Price", 5) + TH("200 DMA", 6, "ma-col")
+        + TH("Analyst Target", 7, "new-col") + TH("Upside %", 8, "new-col")
+        + TH("Mkt Cap", 9) + TH("PEG", 10) + TH("P/E Fwd", 11)
+        + TH("P/S", 12) + TH("EV/EBITDA", 13, "new-col")
+        + TH("ROE %", 14) + TH("Rev Gr %", 15) + TH("Gross Mgn %", 16)
+        + TH("FCF Yld %", 17) + TH("EPS Surp %", 18, "new-col")
+        + TH("From Low %", 19) + TH("From High %", 20)
+        + TH("D/E", 21) + TH("Beta", 22) + TH("Short %", 23)
+        + TH("Insider Buy%", 24, "new-col")
+        + TH("Div Yield %", 25, "div-col") + TH("Payout %", 26, "div-col")
+        + TH("Op Margin %", 27, "div-col") + TH("ROA %", 28, "div-col")
+        + TH("Curr Ratio", 29, "div-col")
+        + TH("Sector", 30)
     )
 
     CSS = """
@@ -241,38 +258,57 @@ def build_html_report(df: pd.DataFrame, run_ts: str) -> str:
 body { background: #0d1117; color: #c9d1d9; font-family: "Segoe UI", sans-serif; font-size: 13px; }
 h2 { font-size: 1.1rem; color: #58a6ff; margin-bottom: 4px; }
 .run-ts { font-size: 11px; color: #8b949e; }
-.legend { font-size: 11px; color: #8b949e; margin: 4px 0 8px; }
-.legend span { margin-right: 14px; }
-.cards { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-.stat-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 8px 14px; min-width: 80px; }
-.stat-card .num { font-size: 1.4rem; font-weight: 700; }
-.stat-card .lbl { font-size: .65rem; color: #8b949e; text-transform: uppercase; letter-spacing: .5px; }
-.toolbar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; margin-bottom: 8px; }
-.fg { display: flex; flex-direction: column; gap: 4px; }
-.fl { font-size: .68rem; color: #8b949e; text-transform: uppercase; letter-spacing: .5px; }
-.btn-row { display: flex; flex-wrap: wrap; gap: 5px; }
-.act-btn { background:#161b22; border:1px solid #30363d; color:#8b949e; border-radius:6px; padding:5px 12px; cursor:pointer; font-size:12px; font-weight:600; transition:all .15s; }
-.act-btn:hover { border-color:#58a6ff; color:#c9d1d9; }
+
+/* Stats row */
+.cards { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.stat-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 6px 12px; min-width: 70px; }
+.stat-card .num { font-size: 1.2rem; font-weight: 700; }
+.stat-card .lbl { font-size: .6rem; color: #8b949e; text-transform: uppercase; letter-spacing: .5px; }
+
+/* Top bar — search + toggle always visible */
+.topbar { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; flex-wrap: wrap; }
+input#srch { background:#161b22; border:1px solid #30363d; color:#c9d1d9; border-radius:6px; padding:7px 11px; flex:1; min-width:120px; outline:none; font-size:13px; }
+input#srch:focus { border-color:#58a6ff; }
+input#minScore { background:#161b22; border:1px solid #30363d; color:#c9d1d9; border-radius:6px; padding:7px 8px; width:62px; outline:none; font-size:13px; text-align:center; }
+.btn-toggle-filters { background:#161b22; border:1.5px solid #30363d; color:#c9d1d9; border-radius:6px; padding:7px 14px; cursor:pointer; font-size:13px; font-weight:600; white-space:nowrap; transition:all .15s; }
+.btn-toggle-filters.has-active { border-color:#58a6ff; color:#58a6ff; }
+.btn-csv { background:#238636; color:#fff; border:none; border-radius:6px; padding:7px 13px; cursor:pointer; font-size:13px; font-weight:600; white-space:nowrap; }
+.btn-csv:hover { background:#2ea043; }
+
+/* Collapsible filter panel */
+.filter-panel { display:none; background:#0f1318; border:1px solid #30363d; border-radius:8px; padding:10px 12px; margin-bottom:8px; }
+.filter-panel.open { display:block; }
+.fg { margin-bottom: 10px; }
+.fl { font-size:.68rem; color:#8b949e; text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+.btn-row { display:flex; flex-wrap:wrap; gap:5px; }
+
+/* Action buttons */
+.act-btn { background:#161b22; border:1px solid #30363d; color:#8b949e; border-radius:6px; padding:5px 11px; cursor:pointer; font-size:12px; font-weight:600; transition:all .15s; }
 #btnAll.active { background:#30363d; color:#c9d1d9; border-color:#8b949e; }
 .act-btn[data-action="STRONG BUY"].active { background:#1f6feb; color:#fff; border-color:#1f6feb; }
 .act-btn[data-action="BUY"].active        { background:#238636; color:#fff; border-color:#238636; }
 .act-btn[data-action="HOLD"].active       { background:#9e6a03; color:#fff; border-color:#9e6a03; }
 .act-btn[data-action="SELL"].active       { background:#b62324; color:#fff; border-color:#b62324; }
+
+/* Sector buttons */
 .sec-btn { background:#161b22; border:1px solid #30363d; color:#8b949e; border-radius:6px; padding:4px 9px; cursor:pointer; font-size:11px; transition:all .15s; }
-.sec-btn:hover { border-color:#58a6ff; color:#c9d1d9; }
 #btnSecAll.active { background:#30363d; color:#c9d1d9; border-color:#8b949e; }
 .sec-btn[data-sector].active { background:#388bfd22; color:#58a6ff; border-color:#388bfd; }
+
+.moat-btn { background:#161b22; border:1px solid #30363d; color:#8b949e; border-radius:6px; padding:4px 9px; cursor:pointer; font-size:11px; transition:all .15s; }
+.moat-btn[data-moat="Wide"].active   { background:#7c3aed33; color:#a78bfa; border-color:#7c3aed; }
+.moat-btn[data-moat="Narrow"].active { background:#4f46e533; color:#818cf8; border-color:#4f46e5; }
+.moat-btn[data-moat="Weak"].active   { background:#37415133; color:#9ca3af; border-color:#6b7280; }
+/* Flag buttons */
 .flag-filter-btn { background:#161b22; border:1px solid #30363d; color:#8b949e; border-radius:6px; padding:4px 9px; cursor:pointer; font-size:11px; transition:all .15s; }
-.flag-filter-btn:hover { border-color:#bc8cff; color:#bc8cff; }
 .flag-filter-btn.active { background:#bc8cff33; color:#bc8cff; border-color:#bc8cff; }
+
+/* MA button */
 .ma-filter-btn { background:#161b22; border:1.5px solid #58a6ff; color:#58a6ff; border-radius:6px; padding:5px 13px; cursor:pointer; font-size:12px; font-weight:700; transition:all .15s; }
 .ma-filter-btn.active { background:#58a6ff; color:#0d1117; }
-input#srch { background:#161b22; border:1px solid #30363d; color:#c9d1d9; border-radius:6px; padding:6px 11px; width:200px; outline:none; font-size:13px; }
-input#srch:focus { border-color:#58a6ff; }
-input#minScore { background:#161b22; border:1px solid #30363d; color:#c9d1d9; border-radius:6px; padding:5px 8px; width:68px; outline:none; font-size:13px; text-align:center; }
-.btn-csv { background:#238636; color:#fff; border:none; border-radius:6px; padding:6px 14px; cursor:pointer; font-size:13px; font-weight:600; }
-.btn-csv:hover { background:#2ea043; }
-.wrap { overflow-x:auto; max-height:72vh; border:1px solid #21262d; border-radius:8px; margin-top:6px; }
+
+/* Table */
+.wrap { overflow-x:auto; max-height:78vh; border:1px solid #21262d; border-radius:8px; }
 table { border-collapse:collapse; width:100%; white-space:nowrap; }
 thead th { background:#161b22; color:#8b949e; position:sticky; top:0; z-index:9; padding:8px 7px; cursor:pointer; user-select:none; font-weight:600; border-bottom:1px solid #30363d; }
 thead th:hover { color:#58a6ff; }
@@ -304,17 +340,34 @@ td small { color:#8b949e; font-size:11px; }
 .ma-near  small   { color:#d29922; }
 .ma-below .ma-val { color:#f85149; font-weight:600; }
 .ma-below small   { color:#f85149; }
-#rowcnt { font-size:12px; color:#8b949e; margin-top:5px; }
+#rowcnt { font-size:12px; color:#8b949e; margin:4px 0 4px; }
+.moat-wide   { background:#7c3aed; color:#fff; }
+.moat-narrow { background:#4f46e5; color:#fff; }
+.moat-weak   { background:#374151; color:#9ca3af; }
+thead th.moat-col { color:#a78bfa; }
 """
 
     JS = """
 var sortDir = {};
-function toggleAction(b){ b.classList.toggle('active'); var a=document.querySelectorAll('.act-btn[data-action].active').length>0; document.getElementById('btnAll').classList.toggle('active',!a); applyFilters(); }
-function toggleAll(){ document.querySelectorAll('.act-btn[data-action]').forEach(function(b){b.classList.remove('active');}); document.getElementById('btnAll').classList.add('active'); applyFilters(); }
-function toggleSector(b){ b.classList.toggle('active'); var a=document.querySelectorAll('.sec-btn[data-sector].active').length>0; document.getElementById('btnSecAll').classList.toggle('active',!a); applyFilters(); }
-function toggleSecAll(){ document.querySelectorAll('.sec-btn[data-sector]').forEach(function(b){b.classList.remove('active');}); document.getElementById('btnSecAll').classList.add('active'); applyFilters(); }
-function toggleMA(b){ b.classList.toggle('active'); applyFilters(); }
-function toggleFlag(b){ b.classList.toggle('active'); applyFilters(); }
+function toggleFilters(){
+    var p=document.getElementById('filterPanel'), b=document.getElementById('btnFilters');
+    var open=p.classList.toggle('open');
+    b.textContent = open ? '▲ Hide Filters' : '▼ Filters';
+}
+function updateFilterBtn(){
+    var active=document.querySelectorAll('.act-btn[data-action].active, .sec-btn[data-sector].active, .flag-filter-btn.active, .ma-filter-btn.active, .moat-btn.active').length;
+    var b=document.getElementById('btnFilters');
+    var panel=document.getElementById('filterPanel');
+    if(active>0){ b.classList.add('has-active'); b.textContent=(panel.classList.contains('open')?'▲ Hide Filters':'▼ Filters ('+active+' active)'); }
+    else{ b.classList.remove('has-active'); b.textContent=(panel.classList.contains('open')?'▲ Hide Filters':'▼ Filters'); }
+}
+function toggleAction(b){ b.classList.toggle('active'); var a=document.querySelectorAll('.act-btn[data-action].active').length>0; document.getElementById('btnAll').classList.toggle('active',!a); applyFilters(); updateFilterBtn(); }
+function toggleAll(){ document.querySelectorAll('.act-btn[data-action]').forEach(function(b){b.classList.remove('active');}); document.getElementById('btnAll').classList.add('active'); applyFilters(); updateFilterBtn(); }
+function toggleSector(b){ b.classList.toggle('active'); var a=document.querySelectorAll('.sec-btn[data-sector].active').length>0; document.getElementById('btnSecAll').classList.toggle('active',!a); applyFilters(); updateFilterBtn(); }
+function toggleSecAll(){ document.querySelectorAll('.sec-btn[data-sector]').forEach(function(b){b.classList.remove('active');}); document.getElementById('btnSecAll').classList.add('active'); applyFilters(); updateFilterBtn(); }
+function toggleMA(b){ b.classList.toggle('active'); applyFilters(); updateFilterBtn(); }
+function toggleFlag(b){ b.classList.toggle('active'); applyFilters(); updateFilterBtn(); }
+function toggleMoat(b){ b.classList.toggle('active'); applyFilters(); updateFilterBtn(); }
 function applyFilters(){
     var q=document.getElementById('srch').value.toLowerCase().trim();
     var ms=parseFloat(document.getElementById('minScore').value)||0;
@@ -324,13 +377,15 @@ function applyFilters(){
     var allS=document.getElementById('btnSecAll').classList.contains('active')||sa.length===0;
     var maB=document.getElementById('btnMABelow').classList.contains('active');
     var fa=Array.from(document.querySelectorAll('.flag-filter-btn.active')).map(function(b){return b.getAttribute('data-flag');});
+    var ma=Array.from(document.querySelectorAll('.moat-btn.active')).map(function(b){return b.getAttribute('data-moat');});
     document.querySelectorAll('#tbody tr').forEach(function(r){
         var ok=((!q||r.innerText.toLowerCase().indexOf(q)!==-1))
             &&(allA||aa.indexOf(r.getAttribute('data-action')||'')!==-1)
             &&(allS||sa.indexOf(r.getAttribute('data-sector')||'')!==-1)
             &&(!maB||(r.getAttribute('data-ma')||'')==='below')
             &&(parseFloat(r.getAttribute('data-score')||0)>=ms)
-            &&(fa.length===0||fa.some(function(f){return (r.getAttribute('data-flags')||'').indexOf(f)!==-1;}));
+            &&(fa.length===0||fa.some(function(f){return (r.getAttribute('data-flags')||'').indexOf(f)!==-1;}))
+            &&(ma.length===0||ma.indexOf(r.getAttribute('data-moat')||'')!==-1);
         r.style.display=ok?'':'none';
     });
     updateCount();
@@ -370,31 +425,34 @@ window.onload=function(){updateCount();};
 <html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>{css}</style></head>
-<body><div style="padding:10px 14px">
+<body><div style="padding:8px 10px">
 
-<h2>📊 Portfolio Analyzer v2 &nbsp;<span class="run-ts">Last run: {run_ts}</span></h2>
-<div class="legend">
-  <span>🟣 Purple = new v2 columns</span>
-  <span>📈 Analyst targets = Wall St consensus</span>
-  <span>⚡ Rev Gr % shows acceleration arrow</span>
-</div>
-
+<!-- Stats row -->
 <div class="cards">
   <div class="stat-card"><div class="num">{total}</div><div class="lbl">Stocks</div></div>
-  <div class="stat-card" style="border-color:#1f6feb"><div class="num" style="color:#1f6feb">{sb}</div><div class="lbl">Strong Buy</div></div>
+  <div class="stat-card" style="border-color:#1f6feb"><div class="num" style="color:#1f6feb">{sb}</div><div class="lbl">Str. Buy</div></div>
   <div class="stat-card" style="border-color:#238636"><div class="num" style="color:#238636">{b}</div><div class="lbl">Buy</div></div>
   <div class="stat-card" style="border-color:#9e6a03"><div class="num" style="color:#9e6a03">{h}</div><div class="lbl">Hold</div></div>
   <div class="stat-card" style="border-color:#b62324"><div class="num" style="color:#b62324">{s}</div><div class="lbl">Sell</div></div>
   <div class="stat-card"><div class="num">{avg}</div><div class="lbl">Avg Score</div></div>
+  <div class="stat-card" style="border-color:#30363d"><div class="num" style="font-size:.75rem;color:#8b949e">{run_ts}</div><div class="lbl">Last Run</div></div>
 </div>
 
-<div class="toolbar">
-  <div class="fg"><div class="fl">🔍 Search</div>
-    <input id="srch" type="text" placeholder="Ticker or name…" oninput="applyFilters()">
-  </div>
-  <div class="fg"><div class="fl">Min Score</div>
-    <input id="minScore" type="number" value="0" min="0" max="100" oninput="applyFilters()">
-  </div>
+<!-- Always-visible top bar: search + score + filter toggle + export -->
+<div class="topbar">
+  <input id="srch" type="text" placeholder="🔍 Ticker or name…" oninput="applyFilters()">
+  <input id="minScore" type="number" value="0" min="0" max="100" placeholder="Score≥" oninput="applyFilters()" title="Min score">
+  <button id="btnFilters" class="btn-toggle-filters" onclick="toggleFilters()">▼ Filters</button>
+  <button class="btn-csv" onclick="exportCSV()">⬇ CSV</button>
+</div>
+
+<!-- Collapsible filter panel (hidden by default on mobile) -->
+<div id="filterPanel" class="filter-panel">
+  <div class="fg"><div class="fl">🏰 Moat</div><div class="btn-row">
+    <button class="moat-btn" data-moat="Wide"   onclick="toggleMoat(this)">🏰 Wide Moat</button>
+    <button class="moat-btn" data-moat="Narrow" onclick="toggleMoat(this)">〰 Narrow Moat</button>
+    <button class="moat-btn" data-moat="Weak"   onclick="toggleMoat(this)">Weak / None</button>
+  </div></div>
   <div class="fg"><div class="fl">Action</div><div class="btn-row">
     <button id="btnAll" class="act-btn active" onclick="toggleAll()">ALL</button>
     <button class="act-btn" data-action="STRONG BUY" onclick="toggleAction(this)">🟢 STRONG BUY</button>
@@ -416,7 +474,6 @@ window.onload=function(){updateCount();};
     <button id="btnSecAll" class="sec-btn active" onclick="toggleSecAll()">ALL</button>
     {sec_btns}
   </div></div>
-  <button class="btn-csv" onclick="exportCSV()">⬇ Export CSV</button>
 </div>
 
 <div id="rowcnt"></div>
@@ -429,7 +486,8 @@ window.onload=function(){updateCount();};
 </div>
 <script>{js}</script>
 </body></html>""".format(
-        css=CSS, js=JS, run_ts=run_ts,
+        css=CSS, js=JS,
+        run_ts=run_ts.replace("UTC","").strip(),
         total=total, sb=sb_c, b=b_c, h=h_c, s=s_c, avg=avg,
         sec_btns=sec_btns, headers=headers, rows_html=rows_html,
     )
@@ -544,4 +602,3 @@ with tab2:
                 if flags and flags != "—":
                     st.markdown(f"**🏷️ Flags:** {flags}")
                 st.caption(f"Base Score: {r['base_score']}  ·  Conviction: {r['conv_score']}")
-
