@@ -1,0 +1,46 @@
+name: Daily Stock Analysis
+
+on:
+  schedule:
+    # Runs every weekday at 10:00 AM UAE time (UTC+4 = 06:00 UTC)
+    # To change timezone, adjust the hour:
+    #   UAE/Gulf  (UTC+4)  → "0 6  * * 1-5"
+    #   London    (UTC+0)  → "0 10 * * 1-5"
+    #   New York  (UTC-4)  → "0 14 * * 1-5"
+    - cron: '0 6 * * 1-5'
+
+  # Run manually anytime from GitHub → Actions tab → Run workflow
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    # Give permission to write results back to the repo
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install yfinance pandas numpy
+
+      - name: Run stock analyzer
+        run: python run_analysis.py
+
+      - name: Commit and push results
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "📊 Daily analysis $(date +'%Y-%m-%d %H:%M UTC')"
+          git push
