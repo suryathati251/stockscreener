@@ -3,13 +3,7 @@ name: Daily Stock Analysis
 on:
   schedule:
     # 10am UAE time (UTC+4) = 06:00 UTC, weekdays only
-    # Change hour to match YOUR local 10am:
-    #   UAE/Gulf (UTC+4)  → "0 6  * * 1-5"
-    #   London   (UTC+0)  → "0 10 * * 1-5"
-    #   New York (UTC-4)  → "0 14 * * 1-5"
     - cron: '0 6 * * 1-5'
-
-  # Run manually anytime: Actions tab → Daily Stock Analysis → Run workflow
   workflow_dispatch:
 
 jobs:
@@ -25,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
-          fetch-depth: 0   # full history so rebase works
+          fetch-depth: 0
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
@@ -34,7 +28,7 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        run: pip install yfinance pandas numpy
+        run: pip install yfinance pandas numpy schedule
 
       - name: Run stock analyzer
         run: python run_analysis.py
@@ -52,6 +46,3 @@ jobs:
             git rebase origin/main
             git push origin main
           fi
-
-
-
