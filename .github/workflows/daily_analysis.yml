@@ -15,10 +15,10 @@ on:
 jobs:
   analyze:
     runs-on: ubuntu-latest
-    timeout-minutes: 45   # allow up to 45 min for rate-limit-safe batching
+    timeout-minutes: 45
 
     permissions:
-      contents: write     # needed to commit results back to repo
+      contents: write
 
     steps:
       - name: Checkout repo
@@ -36,20 +36,15 @@ jobs:
       - name: Run stock analyzer
         run: python run_analysis.py
 
-      - name: Verify output files exist
-        run: |
-          echo "--- Checking data/ folder ---"
-          ls -la data/
-          echo "--- First 3 rows of CSV ---"
-          head -3 data/portfolio_analysis.csv
-          echo "--- run_info.json ---"
-          cat data/run_info.json
-
       - name: Commit and push results to repo
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/
-          git diff --staged --quiet && echo "No changes to commit" || git commit -m "📊 Daily analysis $(date +'%Y-%m-%d %H:%M UTC')"
-          git push
+          git diff --staged --quiet && echo "No changes to commit" || (
+            git commit -m "📊 Daily analysis $(date +'%Y-%m-%d %H:%M UTC')"
+            git pull --rebase
+            git push
+          )
+
 
