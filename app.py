@@ -16,7 +16,7 @@ from datetime import datetime
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="📊 Portfolio Analyzer v2",
+    page_title="📊 Portfolio Analyzer — Master",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -500,8 +500,8 @@ df, run_info, top10 = load_data()
 
 # ── Header ────────────────────────────────────────────────────────────────────
 st.markdown(
-    '<h1 style="color:#58a6ff;margin-bottom:2px">📊 Stock Portfolio Analyzer v2</h1>'
-    '<p style="color:#8b949e;font-size:12px;margin-top:0">344 stocks · Sector-relative scoring · Updated daily at 10am by cron job</p>',
+    '<h1 style="color:#58a6ff;margin-bottom:2px">📊 Stock Portfolio Analyzer — Master</h1>'
+    '<p style="color:#8b949e;font-size:12px;margin-top:0">344 stocks · Sector-relative scoring · Moat analysis (Brand · Switching · Network) · Updated daily at 10am</p>',
     unsafe_allow_html=True,
 )
 
@@ -512,7 +512,9 @@ if df is None:
 
 run_ts  = run_info.get("run_timestamp_utc", "Unknown")
 elapsed = run_info.get("elapsed_minutes", "?")
-st.caption(f"🕐 Last analysis: **{run_ts}** · Completed in {elapsed} min")
+wide_moat   = run_info.get("wide_moat_count", "?")
+narrow_moat = run_info.get("narrow_moat_count", "?")
+st.caption(f"🕐 Last analysis: **{run_ts}** · Completed in {elapsed} min · 🏰 Wide Moat: {wide_moat} · 〰 Narrow Moat: {narrow_moat}")
 
 # ── Download buttons (Streamlit-native, top of page) ─────────────────────────
 dl1, dl2, _ = st.columns([1.2, 1.2, 7])
@@ -534,7 +536,7 @@ with dl2:
         )
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
-tab1, tab2 = st.tabs(["📋 Full Screener", "⭐ Top 10 Picks"])
+tab1, tab2, tab3 = st.tabs(["📋 Full Screener", "⭐ Top 10 Picks", "🏰 Moat Leaderboard"])
 
 with tab1:
     # Build and embed the full interactive HTML report
@@ -546,7 +548,7 @@ with tab2:
         st.info("No top picks available.")
     else:
         st.subheader(f"🏆 Top {len(top10)} Recommendations")
-        st.caption("Multi-factor conviction scoring · Sector-diversified · Risk-filtered")
+        st.caption("Multi-factor conviction scoring · Sector-diversified · Risk-filtered · Moat-boosted")
 
         def fp(v, plus=True):
             if v is None or (isinstance(v, float) and np.isnan(float(v) if v else 0)): return "N/A"
@@ -585,6 +587,15 @@ with tab2:
                     color = "green" if upside and float(upside) > 0 else "red"
                     st.markdown(f"Upside: **:{color}[{fp(upside)}]**")
                     st.write(f"Sector: {r.get('sector')}  ·  Cap: {r.get('mkt_cap','N/A')}")
+                    # Moat badge
+                    moat_label = r.get("moat_label", "None")
+                    moat_score_val = r.get("moat_score")
+                    moat_icons  = {"Wide": "🏰", "Narrow": "〰️", "Weak": "◽", "None": "—"}
+                    moat_colors = {"Wide": "violet", "Narrow": "blue", "Weak": "gray", "None": "gray"}
+                    mi  = moat_icons.get(moat_label, "—")
+                    mc_ = moat_colors.get(moat_label, "gray")
+                    ms_str = f"  ({moat_score_val:.0f}/100)" if moat_score_val is not None else ""
+                    st.markdown(f"Moat: **:{mc_}[{mi} {moat_label}{ms_str}]**")
                 with c2:
                     st.markdown("**📊 Quality**")
                     st.write(f"ROE:       {fp(roe, plus=False)}")
@@ -602,3 +613,97 @@ with tab2:
                 if flags and flags != "—":
                     st.markdown(f"**🏷️ Flags:** {flags}")
                 st.caption(f"Base Score: {r['base_score']}  ·  Conviction: {r['conv_score']}")
+
+with tab3:
+    st.subheader("🏰 Moat Leaderboard")
+    st.caption("Stocks ranked by economic moat score · Three pillars: Brand/Pricing Power · Switching Costs · Network Effects")
+
+    if "Moat_Label" not in df.columns:
+        st.info("Moat scores not available — re-run `python run_analysis.py` to generate them.")
+    else:
+        mc1, mc2, _ = st.columns([1.5, 1.5, 4])
+        with mc1:
+            moat_filter = st.selectbox("Moat Tier", ["All", "Wide", "Narrow", "Weak", "None"])
+        with mc2:
+            action_filter_m = st.selectbox("Action", ["All", "STRONG BUY", "BUY", "HOLD", "SELL"])
+
+        moat_df = df[["Ticker", "Name", "Sector", "Score", "Action",
+                       "Moat_Score", "Moat_Label", "Moat_Brand", "Moat_Switching", "Moat_Network",
+                       "Gross_Margin", "ROE", "Rev_Growth", "FCF_Yield", "Inst_Own",
+                       "Analyst_Upside", "Composite_Flag"]].copy()
+
+        if moat_filter != "All":
+            moat_df = moat_df[moat_df["Moat_Label"] == moat_filter]
+        if action_filter_m != "All":
+            moat_df = moat_df[moat_df["Action"] == action_filter_m]
+        moat_df = moat_df.sort_values("Moat_Score", ascending=False).head(50)
+
+        wide_n   = int((df["Moat_Label"] == "Wide").sum())
+        narrow_n = int((df["Moat_Label"] == "Narrow").sum())
+        weak_n   = int((df["Moat_Label"] == "Weak").sum())
+        none_n   = int((df["Moat_Label"] == "None").sum())
+        ma, mb, mc_col, md = st.columns(4)
+        ma.metric("🏰 Wide Moat",   wide_n)
+        mb.metric("〰️ Narrow Moat", narrow_n)
+        mc_col.metric("◽ Weak",     weak_n)
+        md.metric("— None",         none_n)
+        st.markdown("---")
+
+        for _, row in moat_df.iterrows():
+            label   = str(row.get("Moat_Label") or "None")
+            mscore  = row.get("Moat_Score")
+            brand_s = row.get("Moat_Brand")
+            sw_s    = row.get("Moat_Switching")
+            net_s   = row.get("Moat_Network")
+            badge   = {"Wide": "🟣", "Narrow": "🔵", "Weak": "⚫", "None": "⚫"}.get(label, "⚫")
+            ms_str  = f"{mscore:.0f}/100" if mscore is not None else "N/A"
+
+            with st.expander(
+                f"{badge} **{row['Ticker']}**  —  {str(row.get('Name',''))[:40]}"
+                f"  |  Moat: **{label}** ({ms_str})  |  Score: {row['Score']}  |  {row['Action']}",
+                expanded=False,
+            ):
+                p1, p2, p3, p4 = st.columns(4)
+                with p1:
+                    st.markdown("**🏰 Overall Moat**")
+                    st.metric("Moat Score", ms_str)
+                    st.write(f"Tier: **{label}**")
+                    st.write(f"Sector: {row.get('Sector','')}")
+                with p2:
+                    st.markdown("**💪 Brand / Pricing Power**")
+                    st.metric("Pillar", f"{brand_s:.1f}" if brand_s is not None else "N/A")
+                    gm  = row.get("Gross_Margin")
+                    fcf = row.get("FCF_Yield")
+                    st.write(f"Gross Margin: {f'{gm:.1f}%' if gm else 'N/A'}")
+                    st.write(f"FCF Yield:    {f'{fcf:.1f}%' if fcf else 'N/A'}")
+                with p3:
+                    st.markdown("**🔒 Switching Costs**")
+                    st.metric("Pillar", f"{sw_s:.1f}" if sw_s is not None else "N/A")
+                    roe = row.get("ROE"); rg = row.get("Rev_Growth")
+                    st.write(f"ROE:        {f'{roe:.1f}%' if roe else 'N/A'}")
+                    st.write(f"Rev Growth: {f'{rg:.1f}%' if rg else 'N/A'}")
+                with p4:
+                    st.markdown("**🌐 Network Effects**")
+                    st.metric("Pillar", f"{net_s:.1f}" if net_s is not None else "N/A")
+                    io = row.get("Inst_Own"); au = row.get("Analyst_Upside")
+                    rg = row.get("Rev_Growth")
+                    st.write(f"Rev Growth: {f'{rg:.1f}%' if rg else 'N/A'}")
+                    st.write(f"Inst. Own:  {f'{io:.0f}%' if io else 'N/A'}")
+                    st.write(f"Analyst Up: {f'+{au:.1f}%' if au and au > 0 else (f'{au:.1f}%' if au else 'N/A')}")
+                flags = str(row.get("Composite_Flag") or "")
+                if flags and flags != "—":
+                    st.markdown(f"**🏷️ Flags:** {flags}")
+
+        st.markdown("---")
+        moat_dl = df[["Ticker", "Name", "Sector", "Score", "Action",
+                       "Moat_Score", "Moat_Label", "Moat_Brand", "Moat_Switching", "Moat_Network",
+                       "Gross_Margin", "Op_Margin", "FCF_Yield", "ROE", "Rev_Growth",
+                       "Inst_Own", "Analyst_Upside", "Composite_Flag"]].copy()
+        moat_dl = moat_dl.sort_values("Moat_Score", ascending=False)
+        st.download_button(
+            "⬇️ Download Moat Data CSV",
+            data=moat_dl.to_csv(index=False).encode("utf-8"),
+            file_name=f"moat_analysis_{datetime.now().strftime('%Y%m%d')}.csv",
+            mime="text/csv",
+        )
+
