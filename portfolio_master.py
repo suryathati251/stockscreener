@@ -177,6 +177,9 @@ def _empty_row(ticker):
         "MA200", "Vs_MA200",
         "Analyst_Target", "Analyst_Count", "Analyst_Upside",
         "Composite_Flag",
+        "Price_3M_Return", "Price_6M_Return", "Price_12M_Return",
+        "FCF_vs_NetIncome", "Buyback_Yield", "Shareholder_Yield",
+        "Margin_Trend", "EPS_Revision", "Sector_RS",
     ]
     return {k: (ticker if k in ("Ticker", "Name") else None) for k in keys}
 
@@ -308,6 +311,100 @@ def fetch_ticker_data(ticker, _retries=5, _delay=2.0):
             if analyst_target and price and price > 0:
                 analyst_upside = round(((analyst_target - price) / price) * 100, 2)
 
+            # ── Price momentum: 3m, 6m, 12m returns ──────────────────────
+            price_3m = price_6m = price_12m = None
+            try:
+                hist = t.history(period="1y", interval="1mo", auto_adjust=True)
+                if hist is not None and len(hist) >= 3:
+                    p_now = float(hist["Close"].iloc[-1])
+                    if len(hist) >= 3:
+                        p3  = float(hist["Close"].iloc[-3])
+                        price_3m  = round(((p_now - p3)  / p3)  * 100, 1) if p3  else None
+                    if len(hist) >= 7:
+                        p6  = float(hist["Close"].iloc[-7])
+                        price_6m  = round(((p_now - p6)  / p6)  * 100, 1) if p6  else None
+                    if len(hist) >= 13:
+                        p12 = float(hist["Close"].iloc[-13])
+                        price_12m = round(((p_now - p12) / p12) * 100, 1) if p12 else None
+            except Exception:
+                pass
+
+            # ── FCF quality: FCF vs Net Income ────────────────────────────
+            # Ratio > 1.0 = FCF exceeds net income = very clean/conservative accounting
+            # Ratio < 0.5 = earnings are not converting to cash = red flag
+            fcf_vs_ni = None
+            try:
+                ni = info.get("netIncomeToCommon") or info.get("netIncome")
+                if fcf and ni and ni != 0:
+                    fcf_vs_ni = round(fcf / abs(ni), 2)
+            except Exception:
+                pass
+
+            # ── Buyback Yield ─────────────────────────────────────────────
+            # Negative "repurchaseOfStock" in cash flow = buying back shares
+            buyback_yield = None
+            try:
+                cf = t.cashflow
+                if cf is not None and not cf.empty:
+                    for label in ["Repurchase Of Capital Stock", "RepurchaseOfCapitalStock",
+                                  "repurchaseOfStock", "Common Stock Repurchased"]:
+                        if label in cf.index:
+                            rb = cf.loc[label].iloc[0]
+                            if rb is not None and not np.isnan(float(rb)) and mkt_cap and mkt_cap > 0:
+                                # Repurchases are typically negative in cash flow statements
+                                buyback_yield = round((abs(float(rb)) / mkt_cap) * 100, 2)
+                            break
+            except Exception:
+                pass
+
+            # ── Shareholder Yield = FCF yield + div yield + buyback yield ─
+            shareholder_yield = None
+            try:
+                components = [v for v in [fcf_yield, div_yield, buyback_yield] if v is not None]
+                if components:
+                    shareholder_yield = round(sum(components), 2)
+            except Exception:
+                pass
+
+            # ── Operating Margin Trend (current year vs prior year) ───────
+            margin_trend = None
+            try:
+                ann = t.financials   # annual income statement
+                if ann is not None and not ann.empty:
+                    for rev_label in ["Total Revenue", "Revenue"]:
+                        for om_label in ["Operating Income", "Operating Income Loss"]:
+                            if rev_label in ann.index and om_label in ann.index:
+                                revs = ann.loc[rev_label].dropna()
+                                oms  = ann.loc[om_label].dropna()
+                                if len(revs) >= 2 and len(oms) >= 2:
+                                    om_curr = float(oms.iloc[0]) / float(revs.iloc[0]) * 100 if revs.iloc[0] != 0 else None
+                                    om_prev = float(oms.iloc[1]) / float(revs.iloc[1]) * 100 if revs.iloc[1] != 0 else None
+                                    if om_curr is not None and om_prev is not None:
+                                        margin_trend = round(om_curr - om_prev, 1)
+                                break
+            except Exception:
+                pass
+
+            # ── EPS Revision: estimate revisions direction ─────────────────
+            # +1 = estimates being raised, -1 = being cut, 0 = stable
+            eps_revision = None
+            try:
+                # Compare current mean EPS estimate vs 30d ago
+                ae = t.analyst_price_targets if hasattr(t, "analyst_price_targets") else None
+                # Fallback: use upgradesDowngrades as proxy
+                updown = t.upgrades_downgrades
+                if updown is not None and not updown.empty:
+                    recent_ud = updown.head(10)
+                    upgrades   = (recent_ud["ToGrade"].str.contains("Buy|Outperform|Overweight|Strong Buy",
+                                  case=False, na=False)).sum()
+                    downgrades = (recent_ud["ToGrade"].str.contains("Sell|Underperform|Underweight|Reduce",
+                                  case=False, na=False)).sum()
+                    if   upgrades > downgrades:   eps_revision =  1
+                    elif downgrades > upgrades:   eps_revision = -1
+                    else:                         eps_revision =  0
+            except Exception:
+                pass
+
             if mkt_cap:
                 if   mkt_cap >= 1e12: mkt_cap_fmt = "${:.1f}T".format(mkt_cap / 1e12)
                 elif mkt_cap >= 1e9:  mkt_cap_fmt = "${:.1f}B".format(mkt_cap / 1e9)
@@ -334,6 +431,16 @@ def fetch_ticker_data(ticker, _retries=5, _delay=2.0):
                 "Analyst_Count": analyst_count,
                 "Analyst_Upside": analyst_upside,
                 "Composite_Flag": None,
+                # v3 new fields
+                "Price_3M_Return":   price_3m,
+                "Price_6M_Return":   price_6m,
+                "Price_12M_Return":  price_12m,
+                "FCF_vs_NetIncome":  fcf_vs_ni,
+                "Buyback_Yield":     buyback_yield,
+                "Shareholder_Yield": shareholder_yield,
+                "Margin_Trend":      margin_trend,
+                "EPS_Revision":      eps_revision,
+                "Sector_RS":         None,   # computed post-fetch from sector medians
             }
         except Exception:
             if _attempt < _retries - 1:
@@ -370,11 +477,13 @@ def fetch_all_parallel(tickers, max_workers=8):
 # SECTOR MEDIANS — for relative scoring
 # =============================================================================
 def compute_sector_medians(df):
-    metrics = ["PE_Fwd", "PS", "EV_EBITDA", "Gross_Margin", "Op_Margin"]
+    metrics = ["PE_Fwd", "PS", "EV_EBITDA", "Gross_Margin", "Op_Margin", "Price_6M_Return"]
     sector_medians = {}
     for sector, group in df.groupby("Sector"):
         sector_medians[sector] = {}
         for m in metrics:
+            if m not in df.columns:
+                continue
             vals = group[m].dropna()
             sector_medians[sector][m] = float(vals.median()) if len(vals) >= 3 else None
     return sector_medians
@@ -384,37 +493,44 @@ def compute_sector_medians(df):
 # SCORING ENGINE — WEIGHTED, SECTOR-RELATIVE
 # =============================================================================
 WEIGHTS = {
-    # Quality / profitability
+    # ── Quality / profitability (core compounder signals) ─────────────────
     "fcf_yield":        8,
     "roe":              7,
     "op_margin":        5,
     "roa":              4,
     "gross_margin_rel": 4,
     "current_ratio":    3,
-    # Growth
+    # ── Growth ────────────────────────────────────────────────────────────
     "rev_growth":       7,
     "rev_accel":        5,
     "eps_growth":       5,
     "eps_surprise":     4,
-    # Valuation — relative to sector
+    # ── Valuation — relative to sector ────────────────────────────────────
     "pe_rel":           5,
     "ps_rel":           4,
     "ev_ebitda_rel":    4,
     "peg":              5,
-    # Technical / momentum
-    "vs_ma200":         5,
-    "from_low":         3,
-    # Analyst signal
+    # ── Technical / momentum ──────────────────────────────────────────────
+    "vs_ma200":         4,
+    "price_momentum":   6,   # NEW: 6m price momentum
+    "sector_rs":        4,   # NEW: relative strength vs sector peers
+    "from_low":         2,
+    # ── Analyst signal ────────────────────────────────────────────────────
     "analyst_upside":   6,
     "analyst_count":    2,
-    # Sentiment / risk
+    "eps_revision":     4,   # NEW: estimate revision direction
+    # ── Capital allocation / cash quality ─────────────────────────────────
+    "shareholder_yield":5,   # NEW: FCF + div + buyback yield combined
+    "fcf_quality":      4,   # NEW: FCF vs net income ratio
+    "margin_trend":     4,   # NEW: operating margin expanding/contracting
+    # ── Risk / sentiment ──────────────────────────────────────────────────
     "debt_equity":      4,
     "short_float":      3,
     "inst_own":         2,
     "insider_buy":      3,
     "beta":             2,
-    # Dividend / stability
-    "div_yield":        3,
+    # ── Dividend / stability ──────────────────────────────────────────────
+    "div_yield":        2,
     "payout_ratio":     2,
 }
 TOTAL_WEIGHT = sum(WEIGHTS.values())
@@ -682,6 +798,62 @@ def calculate_weighted_score(row, sector_medians):
         elif pr > 100:  total += w("payout_ratio") * -1.0
         elif pr > 80:   total += w("payout_ratio") * -0.5
 
+    # ── Price Momentum: 6-month return (weight 6) ────────────────────────
+    p6m = row.get("Price_6M_Return")
+    if p6m is not None:
+        if   p6m > 50:   total += w("price_momentum") * 1.0
+        elif p6m > 25:   total += w("price_momentum") * 0.7
+        elif p6m > 10:   total += w("price_momentum") * 0.4
+        elif p6m > 0:    total += w("price_momentum") * 0.1
+        elif p6m < -30:  total += w("price_momentum") * -1.0
+        elif p6m < -15:  total += w("price_momentum") * -0.6
+        elif p6m < 0:    total += w("price_momentum") * -0.2
+
+    # ── Sector Relative Strength (weight 4) ───────────────────────────────
+    srs = row.get("Sector_RS")
+    if srs is not None:
+        if   srs > 20:  total += w("sector_rs") * 1.0
+        elif srs > 10:  total += w("sector_rs") * 0.6
+        elif srs > 0:   total += w("sector_rs") * 0.2
+        elif srs < -20: total += w("sector_rs") * -1.0
+        elif srs < -10: total += w("sector_rs") * -0.5
+        else:           total += w("sector_rs") * -0.1
+
+    # ── EPS Revision Direction (weight 4) ────────────────────────────────
+    er = row.get("EPS_Revision")
+    if er is not None:
+        if   er > 0:  total += w("eps_revision") * 1.0
+        elif er < 0:  total += w("eps_revision") * -1.0
+
+    # ── FCF Quality: FCF vs Net Income ratio (weight 4) ───────────────────
+    fcf_ni = row.get("FCF_vs_NetIncome")
+    if fcf_ni is not None:
+        if   fcf_ni > 1.5:  total += w("fcf_quality") * 1.0
+        elif fcf_ni > 1.0:  total += w("fcf_quality") * 0.6
+        elif fcf_ni > 0.7:  total += w("fcf_quality") * 0.2
+        elif fcf_ni > 0.3:  total += w("fcf_quality") * -0.3
+        elif fcf_ni < 0:    total += w("fcf_quality") * -1.0
+        else:               total += w("fcf_quality") * -0.7
+
+    # ── Shareholder Yield (weight 5) ─────────────────────────────────────
+    shy = row.get("Shareholder_Yield")
+    if shy is not None:
+        if   shy > 15:  total += w("shareholder_yield") * 1.0
+        elif shy > 8:   total += w("shareholder_yield") * 0.7
+        elif shy > 4:   total += w("shareholder_yield") * 0.3
+        elif shy > 1:   total += w("shareholder_yield") * 0.1
+        elif shy < 0:   total += w("shareholder_yield") * -0.5
+
+    # ── Operating Margin Trend (weight 4) ────────────────────────────────
+    mt = row.get("Margin_Trend")
+    if mt is not None:
+        if   mt > 5:    total += w("margin_trend") * 1.0
+        elif mt > 2:    total += w("margin_trend") * 0.6
+        elif mt > 0:    total += w("margin_trend") * 0.2
+        elif mt < -5:   total += w("margin_trend") * -1.0
+        elif mt < -2:   total += w("margin_trend") * -0.5
+        else:           total += w("margin_trend") * -0.1
+
     # ── Normalize to 0–100 ────────────────────────────────────────────────
     max_possible = float(TOTAL_WEIGHT)
     score = ((total + max_possible) / (2 * max_possible)) * 100
@@ -705,21 +877,62 @@ def assign_composite_flag(row):
     dy    = row.get("Div_Yield");    au    = row.get("Analyst_Upside")
     beta  = row.get("Beta");         sf    = row.get("Short_Float")
     vs200 = row.get("Vs_MA200");     peg   = row.get("PEG")
+    p6m   = row.get("Price_6M_Return")
+    srs   = row.get("Sector_RS")
+    fcf_ni= row.get("FCF_vs_NetIncome")
+    shy   = row.get("Shareholder_Yield")
+    mt    = row.get("Margin_Trend")
+    er    = row.get("EPS_Revision")
     accel = None
     if row.get("Rev_Growth") and row.get("Rev_Growth_Prev"):
         accel = row["Rev_Growth"] - row["Rev_Growth_Prev"]
 
+    # ── Quality / compounder signals ──────────────────────────────────────
     if roe and roe > 20 and fcf and fcf > 4 and (de is None or de < 1.0):
         flags.append("⭐ Compounder")
+
+    # ── Growth signals ────────────────────────────────────────────────────
     if accel and accel > 10 and rg and rg > 15:
         flags.append("🚀 Accel Growth")
+
+    # ── Valuation signals ─────────────────────────────────────────────────
     if peg and 0 < peg < 1.0 and fcf and fcf > 3:
         flags.append("💎 Deep Value")
+
+    # ── Analyst signals ───────────────────────────────────────────────────
     ac = row.get("Analyst_Count")
     if au and not _is_nan(au) and au > 25 and ac and not _is_nan(ac) and int(ac) >= 15:
         flags.append("📈 Analyst Conviction")
+    if er is not None and er > 0:
+        flags.append("📊 Est. Rising")      # analysts raising estimates
+
+    # ── Income signals ────────────────────────────────────────────────────
     if dy and dy > 3 and (not de or de < 1.5):
         flags.append("💰 Income")
+
+    # ── NEW: Capital allocator ────────────────────────────────────────────
+    if shy and shy > 8 and (de is None or de < 1.0):
+        flags.append("🔄 Capital Allocator")  # returning lots of cash to shareholders
+
+    # ── NEW: Clean earnings (FCF quality) ─────────────────────────────────
+    if fcf_ni and fcf_ni > 1.2 and fcf and fcf > 4:
+        flags.append("✅ Clean Earnings")    # FCF > net income = high earnings quality
+
+    # ── NEW: Margin expansion ─────────────────────────────────────────────
+    if mt and mt > 2 and roe and roe > 12:
+        flags.append("📐 Margin Expand")    # operating margins expanding
+
+    # ── NEW: Price momentum leader ────────────────────────────────────────
+    if p6m and p6m > 20 and srs and srs > 10:
+        flags.append("🔥 Momentum")         # beating sector peers on price
+
+    # ── NEW: Turnaround candidate ─────────────────────────────────────────
+    # Beaten-down price + positive estimate revisions + improving margins = potential turn
+    if (vs200 and vs200 < -15 and er is not None and er > 0
+            and mt is not None and mt > 0 and fcf and fcf > 2):
+        flags.append("🔃 Turnaround")
+
+    # ── Risk flags ────────────────────────────────────────────────────────
     if sf and sf > 20:
         flags.append("⚠️ High Short")
     if beta and beta > 2.0:
@@ -728,6 +941,10 @@ def assign_composite_flag(row):
         flags.append("⚠️ High Leverage")
     if vs200 and vs200 < -20:
         flags.append("⚠️ Below 200 DMA")
+    if fcf_ni is not None and fcf_ni < 0.4 and fcf_ni > -1:
+        flags.append("⚠️ Weak FCF Quality")  # earnings not converting to cash
+    if er is not None and er < 0:
+        flags.append("⚠️ Est. Cut")           # analysts cutting estimates
 
     return " · ".join(flags) if flags else "—"
 
