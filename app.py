@@ -178,6 +178,48 @@ def build_html_report(df: pd.DataFrame, run_ts: str) -> str:
         else:
             moat_cell = '<td class="tc" data-sort="0"><small style="color:#8b949e">—</small></td>'
 
+        # ── Momentum cells ────────────────────────────────────────────────
+        def _mom_cell(v):
+            if _nan(v): return '<td class="tc">-</td>'
+            fv = float(v)
+            cls = "analyst-up" if fv > 0 else "analyst-dn"
+            return '<td class="tc" data-sort="{}"><span class="{}">{:+.1f}%</span></td>'.format(fv, cls, fv)
+
+        # ── FCF quality cell ──────────────────────────────────────────────
+        fcf_ni = row.get("FCF_vs_NetIncome")
+        if _nan(fcf_ni):
+            fcf_ni_cell = '<td class="tc">-</td>'
+        else:
+            fv = float(fcf_ni)
+            if   fv > 1.2: cls, icon = "analyst-up",  "✅"
+            elif fv > 0.7: cls, icon = "",             ""
+            else:          cls, icon = "analyst-dn",   "⚠"
+            fcf_ni_cell = '<td class="tc" data-sort="{}"><span class="{}">{}{:.2f}</span></td>'.format(fv, cls, icon, fv)
+
+        # ── Margin trend cell ─────────────────────────────────────────────
+        mt = row.get("Margin_Trend")
+        if _nan(mt):
+            mt_cell = '<td class="tc">-</td>'
+        else:
+            fv = float(mt)
+            cls = "analyst-up" if fv > 0.5 else ("analyst-dn" if fv < -0.5 else "")
+            arrow = "▲" if fv > 0.5 else ("▼" if fv < -0.5 else "→")
+            mt_cell = '<td class="tc" data-sort="{}"><span class="{}">{} {:+.1f}pp</span></td>'.format(fv, cls, arrow, fv)
+
+        # ── EPS revision cell ─────────────────────────────────────────────
+        er = row.get("EPS_Revision")
+        if _nan(er) or er is None:
+            er_cell = '<td class="tc">-</td>'
+        else:
+            er_v = int(er)
+            if   er_v > 0: er_cell = '<td class="tc"><span class="analyst-up">▲ Up</span></td>'
+            elif er_v < 0: er_cell = '<td class="tc"><span class="analyst-dn">▼ Cut</span></td>'
+            else:          er_cell = '<td class="tc"><small>Stable</small></td>'
+
+        # ── Shareholder yield cell ────────────────────────────────────────
+        shy = row.get("Shareholder_Yield")
+        shy_cell = ('<td class="tc div-cell">' if (not _nan(shy) and float(shy) > 5) else '<td class="tc">') + fmt(shy, suffix="%", decimals=1) + "</td>"
+
         cells = (
             "<td><strong>{}</strong><br><small>{}</small></td>".format(tv, nv)
             + '<td class="tc">' + sb + "</td>"
@@ -187,6 +229,14 @@ def build_html_report(df: pd.DataFrame, run_ts: str) -> str:
             + '<td class="tr">'  + fmt(row.get("Price"),        prefix="$")             + "</td>"
             + _ma_cell(row)
             + atc + auc
+            + _mom_cell(row.get("Price_3M_Return"))
+            + _mom_cell(row.get("Price_6M_Return"))
+            + _mom_cell(row.get("Price_12M_Return"))
+            + _mom_cell(row.get("Sector_RS"))
+            + er_cell
+            + mt_cell
+            + fcf_ni_cell
+            + shy_cell
             + '<td class="tc">'  + str(row.get("Mkt_Cap") or "-")                       + "</td>"
             + '<td class="tc">'  + fmt(row.get("PEG"))                                  + "</td>"
             + '<td class="tc">'  + fmt(row.get("PE_Fwd"),       decimals=1)             + "</td>"
@@ -240,17 +290,21 @@ def build_html_report(df: pd.DataFrame, run_ts: str) -> str:
         + TH("Moat", 4, "moat-col")
         + TH("Price", 5) + TH("200 DMA", 6, "ma-col")
         + TH("Analyst Target", 7, "new-col") + TH("Upside %", 8, "new-col")
-        + TH("Mkt Cap", 9) + TH("PEG", 10) + TH("P/E Fwd", 11)
-        + TH("P/S", 12) + TH("EV/EBITDA", 13, "new-col")
-        + TH("ROE %", 14) + TH("Rev Gr %", 15) + TH("Gross Mgn %", 16)
-        + TH("FCF Yld %", 17) + TH("EPS Surp %", 18, "new-col")
-        + TH("From Low %", 19) + TH("From High %", 20)
-        + TH("D/E", 21) + TH("Beta", 22) + TH("Short %", 23)
-        + TH("Insider Buy%", 24, "new-col")
-        + TH("Div Yield %", 25, "div-col") + TH("Payout %", 26, "div-col")
-        + TH("Op Margin %", 27, "div-col") + TH("ROA %", 28, "div-col")
-        + TH("Curr Ratio", 29, "div-col")
-        + TH("Sector", 30)
+        + TH("3M Ret%", 9, "mom-col") + TH("6M Ret%", 10, "mom-col")
+        + TH("12M Ret%", 11, "mom-col") + TH("Sector RS", 12, "mom-col")
+        + TH("Est Rev", 13, "mom-col") + TH("Mgn Trend", 14, "mom-col")
+        + TH("FCF/NI", 15, "mom-col") + TH("Shldr Yld%", 16, "mom-col")
+        + TH("Mkt Cap", 17) + TH("PEG", 18) + TH("P/E Fwd", 19)
+        + TH("P/S", 20) + TH("EV/EBITDA", 21, "new-col")
+        + TH("ROE %", 22) + TH("Rev Gr %", 23) + TH("Gross Mgn %", 24)
+        + TH("FCF Yld %", 25) + TH("EPS Surp %", 26, "new-col")
+        + TH("From Low %", 27) + TH("From High %", 28)
+        + TH("D/E", 29) + TH("Beta", 30) + TH("Short %", 31)
+        + TH("Insider Buy%", 32, "new-col")
+        + TH("Div Yield %", 33, "div-col") + TH("Payout %", 34, "div-col")
+        + TH("Op Margin %", 35, "div-col") + TH("ROA %", 36, "div-col")
+        + TH("Curr Ratio", 37, "div-col")
+        + TH("Sector", 38)
     )
 
     CSS = """
@@ -345,6 +399,7 @@ td small { color:#8b949e; font-size:11px; }
 .moat-narrow { background:#4f46e5; color:#fff; }
 .moat-weak   { background:#374151; color:#9ca3af; }
 thead th.moat-col { color:#a78bfa; }
+thead th.mom-col  { color:#38bdf8; }
 """
 
     JS = """
@@ -469,6 +524,12 @@ window.onload=function(){updateCount();};
     <button class="flag-filter-btn" data-flag="Deep Value"         onclick="toggleFlag(this)">💎 Deep Value</button>
     <button class="flag-filter-btn" data-flag="Analyst Conviction" onclick="toggleFlag(this)">📈 Analyst Conv.</button>
     <button class="flag-filter-btn" data-flag="Income"             onclick="toggleFlag(this)">💰 Income</button>
+    <button class="flag-filter-btn" data-flag="Capital Allocator"  onclick="toggleFlag(this)">🔄 Capital Alloc.</button>
+    <button class="flag-filter-btn" data-flag="Clean Earnings"     onclick="toggleFlag(this)">✅ Clean Earnings</button>
+    <button class="flag-filter-btn" data-flag="Margin Expand"      onclick="toggleFlag(this)">📐 Margin Expand</button>
+    <button class="flag-filter-btn" data-flag="Momentum"           onclick="toggleFlag(this)">🔥 Momentum</button>
+    <button class="flag-filter-btn" data-flag="Turnaround"         onclick="toggleFlag(this)">🔃 Turnaround</button>
+    <button class="flag-filter-btn" data-flag="Est. Rising"        onclick="toggleFlag(this)">📊 Est. Rising</button>
   </div></div>
   <div class="fg"><div class="fl">Sector</div><div class="btn-row">
     <button id="btnSecAll" class="sec-btn active" onclick="toggleSecAll()">ALL</button>
