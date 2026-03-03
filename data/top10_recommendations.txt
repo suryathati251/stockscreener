@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-03-03 00:02:32
+  Generated: 2026-03-03 01:47:54
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -15,8 +15,8 @@
   │
   │  💰 PRICE & TARGET
   │     Current Price : $102.82
-  │     Analyst Target: $149.11  (35 analysts)
-  │     Upside        : +45.0%
+  │     Analyst Target: $149.17  (35 analysts)
+  │     Upside        : +45.1%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 31.0%
@@ -233,35 +233,7 @@
   │     🏰 Wide Moat · 🚀 Accel Growth · ⚠️ High Leverage
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #9 TTD  —  The Trade Desk, Inc.
-  │  Sector: Communication Services          Action: BUY
-  │  Base Score:  63.9   Conviction Score:  99.9   Mkt Cap: $11.9B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $24.32
-  │     Analyst Target: $32.95  (33 analysts)
-  │     Upside        : +35.5%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 16.0%
-  │     FCF Yield      : 5.1%
-  │     Operating Mgn  : 30.3%
-  │     Gross Margin   : 78.6%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 14.3%  ▲ accelerating (+20.6pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.18
-  │     Beta           : 1.19
-  │     PEG Ratio      : 3.93
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🏰 Wide Moat · 📈 Analyst Conviction · ⚠️ Below 200 DMA
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #10 PRI  —  Primerica, Inc.
+  ┌─ #9 PRI  —  Primerica, Inc.
   │  Sector: Financial Services              Action: BUY
   │  Base Score:  71.8   Conviction Score:  99.8   Mkt Cap: $8.2B
   │
@@ -289,12 +261,40 @@
   │     🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 💰 Income
   └────────────────────────────────────────────────────────────────────
 
+  ┌─ #10 TTD  —  The Trade Desk, Inc.
+  │  Sector: Communication Services          Action: BUY
+  │  Base Score:  63.8   Conviction Score:  99.8   Mkt Cap: $11.9B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $24.32
+  │     Analyst Target: $32.95  (33 analysts)
+  │     Upside        : +35.5%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 16.0%
+  │     FCF Yield      : 5.1%
+  │     Operating Mgn  : 30.3%
+  │     Gross Margin   : 78.6%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 14.3%  ▲ accelerating (+20.6pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 0.18
+  │     Beta           : 1.19
+  │     PEG Ratio      : 3.93
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🏰 Wide Moat · 📈 Analyst Conviction · ⚠️ Below 200 DMA
+  └────────────────────────────────────────────────────────────────────
+
 
   SUMMARY TABLE
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   PDD     PDD Holdings Inc.       78.2   45.0%    31%  0.03 Consumer Cyclical     
+  1   PDD     PDD Holdings Inc.       78.2   45.1%    31%  0.03 Consumer Cyclical     
   2   PCTY    Paylocity Holding Cor   73.4   58.0%    21%  0.14 Technology            
   3   ADBE    Adobe Inc.              73.8   56.6%    55%  0.57 Technology            
   4   KGC     Kinross Gold Corporat   78.1    8.7%    31%  0.09 Basic Materials       
@@ -302,6 +302,6 @@
   6   APP     Applovin Corporation    69.0   51.5%   213%  1.72 Communication Service 
   7   ELMD    Electromed, Inc.        64.6   53.5%    20%  0.00 Healthcare            
   8   ENVA    Enova International,    69.6   36.8%    24%  3.39 Financial Services    
-  9   TTD     The Trade Desk, Inc.    63.9   35.5%    16%  0.18 Communication Service 
-  10  PRI     Primerica, Inc.         71.8   12.5%    32%  0.78 Financial Services    
+  9   PRI     Primerica, Inc.         71.8   12.5%    32%  0.78 Financial Services    
+  10  TTD     The Trade Desk, Inc.    63.8   35.5%    16%  0.18 Communication Service 
   ────────────────────────────────────────────────────────────────────
