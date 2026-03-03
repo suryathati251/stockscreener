@@ -64,6 +64,22 @@ def run_and_export(send_email: bool = False):
     df = pd.DataFrame(records)
     sector_medians = pm.compute_sector_medians(df)
 
+    # ── Compute Sector Relative Strength (6m return vs sector median) ─────
+    print("  Computing sector relative strength…")
+    if "Price_6M_Return" in df.columns:
+        def _sector_rs(row):
+            p6 = row.get("Price_6M_Return")
+            if p6 is None or (isinstance(p6, float) and np.isnan(p6)):
+                return None
+            sec = row.get("Sector", "Unknown")
+            sec_med = sector_medians.get(sec, {}).get("Price_6M_Return")
+            if sec_med is None:
+                return None
+            return round(float(p6) - float(sec_med), 1)
+        df["Sector_RS"] = df.apply(_sector_rs, axis=1)
+    else:
+        df["Sector_RS"] = None
+
     print("  Scoring…")
     df["Score"] = df.apply(lambda r: pm.calculate_weighted_score(r, sector_medians), axis=1)
     dropped = df["Score"].isna().sum()
@@ -110,6 +126,10 @@ def run_and_export(send_email: bool = False):
         "Div_Yield", "Payout_Ratio", "ROA", "Current_Ratio",
         "MA200", "Vs_MA200",
         "Analyst_Target", "Analyst_Count", "Analyst_Upside",
+        # v3 new columns
+        "Price_3M_Return", "Price_6M_Return", "Price_12M_Return",
+        "Sector_RS", "FCF_vs_NetIncome", "Buyback_Yield",
+        "Shareholder_Yield", "Margin_Trend", "EPS_Revision",
     ]
     csv_path = DATA_DIR / "portfolio_analysis.csv"
     df[csv_cols].to_csv(str(csv_path), index=False)
