@@ -132,7 +132,8 @@ def run_and_export(send_email: bool = False):
         "Shareholder_Yield", "Margin_Trend", "EPS_Revision",
     ]
     csv_path = DATA_DIR / "portfolio_analysis.csv"
-    df[csv_cols].to_csv(str(csv_path), index=False)
+    existing_cols = [c for c in csv_cols if c in df.columns]
+    df[existing_cols].to_csv(str(csv_path), index=False)
     print(f"  ✅  CSV  → {csv_path}")
 
     # ── 6. Write run_info.json ────────────────────────────────────────────────
