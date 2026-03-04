@@ -178,70 +178,15 @@ def build_html_report(df: pd.DataFrame, run_ts: str) -> str:
         else:
             moat_cell = '<td class="tc" data-sort="0"><small style="color:#8b949e">—</small></td>'
 
-        # ── Momentum cells ────────────────────────────────────────────────
-        def _mom_cell(v):
-            if _nan(v): return '<td class="tc">-</td>'
-            fv = float(v)
-            cls = "analyst-up" if fv > 0 else "analyst-dn"
-            return '<td class="tc" data-sort="{}"><span class="{}">{:+.1f}%</span></td>'.format(fv, cls, fv)
-
-        # ── FCF quality cell ──────────────────────────────────────────────
-        fcf_ni = row.get("FCF_vs_NetIncome")
-        if _nan(fcf_ni):
-            fcf_ni_cell = '<td class="tc">-</td>'
-        else:
-            fv = float(fcf_ni)
-            if   fv > 1.2: cls, icon = "analyst-up",  "✅"
-            elif fv > 0.7: cls, icon = "",             ""
-            else:          cls, icon = "analyst-dn",   "⚠"
-            fcf_ni_cell = '<td class="tc" data-sort="{}"><span class="{}">{}{:.2f}</span></td>'.format(fv, cls, icon, fv)
-
-        # ── Margin trend cell ─────────────────────────────────────────────
-        mt = row.get("Margin_Trend")
-        if _nan(mt):
-            mt_cell = '<td class="tc">-</td>'
-        else:
-            fv = float(mt)
-            cls = "analyst-up" if fv > 0.5 else ("analyst-dn" if fv < -0.5 else "")
-            arrow = "▲" if fv > 0.5 else ("▼" if fv < -0.5 else "→")
-            mt_cell = '<td class="tc" data-sort="{}"><span class="{}">{} {:+.1f}pp</span></td>'.format(fv, cls, arrow, fv)
-
-        # ── EPS revision cell ─────────────────────────────────────────────
-        er = row.get("EPS_Revision")
-        if _nan(er) or er is None:
-            er_cell = '<td class="tc">-</td>'
-        else:
-            er_v = int(er)
-            if   er_v > 0: er_cell = '<td class="tc"><span class="analyst-up">▲ Up</span></td>'
-            elif er_v < 0: er_cell = '<td class="tc"><span class="analyst-dn">▼ Cut</span></td>'
-            else:          er_cell = '<td class="tc"><small>Stable</small></td>'
-
-        # ── Shareholder yield cell ────────────────────────────────────────
-        shy = row.get("Shareholder_Yield")
-        shy_cell = ('<td class="tc div-cell">' if (not _nan(shy) and float(shy) > 5) else '<td class="tc">') + fmt(shy, suffix="%", decimals=1) + "</td>"
-
-        # Sanitize values that go into HTML to prevent .format() crashes
-        tv_s = str(tv).replace("{", "&#123;").replace("}", "&#125;")
-        nv_s = str(nv).replace("{", "&#123;").replace("}", "&#125;")
-        fv_s = str(fv).replace("{", "&#123;").replace("}", "&#125;")
-
         cells = (
-            "<td><strong>" + tv_s + "</strong><br><small>" + nv_s + "</small></td>"
+            "<td><strong>{}</strong><br><small>{}</small></td>".format(tv, nv)
             + '<td class="tc">' + sb + "</td>"
             + '<td class="tc">' + ab + "</td>"
-            + '<td class="tc flag-cell">' + fv_s + "</td>"
+            + '<td class="tc flag-cell">' + fv + "</td>"
             + moat_cell
             + '<td class="tr">'  + fmt(row.get("Price"),        prefix="$")             + "</td>"
             + _ma_cell(row)
             + atc + auc
-            + _mom_cell(row.get("Price_3M_Return"))
-            + _mom_cell(row.get("Price_6M_Return"))
-            + _mom_cell(row.get("Price_12M_Return"))
-            + _mom_cell(row.get("Sector_RS"))
-            + er_cell
-            + mt_cell
-            + fcf_ni_cell
-            + shy_cell
             + '<td class="tc">'  + str(row.get("Mkt_Cap") or "-")                       + "</td>"
             + '<td class="tc">'  + fmt(row.get("PEG"))                                  + "</td>"
             + '<td class="tc">'  + fmt(row.get("PE_Fwd"),       decimals=1)             + "</td>"
@@ -266,10 +211,8 @@ def build_html_report(df: pd.DataFrame, run_ts: str) -> str:
             + '<td class="tc"><small>' + sv + "</small></td>"
         )
         rows_html_parts.append(
-            '<tr class="' + rc + '" data-action="' + rec + '" data-sector="' + sv +
-            '" data-ma="' + mas + '" data-score="' + str(score) + '" data-flags="' +
-            str(flags_data).replace('"',"'") + '" data-moat="' + moat_label + '">'
-            + cells + "</tr>"
+            '<tr class="{}" data-action="{}" data-sector="{}" data-ma="{}" data-score="{}" data-flags="{}" data-moat="{}">'.format(
+                rc, rec, sv, mas, score, flags_data, moat_label) + cells + "</tr>"
         )
 
     rows_html = "\n".join(rows_html_parts)
@@ -297,21 +240,17 @@ def build_html_report(df: pd.DataFrame, run_ts: str) -> str:
         + TH("Moat", 4, "moat-col")
         + TH("Price", 5) + TH("200 DMA", 6, "ma-col")
         + TH("Analyst Target", 7, "new-col") + TH("Upside %", 8, "new-col")
-        + TH("3M Ret%", 9, "mom-col") + TH("6M Ret%", 10, "mom-col")
-        + TH("12M Ret%", 11, "mom-col") + TH("Sector RS", 12, "mom-col")
-        + TH("Est Rev", 13, "mom-col") + TH("Mgn Trend", 14, "mom-col")
-        + TH("FCF/NI", 15, "mom-col") + TH("Shldr Yld%", 16, "mom-col")
-        + TH("Mkt Cap", 17) + TH("PEG", 18) + TH("P/E Fwd", 19)
-        + TH("P/S", 20) + TH("EV/EBITDA", 21, "new-col")
-        + TH("ROE %", 22) + TH("Rev Gr %", 23) + TH("Gross Mgn %", 24)
-        + TH("FCF Yld %", 25) + TH("EPS Surp %", 26, "new-col")
-        + TH("From Low %", 27) + TH("From High %", 28)
-        + TH("D/E", 29) + TH("Beta", 30) + TH("Short %", 31)
-        + TH("Insider Buy%", 32, "new-col")
-        + TH("Div Yield %", 33, "div-col") + TH("Payout %", 34, "div-col")
-        + TH("Op Margin %", 35, "div-col") + TH("ROA %", 36, "div-col")
-        + TH("Curr Ratio", 37, "div-col")
-        + TH("Sector", 38)
+        + TH("Mkt Cap", 9) + TH("PEG", 10) + TH("P/E Fwd", 11)
+        + TH("P/S", 12) + TH("EV/EBITDA", 13, "new-col")
+        + TH("ROE %", 14) + TH("Rev Gr %", 15) + TH("Gross Mgn %", 16)
+        + TH("FCF Yld %", 17) + TH("EPS Surp %", 18, "new-col")
+        + TH("From Low %", 19) + TH("From High %", 20)
+        + TH("D/E", 21) + TH("Beta", 22) + TH("Short %", 23)
+        + TH("Insider Buy%", 24, "new-col")
+        + TH("Div Yield %", 25, "div-col") + TH("Payout %", 26, "div-col")
+        + TH("Op Margin %", 27, "div-col") + TH("ROA %", 28, "div-col")
+        + TH("Curr Ratio", 29, "div-col")
+        + TH("Sector", 30)
     )
 
     CSS = """
@@ -406,7 +345,6 @@ td small { color:#8b949e; font-size:11px; }
 .moat-narrow { background:#4f46e5; color:#fff; }
 .moat-weak   { background:#374151; color:#9ca3af; }
 thead th.moat-col { color:#a78bfa; }
-thead th.mom-col  { color:#38bdf8; }
 """
 
     JS = """
@@ -483,21 +421,21 @@ function exportCSV(){
 window.onload=function(){updateCount();};
 """.replace("TOTAL", str(total))
 
-    return ("""<!DOCTYPE html>
+    return """<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<style>""" + CSS + """</style></head>
+<style>{css}</style></head>
 <body><div style="padding:8px 10px">
 
 <!-- Stats row -->
 <div class="cards">
-  <div class="stat-card"><div class="num">""" + str(total) + """</div><div class="lbl">Stocks</div></div>
-  <div class="stat-card" style="border-color:#1f6feb"><div class="num" style="color:#1f6feb">""" + str(sb_c) + """</div><div class="lbl">Str. Buy</div></div>
-  <div class="stat-card" style="border-color:#238636"><div class="num" style="color:#238636">""" + str(b_c) + """</div><div class="lbl">Buy</div></div>
-  <div class="stat-card" style="border-color:#9e6a03"><div class="num" style="color:#9e6a03">""" + str(h_c) + """</div><div class="lbl">Hold</div></div>
-  <div class="stat-card" style="border-color:#b62324"><div class="num" style="color:#b62324">""" + str(s_c) + """</div><div class="lbl">Sell</div></div>
-  <div class="stat-card"><div class="num">""" + str(avg) + """</div><div class="lbl">Avg Score</div></div>
-  <div class="stat-card" style="border-color:#30363d"><div class="num" style="font-size:.75rem;color:#8b949e">""" + run_ts.replace("UTC","").strip() + """</div><div class="lbl">Last Run</div></div>
+  <div class="stat-card"><div class="num">{total}</div><div class="lbl">Stocks</div></div>
+  <div class="stat-card" style="border-color:#1f6feb"><div class="num" style="color:#1f6feb">{sb}</div><div class="lbl">Str. Buy</div></div>
+  <div class="stat-card" style="border-color:#238636"><div class="num" style="color:#238636">{b}</div><div class="lbl">Buy</div></div>
+  <div class="stat-card" style="border-color:#9e6a03"><div class="num" style="color:#9e6a03">{h}</div><div class="lbl">Hold</div></div>
+  <div class="stat-card" style="border-color:#b62324"><div class="num" style="color:#b62324">{s}</div><div class="lbl">Sell</div></div>
+  <div class="stat-card"><div class="num">{avg}</div><div class="lbl">Avg Score</div></div>
+  <div class="stat-card" style="border-color:#30363d"><div class="num" style="font-size:.75rem;color:#8b949e">{run_ts}</div><div class="lbl">Last Run</div></div>
 </div>
 
 <!-- Always-visible top bar: search + score + filter toggle + export -->
@@ -531,29 +469,28 @@ window.onload=function(){updateCount();};
     <button class="flag-filter-btn" data-flag="Deep Value"         onclick="toggleFlag(this)">💎 Deep Value</button>
     <button class="flag-filter-btn" data-flag="Analyst Conviction" onclick="toggleFlag(this)">📈 Analyst Conv.</button>
     <button class="flag-filter-btn" data-flag="Income"             onclick="toggleFlag(this)">💰 Income</button>
-    <button class="flag-filter-btn" data-flag="Capital Allocator"  onclick="toggleFlag(this)">🔄 Capital Alloc.</button>
-    <button class="flag-filter-btn" data-flag="Clean Earnings"     onclick="toggleFlag(this)">✅ Clean Earnings</button>
-    <button class="flag-filter-btn" data-flag="Margin Expand"      onclick="toggleFlag(this)">📐 Margin Expand</button>
-    <button class="flag-filter-btn" data-flag="Momentum"           onclick="toggleFlag(this)">🔥 Momentum</button>
-    <button class="flag-filter-btn" data-flag="Turnaround"         onclick="toggleFlag(this)">🔃 Turnaround</button>
-    <button class="flag-filter-btn" data-flag="Est. Rising"        onclick="toggleFlag(this)">📊 Est. Rising</button>
   </div></div>
   <div class="fg"><div class="fl">Sector</div><div class="btn-row">
     <button id="btnSecAll" class="sec-btn active" onclick="toggleSecAll()">ALL</button>
-    """ + sec_btns + """
+    {sec_btns}
   </div></div>
 </div>
 
 <div id="rowcnt"></div>
 <div class="wrap">
   <table id="tbl">
-    <thead><tr>""" + headers + """</tr></thead>
-    <tbody id="tbody">""" + rows_html + """</tbody>
+    <thead><tr>{headers}</tr></thead>
+    <tbody id="tbody">{rows_html}</tbody>
   </table>
 </div>
 </div>
-<script>""" + JS + """</script>
-</body></html>""")
+<script>{js}</script>
+</body></html>""".format(
+        css=CSS, js=JS,
+        run_ts=run_ts.replace("UTC","").strip(),
+        total=total, sb=sb_c, b=b_c, h=h_c, s=s_c, avg=avg,
+        sec_btns=sec_btns, headers=headers, rows_html=rows_html,
+    )
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -577,7 +514,9 @@ run_ts  = run_info.get("run_timestamp_utc", "Unknown")
 elapsed = run_info.get("elapsed_minutes", "?")
 wide_moat   = run_info.get("wide_moat_count", "?")
 narrow_moat = run_info.get("narrow_moat_count", "?")
-st.caption(f"🕐 Last analysis: **{run_ts}** · Completed in {elapsed} min · 🏰 Wide Moat: {wide_moat} · 〰 Narrow Moat: {narrow_moat}")
+hg_rocket   = run_info.get("hg_rocket_count", "?")
+hg_high     = run_info.get("hg_high_count", "?")
+st.caption(f"🕐 Last analysis: **{run_ts}** · {elapsed} min · 🏰 Wide Moat: {wide_moat} · 〰 Narrow: {narrow_moat} · 🚀 Rocket: {hg_rocket} · 🔥 HG High: {hg_high}")
 
 # ── Download buttons (Streamlit-native, top of page) ─────────────────────────
 dl1, dl2, _ = st.columns([1.2, 1.2, 7])
@@ -599,7 +538,7 @@ with dl2:
         )
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
-tab1, tab2, tab3 = st.tabs(["📋 Full Screener", "⭐ Top 10 Picks", "🏰 Moat Leaderboard"])
+tab1, tab2, tab3, tab4 = st.tabs(["📋 Full Screener", "⭐ Top 10 Picks", "🏰 Moat Leaderboard", "🚀 Hypergrowth Hunter"])
 
 with tab1:
     # Build and embed the full interactive HTML report
@@ -690,11 +629,10 @@ with tab3:
         with mc2:
             action_filter_m = st.selectbox("Action", ["All", "STRONG BUY", "BUY", "HOLD", "SELL"])
 
-        moat_cols_wanted = ["Ticker", "Name", "Sector", "Score", "Action",
-                            "Moat_Score", "Moat_Label", "Moat_Brand", "Moat_Switching", "Moat_Network",
-                            "Gross_Margin", "ROE", "Rev_Growth", "FCF_Yield", "Inst_Own",
-                            "Analyst_Upside", "Composite_Flag"]
-        moat_df = df[[c for c in moat_cols_wanted if c in df.columns]].copy()
+        moat_df = df[["Ticker", "Name", "Sector", "Score", "Action",
+                       "Moat_Score", "Moat_Label", "Moat_Brand", "Moat_Switching", "Moat_Network",
+                       "Gross_Margin", "ROE", "Rev_Growth", "FCF_Yield", "Inst_Own",
+                       "Analyst_Upside", "Composite_Flag"]].copy()
 
         if moat_filter != "All":
             moat_df = moat_df[moat_df["Moat_Label"] == moat_filter]
@@ -759,11 +697,10 @@ with tab3:
                     st.markdown(f"**🏷️ Flags:** {flags}")
 
         st.markdown("---")
-        moat_dl_cols = ["Ticker", "Name", "Sector", "Score", "Action",
-                        "Moat_Score", "Moat_Label", "Moat_Brand", "Moat_Switching", "Moat_Network",
-                        "Gross_Margin", "Op_Margin", "FCF_Yield", "ROE", "Rev_Growth",
-                        "Inst_Own", "Analyst_Upside", "Composite_Flag"]
-        moat_dl = df[[c for c in moat_dl_cols if c in df.columns]].copy()
+        moat_dl = df[["Ticker", "Name", "Sector", "Score", "Action",
+                       "Moat_Score", "Moat_Label", "Moat_Brand", "Moat_Switching", "Moat_Network",
+                       "Gross_Margin", "Op_Margin", "FCF_Yield", "ROE", "Rev_Growth",
+                       "Inst_Own", "Analyst_Upside", "Composite_Flag"]].copy()
         moat_dl = moat_dl.sort_values("Moat_Score", ascending=False)
         st.download_button(
             "⬇️ Download Moat Data CSV",
@@ -772,3 +709,182 @@ with tab3:
             mime="text/csv",
         )
 
+
+with tab4:
+    st.subheader("🚀 Hypergrowth Hunter")
+    st.caption(
+        "Finds the next potential 10x stocks · Ignores valuation multiples · "
+        "Scores: Growth Trajectory · Operating Leverage · PMF & Stickiness · Discovery Phase"
+    )
+    st.info(
+        "⚠️ These stocks look **expensive** by traditional metrics — that's the point. "
+        "Early NVDA, TSLA, SHOP all scored poorly on P/E but high on these signals. "
+        "Always do your own research. This is a discovery tool, not a buy recommendation.",
+        icon="💡"
+    )
+
+    if "HG_Label" not in df.columns:
+        st.warning("Hypergrowth scores not available — re-run `python run_analysis.py` to generate them.")
+    else:
+        # ── Controls ──────────────────────────────────────────────────────────
+        hc1, hc2, hc3, hc4 = st.columns([1.5, 1.5, 1.5, 2])
+        with hc1:
+            hg_tier = st.selectbox("HG Tier", ["All", "🚀 Rocket", "🔥 High", "📈 Emerging"])
+        with hc2:
+            hg_sector = st.selectbox("Sector", ["All"] + sorted(df["Sector"].dropna().unique().tolist()))
+        with hc3:
+            min_rev_growth = st.number_input("Min Rev Growth %", value=15, min_value=0, max_value=200, step=5)
+        with hc4:
+            show_only_accel = st.checkbox("Only accelerating (streak ≥ 2)", value=False)
+
+        # ── Filter ────────────────────────────────────────────────────────────
+        hg_df = df.copy()
+        if hg_tier != "All":
+            hg_df = hg_df[hg_df["HG_Label"] == hg_tier]
+        if hg_sector != "All":
+            hg_df = hg_df[hg_df["Sector"] == hg_sector]
+        if min_rev_growth > 0:
+            hg_df = hg_df[hg_df["Rev_Growth"].fillna(0) >= min_rev_growth]
+        if show_only_accel:
+            hg_df = hg_df[hg_df["Rev_Accel_Streak"].fillna(0) >= 2]
+
+        hg_df = hg_df.sort_values("HG_Score", ascending=False).head(40)
+
+        # ── Summary stats ─────────────────────────────────────────────────────
+        rocket_n   = int((df["HG_Label"] == "🚀 Rocket").sum())
+        high_n     = int((df["HG_Label"] == "🔥 High").sum())
+        emerging_n = int((df["HG_Label"] == "📈 Emerging").sum())
+        avg_hg     = round(df["HG_Score"].dropna().mean(), 1)
+
+        sm1, sm2, sm3, sm4 = st.columns(4)
+        sm1.metric("🚀 Rocket",    rocket_n)
+        sm2.metric("🔥 High",      high_n)
+        sm3.metric("📈 Emerging",  emerging_n)
+        sm4.metric("Avg HG Score", avg_hg)
+        st.markdown("---")
+
+        # ── Leaderboard ───────────────────────────────────────────────────────
+        if len(hg_df) == 0:
+            st.info("No stocks match the current filters.")
+        else:
+            st.caption(f"Showing {len(hg_df)} stocks sorted by Hypergrowth Score")
+
+            for _, row in hg_df.iterrows():
+                hg_score   = row.get("HG_Score")
+                hg_label   = str(row.get("HG_Label") or "—")
+                hg_growth  = row.get("HG_Growth")
+                hg_lev     = row.get("HG_Leverage")
+                hg_pmf     = row.get("HG_PMF")
+                hg_disc    = row.get("HG_Discovery")
+
+                streak   = row.get("Rev_Accel_Streak")
+                gm_exp   = row.get("GM_Expansion_4Q")
+                ol_ratio = row.get("Op_Leverage_Ratio")
+                r40      = row.get("Rule_Of_40")
+                rd_pct   = row.get("RD_Pct_Rev")
+                evsg     = row.get("EV_Sales_Div_Growth")
+                drg      = row.get("Deferred_Rev_Growth")
+                runway   = row.get("Cash_Runway_Qtrs")
+                rg       = row.get("Rev_Growth")
+                gm       = row.get("Gross_Margin")
+                moat_lbl = str(row.get("Moat_Label") or "None")
+                score    = row.get("Score")
+                flags    = str(row.get("Composite_Flag") or "—")
+
+                def _fs(v, suffix="%", dec=1):
+                    try:
+                        return f"{float(v):.{dec}f}{suffix}" if v is not None and not (isinstance(v, float) and np.isnan(v)) else "N/A"
+                    except Exception:
+                        return "N/A"
+
+                def _fp(v, dec=1):
+                    try:
+                        fv = float(v)
+                        return f"+{fv:.{dec}f}%" if fv > 0 else f"{fv:.{dec}f}%"
+                    except Exception:
+                        return "N/A"
+
+                streak_str = f"🔥 {int(streak)}Q streak" if streak and streak >= 2 else (f"1Q" if streak == 1 else "—")
+                hg_str     = f"{hg_score:.0f}/100" if hg_score is not None else "N/A"
+                rg_str     = _fp(rg)
+                gm_exp_str = (_fp(gm_exp) if gm_exp is not None else "N/A")
+
+                with st.expander(
+                    f"{hg_label}  **{row['Ticker']}**  —  {str(row.get('Name',''))[:45]}"
+                    f"  |  HG Score: {hg_str}  |  Rev Growth: {rg_str}  |  Accel: {streak_str}",
+                    expanded=False,
+                ):
+                    # Top metrics bar
+                    tb1, tb2, tb3, tb4, tb5 = st.columns(5)
+                    tb1.metric("HG Score",    hg_str)
+                    tb2.metric("Rev Growth",  rg_str)
+                    tb3.metric("Rule of 40",  _fs(r40, suffix="", dec=0))
+                    tb4.metric("Op Leverage", _fs(ol_ratio, suffix="x", dec=2))
+                    tb5.metric("Stock Score", f"{score:.0f}" if score else "N/A")
+
+                    st.markdown("---")
+                    p1, p2, p3, p4 = st.columns(4)
+
+                    with p1:
+                        st.markdown("**📈 Growth Trajectory**")
+                        st.metric("Pillar Score", f"{hg_growth:.1f}" if hg_growth is not None else "N/A")
+                        st.write(f"Rev Growth:     {rg_str}")
+                        st.write(f"Accel Streak:   {streak_str}")
+                        st.write(f"GM Expansion:   {gm_exp_str}")
+                        st.write(f"Gross Margin:   {_fs(gm)}")
+
+                    with p2:
+                        st.markdown("**⚙️ Operating Leverage**")
+                        st.metric("Pillar Score", f"{hg_lev:.1f}" if hg_lev is not None else "N/A")
+                        st.write(f"Op Leverage:    {_fs(ol_ratio, suffix='x', dec=2)}")
+                        st.write(f"Rule of 40:     {_fs(r40, suffix='', dec=0)}")
+                        st.write(f"R&D % Rev:      {_fs(rd_pct)}")
+                        st.write(f"EV/Sales÷Grwth: {_fs(evsg, suffix='', dec=2)}")
+
+                    with p3:
+                        st.markdown("**🎯 PMF & Stickiness**")
+                        st.metric("Pillar Score", f"{hg_pmf:.1f}" if hg_pmf is not None else "N/A")
+                        st.write(f"Deferred Rev Gr:{_fs(drg)}")
+                        st.write(f"EPS Surprise:   {_fp(row.get('EPS_Surprise'))}")
+                        st.write(f"Analyst Upside: {_fp(row.get('Analyst_Upside'))}")
+                        st.write(f"Cash Runway:    {_fs(runway, suffix='Q', dec=1)}")
+
+                    with p4:
+                        st.markdown("**🔍 Discovery Phase**")
+                        st.metric("Pillar Score", f"{hg_disc:.1f}" if hg_disc is not None else "N/A")
+                        st.write(f"Inst. Own:      {_fs(row.get('Inst_Own'))}")
+                        st.write(f"Short Float:    {_fs(row.get('Short_Float'))}")
+                        st.write(f"Analyst Count:  {int(row['Analyst_Count']) if row.get('Analyst_Count') and not (isinstance(row.get('Analyst_Count'), float) and np.isnan(row['Analyst_Count'])) else 'N/A'}")
+                        moat_icon = {"Wide": "🏰", "Narrow": "〰️", "Weak": "◽", "None": "—"}.get(moat_lbl, "—")
+                        st.write(f"Moat:           {moat_icon} {moat_lbl}")
+
+                    if flags and flags != "—":
+                        st.markdown(f"**🏷️ Signal Flags:** {flags}")
+
+                    st.caption(
+                        f"Sector: {row.get('Sector','')}  ·  "
+                        f"Price: ${row['Price']:.2f}  ·  "
+                        f"Mkt Cap: {row.get('Mkt_Cap','N/A')}  ·  "
+                        f"Traditional Score: {score:.0f}  ←  may look 'expensive' by design"
+                    )
+
+        # ── Download ──────────────────────────────────────────────────────────
+        st.markdown("---")
+        hg_dl_cols = [
+            "Ticker", "Name", "Sector", "HG_Score", "HG_Label",
+            "HG_Growth", "HG_Leverage", "HG_PMF", "HG_Discovery",
+            "Score", "Action", "Rev_Growth", "Rev_Accel_Streak",
+            "GM_Expansion_4Q", "Op_Leverage_Ratio", "Rule_Of_40",
+            "RD_Pct_Rev", "EV_Sales_Div_Growth", "Deferred_Rev_Growth",
+            "Cash_Runway_Qtrs", "Gross_Margin", "EPS_Surprise",
+            "Analyst_Upside", "Inst_Own", "Short_Float",
+            "Moat_Label", "Composite_Flag", "Price", "Mkt_Cap",
+        ]
+        existing_cols = [c for c in hg_dl_cols if c in df.columns]
+        hg_dl = df[existing_cols].sort_values("HG_Score", ascending=False)
+        st.download_button(
+            "⬇️ Download Hypergrowth Data CSV",
+            data=hg_dl.to_csv(index=False).encode("utf-8"),
+            file_name=f"hypergrowth_{datetime.now().strftime('%Y%m%d')}.csv",
+            mime="text/csv",
+        )
