@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-03-04 02:50:32
+  Generated: 2026-03-04 06:57:10
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -11,11 +11,11 @@
 
   ┌─ #1 PDD  —  PDD Holdings Inc.
   │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  74.9   Conviction Score: 115.9   Mkt Cap: $143.0B
+  │  Base Score:  74.8   Conviction Score: 115.8   Mkt Cap: $143.0B
   │
   │  💰 PRICE & TARGET
   │     Current Price : $100.71
-  │     Analyst Target: $148.31  (35 analysts)
+  │     Analyst Target: $148.37  (35 analysts)
   │     Upside        : +47.3%
   │
   │  📊 QUALITY & PROFITABILITY
@@ -39,7 +39,7 @@
 
   ┌─ #2 PCTY  —  Paylocity Holding Corporation
   │  Sector: Technology                      Action: BUY
-  │  Base Score:  70.9   Conviction Score: 110.9   Mkt Cap: $6.2B
+  │  Base Score:  70.6   Conviction Score: 110.6   Mkt Cap: $6.2B
   │
   │  💰 PRICE & TARGET
   │     Current Price : $113.60
@@ -65,37 +65,37 @@
   │     🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💎 Deep Value · 📈 Analyst Conviction · 📊 Est. Rising · 🔄 Capital Allocator · ✅ Clean Earnings · 🔃 Turnaround · ⚠️ Below 200 DMA
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #3 GEN  —  Gen Digital Inc.
+  ┌─ #3 QLYS  —  Qualys, Inc.
   │  Sector: Technology                      Action: BUY
-  │  Base Score:  74.3   Conviction Score: 110.3   Mkt Cap: $13.8B
+  │  Base Score:  69.5   Conviction Score: 110.5   Mkt Cap: $3.5B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $22.40
-  │     Analyst Target: $31.19  (11 analysts)
-  │     Upside        : +39.2%
+  │     Current Price : $97.39
+  │     Analyst Target: $138.53  (19 analysts)
+  │     Upside        : +42.2%
   │
   │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 27.0%
-  │     FCF Yield      : 9.5%
-  │     Operating Mgn  : 35.8%
-  │     Gross Margin   : 78.8%
+  │     ROE            : 38.0%
+  │     FCF Yield      : 7.4%
+  │     Operating Mgn  : 33.6%
+  │     Gross Margin   : 82.8%
   │
   │  🚀 GROWTH
-  │     Revenue Growth : 25.8%  ▲ accelerating (+5.0pp)
+  │     Revenue Growth : 10.1%  → stable
   │     EPS Surprise   : N/A
   │
   │  🛡️  RISK
-  │     Debt/Equity    : 3.63
-  │     Beta           : 1.09
-  │     PEG Ratio      : 0.38
+  │     Debt/Equity    : 0.09
+  │     Beta           : 0.60
+  │     PEG Ratio      : 0.58
   │
   │  🏷️  SIGNAL FLAGS
-  │     🏰 Wide Moat · 💎 Deep Value · 📊 Est. Rising · ✅ Clean Earnings · 📐 Margin Expand · 🔃 Turnaround · ⚠️ High Leverage
+  │     🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 📈 Analyst Conviction · 🔄 Capital Allocator · ✅ Clean Earnings · 📐 Margin Expand · ⚠️ Below 200 DMA
   └────────────────────────────────────────────────────────────────────
 
   ┌─ #4 KGC  —  Kinross Gold Corporation
   │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  81.5   Conviction Score: 109.5   Mkt Cap: $40.8B
+  │  Base Score:  81.4   Conviction Score: 109.4   Mkt Cap: $40.8B
   │
   │  💰 PRICE & TARGET
   │     Current Price : $33.80
@@ -123,7 +123,7 @@
 
   ┌─ #5 AU  —  AngloGold Ashanti PLC
   │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  79.9   Conviction Score: 107.9   Mkt Cap: $58.0B
+  │  Base Score:  80.0   Conviction Score: 108.0   Mkt Cap: $58.0B
   │
   │  💰 PRICE & TARGET
   │     Current Price : $114.92
@@ -211,8 +211,8 @@
   │
   │  💰 PRICE & TARGET
   │     Current Price : $46.75
-  │     Analyst Target: $76.17  (6 analysts)
-  │     Upside        : +62.9%
+  │     Analyst Target: $70.67  (6 analysts)
+  │     Upside        : +51.2%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 76.0%
@@ -235,7 +235,7 @@
 
   ┌─ #9 ALSN  —  Allison Transmission Holdings, 
   │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  73.5   Conviction Score: 100.5   Mkt Cap: $10.4B
+  │  Base Score:  73.4   Conviction Score: 100.4   Mkt Cap: $10.4B
   │
   │  💰 PRICE & TARGET
   │     Current Price : $124.80
@@ -263,7 +263,7 @@
 
   ┌─ #10 GOOGL  —  Alphabet Inc.
   │  Sector: Communication Services          Action: BUY
-  │  Base Score:  71.2   Conviction Score: 100.2   Mkt Cap: $3.7T
+  │  Base Score:  71.4   Conviction Score: 100.4   Mkt Cap: $3.7T
   │
   │  💰 PRICE & TARGET
   │     Current Price : $303.58
@@ -294,14 +294,14 @@
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   PDD     PDD Holdings Inc.       74.9   47.3%    31%  0.03 Consumer Cyclical     
-  2   PCTY    Paylocity Holding Cor   70.9   50.0%    21%  0.14 Technology            
-  3   GEN     Gen Digital Inc.        74.3   39.2%    27%  3.63 Technology            
-  4   KGC     Kinross Gold Corporat   81.5   18.6%    31%  0.09 Basic Materials       
-  5   AU      AngloGold Ashanti PLC   79.9    6.2%    34%  0.23 Basic Materials       
+  1   PDD     PDD Holdings Inc.       74.8   47.3%    31%  0.03 Consumer Cyclical     
+  2   PCTY    Paylocity Holding Cor   70.6   50.0%    21%  0.14 Technology            
+  3   QLYS    Qualys, Inc.            69.5   42.2%    38%  0.09 Technology            
+  4   KGC     Kinross Gold Corporat   81.4   18.6%    31%  0.09 Basic Materials       
+  5   AU      AngloGold Ashanti PLC   80.0    6.2%    34%  0.23 Basic Materials       
   6   COLL    Collegium Pharmaceuti   74.7   34.6%    24%  3.10 Healthcare            
   7   ELMD    Electromed, Inc.        65.2   54.3%    20%  0.00 Healthcare            
-  8   TREE    LendingTree, Inc.       66.5   62.9%    76%  1.52 Financial Services    
-  9   ALSN    Allison Transmission    73.5    1.5%    35%  3.96 Consumer Cyclical     
-  10  GOOGL   Alphabet Inc.           71.2   24.1%    36%  0.16 Communication Service 
+  8   TREE    LendingTree, Inc.       66.5   51.2%    76%  1.52 Financial Services    
+  9   ALSN    Allison Transmission    73.4    1.5%    35%  3.96 Consumer Cyclical     
+  10  GOOGL   Alphabet Inc.           71.4   24.1%    36%  0.16 Communication Service 
   ────────────────────────────────────────────────────────────────────
