@@ -64,22 +64,6 @@ def run_and_export(send_email: bool = False):
     df = pd.DataFrame(records)
     sector_medians = pm.compute_sector_medians(df)
 
-    # ── Compute Sector Relative Strength (6m return vs sector median) ─────
-    print("  Computing sector relative strength…")
-    if "Price_6M_Return" in df.columns:
-        def _sector_rs(row):
-            p6 = row.get("Price_6M_Return")
-            if p6 is None or (isinstance(p6, float) and np.isnan(p6)):
-                return None
-            sec = row.get("Sector", "Unknown")
-            sec_med = sector_medians.get(sec, {}).get("Price_6M_Return")
-            if sec_med is None:
-                return None
-            return round(float(p6) - float(sec_med), 1)
-        df["Sector_RS"] = df.apply(_sector_rs, axis=1)
-    else:
-        df["Sector_RS"] = None
-
     print("  Scoring…")
     df["Score"] = df.apply(lambda r: pm.calculate_weighted_score(r, sector_medians), axis=1)
     dropped = df["Score"].isna().sum()
@@ -109,6 +93,26 @@ def run_and_export(send_email: bool = False):
         return existing
     df["Composite_Flag"] = df.apply(_append_moat_flag, axis=1)
 
+    # ── 5. Hypergrowth scoring ────────────────────────────────────────────────
+    print("  Computing hypergrowth scores (growth · leverage · PMF · discovery)…")
+    df["Sector_Rev_Growth_Med"] = df["Sector"].apply(
+        lambda s: sector_medians.get(s, {}).get("Rev_Growth"))
+    hg_results     = df.apply(lambda r: pm.calculate_hypergrowth_score(r, sector_medians), axis=1)
+    df["HG_Score"]     = hg_results.apply(lambda x: x[0])
+    df["HG_Label"]     = hg_results.apply(lambda x: x[1])
+    df["HG_Growth"]    = hg_results.apply(lambda x: x[2].get("growth"))
+    df["HG_Leverage"]  = hg_results.apply(lambda x: x[2].get("leverage"))
+    df["HG_PMF"]       = hg_results.apply(lambda x: x[2].get("pmf"))
+    df["HG_Discovery"] = hg_results.apply(lambda x: x[2].get("discovery"))
+
+    def _append_hg_flag(row):
+        existing = str(row.get("Composite_Flag") or "—")
+        hf = pm.assign_hypergrowth_flag(row)
+        if hf:
+            return (hf + " · " + existing) if existing != "—" else hf
+        return existing
+    df["Composite_Flag"] = df.apply(_append_hg_flag, axis=1)
+
     df.sort_values("Score", ascending=False, inplace=True)
     df.reset_index(drop=True, inplace=True)
 
@@ -116,6 +120,10 @@ def run_and_export(send_email: bool = False):
     csv_cols = [
         "Ticker", "Name", "Sector", "Score", "Action", "Composite_Flag",
         "Moat_Score", "Moat_Label", "Moat_Brand", "Moat_Switching", "Moat_Network",
+        "HG_Score", "HG_Label", "HG_Growth", "HG_Leverage", "HG_PMF", "HG_Discovery",
+        "Rev_Accel_Streak", "GM_Expansion_4Q", "Op_Leverage_Ratio",
+        "Rule_Of_40", "EV_Sales_Div_Growth", "RD_Pct_Rev",
+        "Deferred_Rev_Growth", "Cash_Runway_Qtrs",
         "Price", "Target", "Upside", "Mkt_Cap",
         "PE_Fwd", "PS", "PB", "PEG", "EV_EBITDA",
         "ROE", "Rev_Growth", "Rev_Growth_Prev", "Gross_Margin",
@@ -126,14 +134,9 @@ def run_and_export(send_email: bool = False):
         "Div_Yield", "Payout_Ratio", "ROA", "Current_Ratio",
         "MA200", "Vs_MA200",
         "Analyst_Target", "Analyst_Count", "Analyst_Upside",
-        # v3 new columns
-        "Price_3M_Return", "Price_6M_Return", "Price_12M_Return",
-        "Sector_RS", "FCF_vs_NetIncome", "Buyback_Yield",
-        "Shareholder_Yield", "Margin_Trend", "EPS_Revision",
     ]
     csv_path = DATA_DIR / "portfolio_analysis.csv"
-    existing_cols = [c for c in csv_cols if c in df.columns]
-    df[existing_cols].to_csv(str(csv_path), index=False)
+    df[csv_cols].to_csv(str(csv_path), index=False)
     print(f"  ✅  CSV  → {csv_path}")
 
     # ── 6. Write run_info.json ────────────────────────────────────────────────
@@ -149,6 +152,8 @@ def run_and_export(send_email: bool = False):
         "avg_score":         round(float(df["Score"].mean()), 1),
         "wide_moat_count":   int((df["Moat_Label"] == "Wide").sum()),
         "narrow_moat_count": int((df["Moat_Label"] == "Narrow").sum()),
+        "hg_rocket_count":   int((df["HG_Label"] == "🚀 Rocket").sum()),
+        "hg_high_count":     int((df["HG_Label"] == "🔥 High").sum()),
     }
     ri_path = DATA_DIR / "run_info.json"
     with open(str(ri_path), "w") as f:
