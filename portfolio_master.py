@@ -177,9 +177,10 @@ def _empty_row(ticker):
         "MA200", "Vs_MA200",
         "Analyst_Target", "Analyst_Count", "Analyst_Upside",
         "Composite_Flag",
-        "Price_3M_Return", "Price_6M_Return", "Price_12M_Return",
-        "FCF_vs_NetIncome", "Buyback_Yield", "Shareholder_Yield",
-        "Margin_Trend", "EPS_Revision", "Sector_RS",
+        # Hypergrowth fields
+        "Rev_Accel_Streak", "GM_Expansion_4Q", "Op_Leverage_Ratio",
+        "Rule_Of_40", "EV_Sales_Div_Growth", "RD_Pct_Rev",
+        "Deferred_Rev_Growth", "Cash_Runway_Qtrs", "Sector_Rev_Growth_Med",
     ]
     return {k: (ticker if k in ("Ticker", "Name") else None) for k in keys}
 
@@ -311,106 +312,116 @@ def fetch_ticker_data(ticker, _retries=5, _delay=2.0):
             if analyst_target and price and price > 0:
                 analyst_upside = round(((analyst_target - price) / price) * 100, 2)
 
-            # ── Price momentum: 3m, 6m, 12m returns ──────────────────────
-            price_3m = price_6m = price_12m = None
-            try:
-                hist = t.history(period="1y", interval="1mo", auto_adjust=True)
-                if hist is not None and len(hist) >= 3:
-                    p_now = float(hist["Close"].iloc[-1])
-                    if len(hist) >= 3:
-                        p3  = float(hist["Close"].iloc[-3])
-                        price_3m  = round(((p_now - p3)  / p3)  * 100, 1) if p3  else None
-                    if len(hist) >= 7:
-                        p6  = float(hist["Close"].iloc[-7])
-                        price_6m  = round(((p_now - p6)  / p6)  * 100, 1) if p6  else None
-                    if len(hist) >= 13:
-                        p12 = float(hist["Close"].iloc[-13])
-                        price_12m = round(((p_now - p12) / p12) * 100, 1) if p12 else None
-            except Exception:
-                pass
-
-            # ── FCF quality: FCF vs Net Income ────────────────────────────
-            # Ratio > 1.0 = FCF exceeds net income = very clean/conservative accounting
-            # Ratio < 0.5 = earnings are not converting to cash = red flag
-            fcf_vs_ni = None
-            try:
-                ni = info.get("netIncomeToCommon") or info.get("netIncome")
-                if fcf and ni and ni != 0:
-                    fcf_vs_ni = round(fcf / abs(ni), 2)
-            except Exception:
-                pass
-
-            # ── Buyback Yield ─────────────────────────────────────────────
-            # Negative "repurchaseOfStock" in cash flow = buying back shares
-            buyback_yield = None
-            try:
-                cf = t.cashflow
-                if cf is not None and not cf.empty:
-                    for label in ["Repurchase Of Capital Stock", "RepurchaseOfCapitalStock",
-                                  "repurchaseOfStock", "Common Stock Repurchased"]:
-                        if label in cf.index:
-                            rb = cf.loc[label].iloc[0]
-                            if rb is not None and not np.isnan(float(rb)) and mkt_cap and mkt_cap > 0:
-                                # Repurchases are typically negative in cash flow statements
-                                buyback_yield = round((abs(float(rb)) / mkt_cap) * 100, 2)
-                            break
-            except Exception:
-                pass
-
-            # ── Shareholder Yield = FCF yield + div yield + buyback yield ─
-            shareholder_yield = None
-            try:
-                components = [v for v in [fcf_yield, div_yield, buyback_yield] if v is not None]
-                if components:
-                    shareholder_yield = round(sum(components), 2)
-            except Exception:
-                pass
-
-            # ── Operating Margin Trend (current year vs prior year) ───────
-            margin_trend = None
-            try:
-                ann = t.financials   # annual income statement
-                if ann is not None and not ann.empty:
-                    for rev_label in ["Total Revenue", "Revenue"]:
-                        for om_label in ["Operating Income", "Operating Income Loss"]:
-                            if rev_label in ann.index and om_label in ann.index:
-                                revs = ann.loc[rev_label].dropna()
-                                oms  = ann.loc[om_label].dropna()
-                                if len(revs) >= 2 and len(oms) >= 2:
-                                    om_curr = float(oms.iloc[0]) / float(revs.iloc[0]) * 100 if revs.iloc[0] != 0 else None
-                                    om_prev = float(oms.iloc[1]) / float(revs.iloc[1]) * 100 if revs.iloc[1] != 0 else None
-                                    if om_curr is not None and om_prev is not None:
-                                        margin_trend = round(om_curr - om_prev, 1)
-                                break
-            except Exception:
-                pass
-
-            # ── EPS Revision: estimate revisions direction ─────────────────
-            # +1 = estimates being raised, -1 = being cut, 0 = stable
-            eps_revision = None
-            try:
-                # Compare current mean EPS estimate vs 30d ago
-                ae = t.analyst_price_targets if hasattr(t, "analyst_price_targets") else None
-                # Fallback: use upgradesDowngrades as proxy
-                updown = t.upgrades_downgrades
-                if updown is not None and not updown.empty:
-                    recent_ud = updown.head(10)
-                    upgrades   = (recent_ud["ToGrade"].str.contains("Buy|Outperform|Overweight|Strong Buy",
-                                  case=False, na=False)).sum()
-                    downgrades = (recent_ud["ToGrade"].str.contains("Sell|Underperform|Underweight|Reduce",
-                                  case=False, na=False)).sum()
-                    if   upgrades > downgrades:   eps_revision =  1
-                    elif downgrades > upgrades:   eps_revision = -1
-                    else:                         eps_revision =  0
-            except Exception:
-                pass
-
             if mkt_cap:
                 if   mkt_cap >= 1e12: mkt_cap_fmt = "${:.1f}T".format(mkt_cap / 1e12)
                 elif mkt_cap >= 1e9:  mkt_cap_fmt = "${:.1f}B".format(mkt_cap / 1e9)
                 else:                 mkt_cap_fmt = "${:.0f}M".format(mkt_cap / 1e6)
             else:
                 mkt_cap_fmt = None
+
+            # ── HYPERGROWTH extra fields ──────────────────────────────────────
+            # 1. Revenue acceleration streak & gross margin trajectory
+            rev_accel_streak   = None
+            gm_expansion_4q    = None
+            op_leverage_ratio  = None
+            deferred_rev_growth = None
+            rd_pct_rev         = None
+            cash_runway_qtrs   = None
+            try:
+                qfin = t.quarterly_financials
+                if qfin is not None and not qfin.empty:
+                    # ── Rev acceleration streak (how many consecutive quarters accelerating)
+                    if "Total Revenue" in qfin.index:
+                        revs = qfin.loc["Total Revenue"].dropna()
+                        if len(revs) >= 6:
+                            # compute YoY growth for last 4 quarters
+                            yoy = []
+                            for i in range(4):
+                                if revs.iloc[i+2] != 0:
+                                    yoy.append((revs.iloc[i] - revs.iloc[i+2]) / abs(revs.iloc[i+2]) * 100)
+                            # count streak of acceleration from most recent
+                            streak = 0
+                            for i in range(len(yoy) - 1):
+                                if yoy[i] > yoy[i+1]:
+                                    streak += 1
+                                else:
+                                    break
+                            rev_accel_streak = streak
+
+                    # ── Gross margin expansion vs 4Q avg
+                    if "Gross Profit" in qfin.index and "Total Revenue" in qfin.index:
+                        gp   = qfin.loc["Gross Profit"].dropna()
+                        rv   = qfin.loc["Total Revenue"].dropna()
+                        idx  = gp.index.intersection(rv.index)
+                        if len(idx) >= 5:
+                            gms = [(float(gp[i]) / float(rv[i]) * 100) for i in idx[:5] if float(rv[i]) != 0]
+                            if len(gms) >= 5:
+                                current_gm = gms[0]
+                                avg_4q     = sum(gms[1:5]) / 4
+                                gm_expansion_4q = round(current_gm - avg_4q, 1)  # bps equivalent in pct pts
+
+                    # ── Operating leverage: rev growth / opex growth
+                    if "Total Revenue" in qfin.index and "Total Expenses" in qfin.index:
+                        rv2  = qfin.loc["Total Revenue"].dropna()
+                        opex = qfin.loc["Total Expenses"].dropna()
+                        idx2 = rv2.index.intersection(opex.index)
+                        if len(idx2) >= 3:
+                            rg_r  = (float(rv2[idx2[0]]) - float(rv2[idx2[2]])) / abs(float(rv2[idx2[2]])) if float(rv2[idx2[2]]) != 0 else None
+                            opg_r = (float(opex[idx2[0]]) - float(opex[idx2[2]])) / abs(float(opex[idx2[2]])) if float(opex[idx2[2]]) != 0 else None
+                            if rg_r and opg_r and opg_r != 0:
+                                op_leverage_ratio = round(rg_r / opg_r, 2)
+
+                    # ── Deferred revenue growth
+                    bs = t.quarterly_balance_sheet
+                    if bs is not None and not bs.empty:
+                        dr_keys = [k for k in bs.index if "Deferred" in str(k) and "Revenue" in str(k)]
+                        if dr_keys:
+                            dr = bs.loc[dr_keys[0]].dropna()
+                            if len(dr) >= 3 and float(dr.iloc[2]) != 0:
+                                deferred_rev_growth = round(
+                                    (float(dr.iloc[0]) - float(dr.iloc[2])) / abs(float(dr.iloc[2])) * 100, 1)
+
+                    # ── Cash runway
+                    cf = t.quarterly_cashflow
+                    if cf is not None and not cf.empty and bs is not None and not bs.empty:
+                        cash_keys = [k for k in bs.index if "Cash" in str(k)]
+                        burn_keys = [k for k in cf.index if "Operating" in str(k)]
+                        if cash_keys and burn_keys:
+                            cash  = float(bs.loc[cash_keys[0]].dropna().iloc[0])
+                            qburn = float(cf.loc[burn_keys[0]].dropna().iloc[0])
+                            if qburn < 0:  # negative = burning cash
+                                cash_runway_qtrs = round(cash / abs(qburn), 1)
+            except Exception:
+                pass
+
+            # ── R&D as % of revenue
+            try:
+                ann = t.financials
+                if ann is not None and not ann.empty:
+                    rd_keys  = [k for k in ann.index if "Research" in str(k)]
+                    rev_keys = [k for k in ann.index if "Total Revenue" in str(k)]
+                    if rd_keys and rev_keys:
+                        rd_val  = float(ann.loc[rd_keys[0]].dropna().iloc[0])
+                        rev_val = float(ann.loc[rev_keys[0]].dropna().iloc[0])
+                        if rev_val > 0:
+                            rd_pct_rev = round(abs(rd_val) / rev_val * 100, 1)
+            except Exception:
+                pass
+
+            # ── Rule of 40 & EV/Sales÷Growth
+            rule_of_40       = None
+            ev_sales_div_growth = None
+            try:
+                fcf_margin = (fcf / (info.get("totalRevenue") or 1)) * 100 if fcf and info.get("totalRevenue") else None
+                if rev_growth is not None and fcf_margin is not None:
+                    rule_of_40 = round(rev_growth + fcf_margin, 1)
+                ev = info.get("enterpriseValue")
+                total_rev = info.get("totalRevenue")
+                if ev and total_rev and total_rev > 0 and rev_growth and rev_growth > 0:
+                    ev_sales = ev / total_rev
+                    ev_sales_div_growth = round(ev_sales / rev_growth, 3)
+            except Exception:
+                pass
 
             return {
                 "Ticker": ticker, "Name": info.get("shortName", ticker),
@@ -431,16 +442,16 @@ def fetch_ticker_data(ticker, _retries=5, _delay=2.0):
                 "Analyst_Count": analyst_count,
                 "Analyst_Upside": analyst_upside,
                 "Composite_Flag": None,
-                # v3 new fields
-                "Price_3M_Return":   price_3m,
-                "Price_6M_Return":   price_6m,
-                "Price_12M_Return":  price_12m,
-                "FCF_vs_NetIncome":  fcf_vs_ni,
-                "Buyback_Yield":     buyback_yield,
-                "Shareholder_Yield": shareholder_yield,
-                "Margin_Trend":      margin_trend,
-                "EPS_Revision":      eps_revision,
-                "Sector_RS":         None,   # computed post-fetch from sector medians
+                # Hypergrowth fields
+                "Rev_Accel_Streak":      rev_accel_streak,
+                "GM_Expansion_4Q":       gm_expansion_4q,
+                "Op_Leverage_Ratio":     op_leverage_ratio,
+                "Rule_Of_40":            rule_of_40,
+                "EV_Sales_Div_Growth":   ev_sales_div_growth,
+                "RD_Pct_Rev":            rd_pct_rev,
+                "Deferred_Rev_Growth":   deferred_rev_growth,
+                "Cash_Runway_Qtrs":      cash_runway_qtrs,
+                "Sector_Rev_Growth_Med": None,  # filled after sector medians computed
             }
         except Exception:
             if _attempt < _retries - 1:
@@ -477,13 +488,11 @@ def fetch_all_parallel(tickers, max_workers=8):
 # SECTOR MEDIANS — for relative scoring
 # =============================================================================
 def compute_sector_medians(df):
-    metrics = ["PE_Fwd", "PS", "EV_EBITDA", "Gross_Margin", "Op_Margin", "Price_6M_Return"]
+    metrics = ["PE_Fwd", "PS", "EV_EBITDA", "Gross_Margin", "Op_Margin", "Rev_Growth"]
     sector_medians = {}
     for sector, group in df.groupby("Sector"):
         sector_medians[sector] = {}
         for m in metrics:
-            if m not in df.columns:
-                continue
             vals = group[m].dropna()
             sector_medians[sector][m] = float(vals.median()) if len(vals) >= 3 else None
     return sector_medians
@@ -493,44 +502,37 @@ def compute_sector_medians(df):
 # SCORING ENGINE — WEIGHTED, SECTOR-RELATIVE
 # =============================================================================
 WEIGHTS = {
-    # ── Quality / profitability (core compounder signals) ─────────────────
+    # Quality / profitability
     "fcf_yield":        8,
     "roe":              7,
     "op_margin":        5,
     "roa":              4,
     "gross_margin_rel": 4,
     "current_ratio":    3,
-    # ── Growth ────────────────────────────────────────────────────────────
+    # Growth
     "rev_growth":       7,
     "rev_accel":        5,
     "eps_growth":       5,
     "eps_surprise":     4,
-    # ── Valuation — relative to sector ────────────────────────────────────
+    # Valuation — relative to sector
     "pe_rel":           5,
     "ps_rel":           4,
     "ev_ebitda_rel":    4,
     "peg":              5,
-    # ── Technical / momentum ──────────────────────────────────────────────
-    "vs_ma200":         4,
-    "price_momentum":   6,   # NEW: 6m price momentum
-    "sector_rs":        4,   # NEW: relative strength vs sector peers
-    "from_low":         2,
-    # ── Analyst signal ────────────────────────────────────────────────────
+    # Technical / momentum
+    "vs_ma200":         5,
+    "from_low":         3,
+    # Analyst signal
     "analyst_upside":   6,
     "analyst_count":    2,
-    "eps_revision":     4,   # NEW: estimate revision direction
-    # ── Capital allocation / cash quality ─────────────────────────────────
-    "shareholder_yield":5,   # NEW: FCF + div + buyback yield combined
-    "fcf_quality":      4,   # NEW: FCF vs net income ratio
-    "margin_trend":     4,   # NEW: operating margin expanding/contracting
-    # ── Risk / sentiment ──────────────────────────────────────────────────
+    # Sentiment / risk
     "debt_equity":      4,
     "short_float":      3,
     "inst_own":         2,
     "insider_buy":      3,
     "beta":             2,
-    # ── Dividend / stability ──────────────────────────────────────────────
-    "div_yield":        2,
+    # Dividend / stability
+    "div_yield":        3,
     "payout_ratio":     2,
 }
 TOTAL_WEIGHT = sum(WEIGHTS.values())
@@ -798,62 +800,6 @@ def calculate_weighted_score(row, sector_medians):
         elif pr > 100:  total += w("payout_ratio") * -1.0
         elif pr > 80:   total += w("payout_ratio") * -0.5
 
-    # ── Price Momentum: 6-month return (weight 6) ────────────────────────
-    p6m = row.get("Price_6M_Return")
-    if p6m is not None:
-        if   p6m > 50:   total += w("price_momentum") * 1.0
-        elif p6m > 25:   total += w("price_momentum") * 0.7
-        elif p6m > 10:   total += w("price_momentum") * 0.4
-        elif p6m > 0:    total += w("price_momentum") * 0.1
-        elif p6m < -30:  total += w("price_momentum") * -1.0
-        elif p6m < -15:  total += w("price_momentum") * -0.6
-        elif p6m < 0:    total += w("price_momentum") * -0.2
-
-    # ── Sector Relative Strength (weight 4) ───────────────────────────────
-    srs = row.get("Sector_RS")
-    if srs is not None:
-        if   srs > 20:  total += w("sector_rs") * 1.0
-        elif srs > 10:  total += w("sector_rs") * 0.6
-        elif srs > 0:   total += w("sector_rs") * 0.2
-        elif srs < -20: total += w("sector_rs") * -1.0
-        elif srs < -10: total += w("sector_rs") * -0.5
-        else:           total += w("sector_rs") * -0.1
-
-    # ── EPS Revision Direction (weight 4) ────────────────────────────────
-    er = row.get("EPS_Revision")
-    if er is not None:
-        if   er > 0:  total += w("eps_revision") * 1.0
-        elif er < 0:  total += w("eps_revision") * -1.0
-
-    # ── FCF Quality: FCF vs Net Income ratio (weight 4) ───────────────────
-    fcf_ni = row.get("FCF_vs_NetIncome")
-    if fcf_ni is not None:
-        if   fcf_ni > 1.5:  total += w("fcf_quality") * 1.0
-        elif fcf_ni > 1.0:  total += w("fcf_quality") * 0.6
-        elif fcf_ni > 0.7:  total += w("fcf_quality") * 0.2
-        elif fcf_ni > 0.3:  total += w("fcf_quality") * -0.3
-        elif fcf_ni < 0:    total += w("fcf_quality") * -1.0
-        else:               total += w("fcf_quality") * -0.7
-
-    # ── Shareholder Yield (weight 5) ─────────────────────────────────────
-    shy = row.get("Shareholder_Yield")
-    if shy is not None:
-        if   shy > 15:  total += w("shareholder_yield") * 1.0
-        elif shy > 8:   total += w("shareholder_yield") * 0.7
-        elif shy > 4:   total += w("shareholder_yield") * 0.3
-        elif shy > 1:   total += w("shareholder_yield") * 0.1
-        elif shy < 0:   total += w("shareholder_yield") * -0.5
-
-    # ── Operating Margin Trend (weight 4) ────────────────────────────────
-    mt = row.get("Margin_Trend")
-    if mt is not None:
-        if   mt > 5:    total += w("margin_trend") * 1.0
-        elif mt > 2:    total += w("margin_trend") * 0.6
-        elif mt > 0:    total += w("margin_trend") * 0.2
-        elif mt < -5:   total += w("margin_trend") * -1.0
-        elif mt < -2:   total += w("margin_trend") * -0.5
-        else:           total += w("margin_trend") * -0.1
-
     # ── Normalize to 0–100 ────────────────────────────────────────────────
     max_possible = float(TOTAL_WEIGHT)
     score = ((total + max_possible) / (2 * max_possible)) * 100
@@ -877,62 +823,21 @@ def assign_composite_flag(row):
     dy    = row.get("Div_Yield");    au    = row.get("Analyst_Upside")
     beta  = row.get("Beta");         sf    = row.get("Short_Float")
     vs200 = row.get("Vs_MA200");     peg   = row.get("PEG")
-    p6m   = row.get("Price_6M_Return")
-    srs   = row.get("Sector_RS")
-    fcf_ni= row.get("FCF_vs_NetIncome")
-    shy   = row.get("Shareholder_Yield")
-    mt    = row.get("Margin_Trend")
-    er    = row.get("EPS_Revision")
     accel = None
     if row.get("Rev_Growth") and row.get("Rev_Growth_Prev"):
         accel = row["Rev_Growth"] - row["Rev_Growth_Prev"]
 
-    # ── Quality / compounder signals ──────────────────────────────────────
     if roe and roe > 20 and fcf and fcf > 4 and (de is None or de < 1.0):
         flags.append("⭐ Compounder")
-
-    # ── Growth signals ────────────────────────────────────────────────────
     if accel and accel > 10 and rg and rg > 15:
         flags.append("🚀 Accel Growth")
-
-    # ── Valuation signals ─────────────────────────────────────────────────
     if peg and 0 < peg < 1.0 and fcf and fcf > 3:
         flags.append("💎 Deep Value")
-
-    # ── Analyst signals ───────────────────────────────────────────────────
     ac = row.get("Analyst_Count")
     if au and not _is_nan(au) and au > 25 and ac and not _is_nan(ac) and int(ac) >= 15:
         flags.append("📈 Analyst Conviction")
-    if er is not None and er > 0:
-        flags.append("📊 Est. Rising")      # analysts raising estimates
-
-    # ── Income signals ────────────────────────────────────────────────────
     if dy and dy > 3 and (not de or de < 1.5):
         flags.append("💰 Income")
-
-    # ── NEW: Capital allocator ────────────────────────────────────────────
-    if shy and shy > 8 and (de is None or de < 1.0):
-        flags.append("🔄 Capital Allocator")  # returning lots of cash to shareholders
-
-    # ── NEW: Clean earnings (FCF quality) ─────────────────────────────────
-    if fcf_ni and fcf_ni > 1.2 and fcf and fcf > 4:
-        flags.append("✅ Clean Earnings")    # FCF > net income = high earnings quality
-
-    # ── NEW: Margin expansion ─────────────────────────────────────────────
-    if mt and mt > 2 and roe and roe > 12:
-        flags.append("📐 Margin Expand")    # operating margins expanding
-
-    # ── NEW: Price momentum leader ────────────────────────────────────────
-    if p6m and p6m > 20 and srs and srs > 10:
-        flags.append("🔥 Momentum")         # beating sector peers on price
-
-    # ── NEW: Turnaround candidate ─────────────────────────────────────────
-    # Beaten-down price + positive estimate revisions + improving margins = potential turn
-    if (vs200 and vs200 < -15 and er is not None and er > 0
-            and mt is not None and mt > 0 and fcf and fcf > 2):
-        flags.append("🔃 Turnaround")
-
-    # ── Risk flags ────────────────────────────────────────────────────────
     if sf and sf > 20:
         flags.append("⚠️ High Short")
     if beta and beta > 2.0:
@@ -941,10 +846,6 @@ def assign_composite_flag(row):
         flags.append("⚠️ High Leverage")
     if vs200 and vs200 < -20:
         flags.append("⚠️ Below 200 DMA")
-    if fcf_ni is not None and fcf_ni < 0.4 and fcf_ni > -1:
-        flags.append("⚠️ Weak FCF Quality")  # earnings not converting to cash
-    if er is not None and er < 0:
-        flags.append("⚠️ Est. Cut")           # analysts cutting estimates
 
     return " · ".join(flags) if flags else "—"
 
@@ -1154,6 +1055,285 @@ def assign_moat_flag(row):
         return "〰️ Narrow Moat"
     return None
 
+
+# =============================================================================
+# HYPERGROWTH SCORING ENGINE — catches 10x candidates
+#
+# PHILOSOPHY: Deliberately ignores valuation multiples (P/E, EV/EBITDA etc.)
+# because early 10x stocks always look "expensive" on those metrics.
+# Instead scores purely on: growth trajectory · operating leverage ·
+# market position · early PMF signals · discovery phase indicators.
+#
+# Score 0–100. Label: 🚀 Rocket (≥70) | 🔥 High (≥50) | 📈 Emerging (≥35) | — Below
+#
+# Four pillars (25 pts each):
+#   1. Growth Trajectory   — acceleration streak, Rev growth vs sector, GM expansion
+#   2. Operating Leverage  — op leverage ratio, Rule of 40, R&D investment
+#   3. PMF & Stickiness    — deferred rev growth, EPS surprise streak, analyst accel
+#   4. Discovery Phase     — inst ownership trajectory, short squeeze potential,
+#                            analyst count growth, cash runway (won't dilute)
+# =============================================================================
+
+HG_WEIGHTS = {
+    # Pillar 1: Growth Trajectory (25 pts)
+    "rev_growth_abs":        8,   # raw growth rate — hypergrowth needs >25%
+    "rev_vs_sector":         7,   # beating sector median = market share gain
+    "rev_accel_streak":      6,   # 2+ consecutive quarters accelerating = inflection
+    "gm_expansion":          4,   # expanding gross margins = pricing power emerging
+
+    # Pillar 2: Operating Leverage (25 pts)
+    "op_leverage":           9,   # rev growing faster than costs = scaling
+    "rule_of_40":            8,   # growth + fcf margin — best single SaaS metric
+    "rd_investment":         4,   # high R&D = building next moat
+    "ev_sales_growth":       4,   # cheap relative to growth speed
+
+    # Pillar 3: PMF & Stickiness (25 pts)
+    "deferred_rev":          8,   # customers paying upfront = pull demand
+    "eps_surprise":          7,   # beating estimates consistently = PMF
+    "analyst_upside_hg":     6,   # analysts raising targets = narrative shifting
+    "cash_runway":           4,   # won't need to dilute shareholders
+
+    # Pillar 4: Discovery Phase (25 pts)
+    "inst_own_level":        7,   # 20–60% = mid-discovery sweet spot
+    "short_squeeze":         6,   # declining short interest = bears capitulating
+    "analyst_count_hg":      6,   # 5–20 analysts = being discovered not yet crowded
+    "beta_momentum":         6,   # higher beta in uptrend = momentum building
+}
+HG_TOTAL = sum(HG_WEIGHTS.values())  # = 100
+
+
+def calculate_hypergrowth_score(row, sector_medians):
+    """
+    Returns (hg_score 0–100, hg_label, pillar_scores dict).
+    hg_label: '🚀 Rocket' (>=70) | '🔥 High' (>=50) | '📈 Emerging' (>=35) | '—'
+    """
+    def _has(m):
+        v = row.get(m)
+        return v is not None and not (isinstance(v, float) and np.isnan(v))
+
+    if not _has("Price"):
+        return None, "—", {}
+
+    sector = row.get("Sector", "Unknown")
+    sm     = sector_medians.get(sector, {})
+    total  = 0.0
+    w      = lambda key: HG_WEIGHTS.get(key, 0)
+    pillars = {"growth": 0.0, "leverage": 0.0, "pmf": 0.0, "discovery": 0.0}
+
+    # ══════════════════════════════════════════════════════════════════════
+    # PILLAR 1: GROWTH TRAJECTORY
+    # ══════════════════════════════════════════════════════════════════════
+
+    # 1a. Raw revenue growth (weight 8) — hypergrowth threshold is >25%
+    rg = row.get("Rev_Growth")
+    if rg is not None:
+        if   rg > 50:   pts = w("rev_growth_abs") * 1.0
+        elif rg > 35:   pts = w("rev_growth_abs") * 0.85
+        elif rg > 25:   pts = w("rev_growth_abs") * 0.65
+        elif rg > 15:   pts = w("rev_growth_abs") * 0.35
+        elif rg > 5:    pts = w("rev_growth_abs") * 0.1
+        elif rg < -10:  pts = w("rev_growth_abs") * -0.8
+        else:           pts = w("rev_growth_abs") * -0.2
+        total += pts; pillars["growth"] += pts
+
+    # 1b. Rev growth vs sector median (weight 7) — are they taking share?
+    sec_rg = sm.get("Rev_Growth")
+    if rg is not None and sec_rg is not None and sec_rg != 0:
+        beat = rg - sec_rg
+        if   beat > 30:   pts = w("rev_vs_sector") * 1.0
+        elif beat > 15:   pts = w("rev_vs_sector") * 0.7
+        elif beat > 5:    pts = w("rev_vs_sector") * 0.4
+        elif beat > 0:    pts = w("rev_vs_sector") * 0.1
+        elif beat < -20:  pts = w("rev_vs_sector") * -0.8
+        elif beat < -5:   pts = w("rev_vs_sector") * -0.3
+        else:             pts = 0.0
+        total += pts; pillars["growth"] += pts
+
+    # 1c. Acceleration streak (weight 6) — 3+ quarters = S-curve inflection confirmed
+    streak = row.get("Rev_Accel_Streak")
+    if streak is not None:
+        if   streak >= 3: pts = w("rev_accel_streak") * 1.0   # confirmed inflection
+        elif streak == 2: pts = w("rev_accel_streak") * 0.6   # building momentum
+        elif streak == 1: pts = w("rev_accel_streak") * 0.25  # possible start
+        else:             pts = w("rev_accel_streak") * -0.3  # decelerating
+        total += pts; pillars["growth"] += pts
+
+    # 1d. Gross margin expansion vs 4Q avg (weight 4)
+    gm_exp = row.get("GM_Expansion_4Q")
+    if gm_exp is not None:
+        if   gm_exp > 5:    pts = w("gm_expansion") * 1.0   # strong pricing power emerging
+        elif gm_exp > 2:    pts = w("gm_expansion") * 0.6
+        elif gm_exp > 0:    pts = w("gm_expansion") * 0.2
+        elif gm_exp < -5:   pts = w("gm_expansion") * -1.0  # margins collapsing
+        elif gm_exp < -2:   pts = w("gm_expansion") * -0.5
+        else:               pts = 0.0
+        total += pts; pillars["growth"] += pts
+
+    # ══════════════════════════════════════════════════════════════════════
+    # PILLAR 2: OPERATING LEVERAGE
+    # ══════════════════════════════════════════════════════════════════════
+
+    # 2a. Op leverage ratio: rev growth / opex growth (weight 9)
+    # >1.5x means revenue scaling faster than costs — the holy grail
+    ol = row.get("Op_Leverage_Ratio")
+    if ol is not None:
+        if   ol > 2.5:  pts = w("op_leverage") * 1.0   # exceptional scale efficiency
+        elif ol > 1.75: pts = w("op_leverage") * 0.8
+        elif ol > 1.25: pts = w("op_leverage") * 0.5   # healthy leverage
+        elif ol > 0.75: pts = w("op_leverage") * 0.0   # neutral
+        elif ol > 0:    pts = w("op_leverage") * -0.4  # costs growing faster
+        else:           pts = w("op_leverage") * -0.8  # negative leverage (burning)
+        total += pts; pillars["leverage"] += pts
+
+    # 2b. Rule of 40 (weight 8) — best single metric for growth+profitability balance
+    r40 = row.get("Rule_Of_40")
+    if r40 is not None:
+        if   r40 > 60:  pts = w("rule_of_40") * 1.0   # elite (Snowflake, Cloudflare territory)
+        elif r40 > 40:  pts = w("rule_of_40") * 0.7   # passes the bar
+        elif r40 > 20:  pts = w("rule_of_40") * 0.2   # below bar but growing
+        elif r40 < -20: pts = w("rule_of_40") * -1.0  # burning fast with no growth
+        elif r40 < 0:   pts = w("rule_of_40") * -0.4
+        else:           pts = 0.0
+        total += pts; pillars["leverage"] += pts
+
+    # 2c. R&D as % of revenue (weight 4) — investing in next moat
+    # High R&D is a POSITIVE signal for hypergrowth (opposite of value screener)
+    rd = row.get("RD_Pct_Rev")
+    if rd is not None:
+        if   rd > 25:   pts = w("rd_investment") * 1.0   # heavy R&D = building advantage
+        elif rd > 15:   pts = w("rd_investment") * 0.7
+        elif rd > 8:    pts = w("rd_investment") * 0.3
+        elif rd < 2:    pts = w("rd_investment") * -0.3  # no R&D = no moat building
+        else:           pts = 0.0
+        total += pts; pillars["leverage"] += pts
+
+    # 2d. EV/Sales ÷ Rev growth (weight 4) — cheap relative to growth speed
+    # Lower = you're not overpaying for the growth. <0.5 is excellent.
+    evsg = row.get("EV_Sales_Div_Growth")
+    if evsg is not None and evsg > 0:
+        if   evsg < 0.3:  pts = w("ev_sales_growth") * 1.0  # very cheap for growth rate
+        elif evsg < 0.5:  pts = w("ev_sales_growth") * 0.7
+        elif evsg < 1.0:  pts = w("ev_sales_growth") * 0.3
+        elif evsg > 3.0:  pts = w("ev_sales_growth") * -0.7  # very expensive for growth
+        elif evsg > 2.0:  pts = w("ev_sales_growth") * -0.3
+        else:             pts = 0.0
+        total += pts; pillars["leverage"] += pts
+
+    # ══════════════════════════════════════════════════════════════════════
+    # PILLAR 3: PRODUCT-MARKET FIT & STICKINESS
+    # ══════════════════════════════════════════════════════════════════════
+
+    # 3a. Deferred revenue growth (weight 8) — customers paying upfront = pull demand
+    drg = row.get("Deferred_Rev_Growth")
+    if drg is not None:
+        if   drg > 50:   pts = w("deferred_rev") * 1.0   # backlog exploding
+        elif drg > 25:   pts = w("deferred_rev") * 0.7
+        elif drg > 10:   pts = w("deferred_rev") * 0.3
+        elif drg < -20:  pts = w("deferred_rev") * -0.8  # customers not renewing
+        elif drg < 0:    pts = w("deferred_rev") * -0.3
+        else:            pts = 0.0
+        total += pts; pillars["pmf"] += pts
+
+    # 3b. EPS surprise (weight 7) — consistent beats = management has visibility
+    eps_s = row.get("EPS_Surprise")
+    if eps_s is not None:
+        if   eps_s > 25:  pts = w("eps_surprise") * 1.0   # massive beats = demand > supply
+        elif eps_s > 15:  pts = w("eps_surprise") * 0.75
+        elif eps_s > 5:   pts = w("eps_surprise") * 0.4
+        elif eps_s > 0:   pts = w("eps_surprise") * 0.1
+        elif eps_s < -20: pts = w("eps_surprise") * -1.0
+        elif eps_s < -5:  pts = w("eps_surprise") * -0.5
+        else:             pts = 0.0
+        total += pts; pillars["pmf"] += pts
+
+    # 3c. Analyst upside (weight 6) — used differently here: large upside = narrative shift
+    au = row.get("Analyst_Upside")
+    if au is not None:
+        if   au > 50:   pts = w("analyst_upside_hg") * 1.0   # analysts far behind = stock being re-rated
+        elif au > 30:   pts = w("analyst_upside_hg") * 0.75
+        elif au > 15:   pts = w("analyst_upside_hg") * 0.4
+        elif au > 0:    pts = w("analyst_upside_hg") * 0.1
+        elif au < -10:  pts = w("analyst_upside_hg") * -0.8  # analysts ahead of price = peaked
+        else:           pts = 0.0
+        total += pts; pillars["pmf"] += pts
+
+    # 3d. Cash runway (weight 4) — >8 quarters means won't dilute you
+    cr = row.get("Cash_Runway_Qtrs")
+    if cr is not None:
+        if   cr > 12:   pts = w("cash_runway") * 1.0   # very safe, won't need to raise
+        elif cr > 8:    pts = w("cash_runway") * 0.6
+        elif cr > 4:    pts = w("cash_runway") * 0.0   # borderline
+        else:           pts = w("cash_runway") * -0.8  # imminent dilution risk
+        total += pts; pillars["pmf"] += pts
+
+    # ══════════════════════════════════════════════════════════════════════
+    # PILLAR 4: DISCOVERY PHASE
+    # ══════════════════════════════════════════════════════════════════════
+
+    # 4a. Institutional ownership (weight 7) — mid-range = still being discovered
+    # 20–60% is the sweet spot: institutions are interested but not crowded yet
+    io = row.get("Inst_Own")
+    if io is not None:
+        if   20 <= io <= 55:  pts = w("inst_own_level") * 1.0   # discovery sweet spot
+        elif io < 20:         pts = w("inst_own_level") * 0.5   # undiscovered
+        elif io <= 70:        pts = w("inst_own_level") * 0.3   # crowded but ok
+        else:                 pts = w("inst_own_level") * -0.3  # fully owned = crowded trade
+        total += pts; pillars["discovery"] += pts
+
+    # 4b. Short float — high short = bearish consensus = potential squeeze fuel (weight 6)
+    sf = row.get("Short_Float")
+    if sf is not None:
+        if   sf > 20:   pts = w("short_squeeze") * 0.8   # high short = massive squeeze potential
+        elif sf > 10:   pts = w("short_squeeze") * 0.5   # meaningful short interest
+        elif sf > 5:    pts = w("short_squeeze") * 0.2
+        elif sf < 1:    pts = w("short_squeeze") * -0.3  # no one shorting = no squeeze fuel
+        else:           pts = 0.0
+        total += pts; pillars["discovery"] += pts
+
+    # 4c. Analyst count (weight 6) — 5–20 analysts = being discovered, not yet consensus
+    ac = row.get("Analyst_Count")
+    if ac is not None and not _is_nan(ac):
+        try:
+            ac = int(ac)
+            if   5 <= ac <= 15:   pts = w("analyst_count_hg") * 1.0   # sweet spot: discovered not crowded
+            elif ac < 5:          pts = w("analyst_count_hg") * 0.5   # undercovered = hidden gem potential
+            elif ac <= 25:        pts = w("analyst_count_hg") * 0.3
+            else:                 pts = w("analyst_count_hg") * -0.2  # everyone already knows
+        except Exception:
+            pts = 0.0
+        total += pts; pillars["discovery"] += pts
+
+    # 4d. Beta as momentum signal (weight 6)
+    # In a hypergrowth context, high beta in uptrend = momentum behind it
+    beta = row.get("Beta")
+    vs200 = row.get("Vs_MA200")
+    if beta is not None and vs200 is not None:
+        if beta > 1.5 and vs200 > 10:    pts = w("beta_momentum") * 1.0   # high beta + above 200MA = momentum
+        elif beta > 1.2 and vs200 > 0:   pts = w("beta_momentum") * 0.6
+        elif beta > 1.0:                 pts = w("beta_momentum") * 0.2
+        elif beta > 2.0 and vs200 < -10: pts = w("beta_momentum") * -0.8  # high beta below 200 = dangerous
+        else:                            pts = 0.0
+        total += pts; pillars["discovery"] += pts
+
+    # ── Normalize to 0–100 ────────────────────────────────────────────────────
+    hg_score = round(min(max(((total + HG_TOTAL) / (2 * HG_TOTAL)) * 100, 0), 100), 1)
+
+    if   hg_score >= 70: label = "🚀 Rocket"
+    elif hg_score >= 50: label = "🔥 High"
+    elif hg_score >= 35: label = "📈 Emerging"
+    else:                label = "—"
+
+    return hg_score, label, {k: round(v, 1) for k, v in pillars.items()}
+
+
+def assign_hypergrowth_flag(row):
+    """Returns a flag string for top hypergrowth candidates."""
+    label = row.get("HG_Label", "")
+    if label == "🚀 Rocket":
+        return "🚀 Rocket"
+    if label == "🔥 High":
+        return "🔥 HG High"
+    return None
 
 # =============================================================================
 # TOP 10 RECOMMENDATIONS
@@ -1835,6 +2015,29 @@ def run(send_email_after: bool = True) -> bool:
             return existing
         df["Composite_Flag"] = df.apply(_append_moat_flag, axis=1)
 
+        # ── Hypergrowth scoring ───────────────────────────────────────────
+        print("  Computing hypergrowth scores (growth · leverage · PMF · discovery)...")
+        # Fill in Sector_Rev_Growth_Med from sector medians
+        df["Sector_Rev_Growth_Med"] = df["Sector"].apply(
+            lambda s: sector_medians.get(s, {}).get("Rev_Growth"))
+
+        hg_results = df.apply(lambda r: calculate_hypergrowth_score(r, sector_medians), axis=1)
+        df["HG_Score"]    = hg_results.apply(lambda x: x[0])
+        df["HG_Label"]    = hg_results.apply(lambda x: x[1])
+        df["HG_Growth"]   = hg_results.apply(lambda x: x[2].get("growth"))
+        df["HG_Leverage"] = hg_results.apply(lambda x: x[2].get("leverage"))
+        df["HG_PMF"]      = hg_results.apply(lambda x: x[2].get("pmf"))
+        df["HG_Discovery"]= hg_results.apply(lambda x: x[2].get("discovery"))
+
+        # Append hypergrowth flag to Composite_Flag
+        def _append_hg_flag(row):
+            existing = str(row.get("Composite_Flag") or "—")
+            hf = assign_hypergrowth_flag(row)
+            if hf:
+                return (hf + " · " + existing) if existing != "—" else hf
+            return existing
+        df["Composite_Flag"] = df.apply(_append_hg_flag, axis=1)
+
         df.sort_values("Score", ascending=False, inplace=True)
         df.reset_index(drop=True, inplace=True)
 
@@ -1842,6 +2045,10 @@ def run(send_email_after: bool = True) -> bool:
         csv_cols = [
             "Ticker", "Name", "Sector", "Score", "Action", "Composite_Flag",
             "Moat_Score", "Moat_Label", "Moat_Brand", "Moat_Switching", "Moat_Network",
+            "HG_Score", "HG_Label", "HG_Growth", "HG_Leverage", "HG_PMF", "HG_Discovery",
+            "Rev_Accel_Streak", "GM_Expansion_4Q", "Op_Leverage_Ratio",
+            "Rule_Of_40", "EV_Sales_Div_Growth", "RD_Pct_Rev",
+            "Deferred_Rev_Growth", "Cash_Runway_Qtrs",
             "Price", "Target", "Upside", "Mkt_Cap",
             "PE_Fwd", "PS", "PB", "PEG", "EV_EBITDA",
             "ROE", "Rev_Growth", "Rev_Growth_Prev", "Gross_Margin",
