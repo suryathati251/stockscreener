@@ -688,10 +688,11 @@ with tab3:
         with mc2:
             action_filter_m = st.selectbox("Action", ["All", "STRONG BUY", "BUY", "HOLD", "SELL"])
 
-        moat_df = df[["Ticker", "Name", "Sector", "Score", "Action",
-                       "Moat_Score", "Moat_Label", "Moat_Brand", "Moat_Switching", "Moat_Network",
-                       "Gross_Margin", "ROE", "Rev_Growth", "FCF_Yield", "Inst_Own",
-                       "Analyst_Upside", "Composite_Flag"]].copy()
+        moat_cols_wanted = ["Ticker", "Name", "Sector", "Score", "Action",
+                            "Moat_Score", "Moat_Label", "Moat_Brand", "Moat_Switching", "Moat_Network",
+                            "Gross_Margin", "ROE", "Rev_Growth", "FCF_Yield", "Inst_Own",
+                            "Analyst_Upside", "Composite_Flag"]
+        moat_df = df[[c for c in moat_cols_wanted if c in df.columns]].copy()
 
         if moat_filter != "All":
             moat_df = moat_df[moat_df["Moat_Label"] == moat_filter]
@@ -756,10 +757,11 @@ with tab3:
                     st.markdown(f"**🏷️ Flags:** {flags}")
 
         st.markdown("---")
-        moat_dl = df[["Ticker", "Name", "Sector", "Score", "Action",
-                       "Moat_Score", "Moat_Label", "Moat_Brand", "Moat_Switching", "Moat_Network",
-                       "Gross_Margin", "Op_Margin", "FCF_Yield", "ROE", "Rev_Growth",
-                       "Inst_Own", "Analyst_Upside", "Composite_Flag"]].copy()
+        moat_dl_cols = ["Ticker", "Name", "Sector", "Score", "Action",
+                        "Moat_Score", "Moat_Label", "Moat_Brand", "Moat_Switching", "Moat_Network",
+                        "Gross_Margin", "Op_Margin", "FCF_Yield", "ROE", "Rev_Growth",
+                        "Inst_Own", "Analyst_Upside", "Composite_Flag"]
+        moat_dl = df[[c for c in moat_dl_cols if c in df.columns]].copy()
         moat_dl = moat_dl.sort_values("Moat_Score", ascending=False)
         st.download_button(
             "⬇️ Download Moat Data CSV",
