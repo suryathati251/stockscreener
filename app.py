@@ -476,21 +476,21 @@ function exportCSV(){
 window.onload=function(){updateCount();};
 """.replace("TOTAL", str(total))
 
-    return """<!DOCTYPE html>
+    return ("""<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<style>{css}</style></head>
+<style>""" + CSS + """</style></head>
 <body><div style="padding:8px 10px">
 
 <!-- Stats row -->
 <div class="cards">
-  <div class="stat-card"><div class="num">{total}</div><div class="lbl">Stocks</div></div>
-  <div class="stat-card" style="border-color:#1f6feb"><div class="num" style="color:#1f6feb">{sb}</div><div class="lbl">Str. Buy</div></div>
-  <div class="stat-card" style="border-color:#238636"><div class="num" style="color:#238636">{b}</div><div class="lbl">Buy</div></div>
-  <div class="stat-card" style="border-color:#9e6a03"><div class="num" style="color:#9e6a03">{h}</div><div class="lbl">Hold</div></div>
-  <div class="stat-card" style="border-color:#b62324"><div class="num" style="color:#b62324">{s}</div><div class="lbl">Sell</div></div>
-  <div class="stat-card"><div class="num">{avg}</div><div class="lbl">Avg Score</div></div>
-  <div class="stat-card" style="border-color:#30363d"><div class="num" style="font-size:.75rem;color:#8b949e">{run_ts}</div><div class="lbl">Last Run</div></div>
+  <div class="stat-card"><div class="num">""" + str(total) + """</div><div class="lbl">Stocks</div></div>
+  <div class="stat-card" style="border-color:#1f6feb"><div class="num" style="color:#1f6feb">""" + str(sb_c) + """</div><div class="lbl">Str. Buy</div></div>
+  <div class="stat-card" style="border-color:#238636"><div class="num" style="color:#238636">""" + str(b_c) + """</div><div class="lbl">Buy</div></div>
+  <div class="stat-card" style="border-color:#9e6a03"><div class="num" style="color:#9e6a03">""" + str(h_c) + """</div><div class="lbl">Hold</div></div>
+  <div class="stat-card" style="border-color:#b62324"><div class="num" style="color:#b62324">""" + str(s_c) + """</div><div class="lbl">Sell</div></div>
+  <div class="stat-card"><div class="num">""" + str(avg) + """</div><div class="lbl">Avg Score</div></div>
+  <div class="stat-card" style="border-color:#30363d"><div class="num" style="font-size:.75rem;color:#8b949e">""" + run_ts.replace("UTC","").strip() + """</div><div class="lbl">Last Run</div></div>
 </div>
 
 <!-- Always-visible top bar: search + score + filter toggle + export -->
@@ -533,25 +533,20 @@ window.onload=function(){updateCount();};
   </div></div>
   <div class="fg"><div class="fl">Sector</div><div class="btn-row">
     <button id="btnSecAll" class="sec-btn active" onclick="toggleSecAll()">ALL</button>
-    {sec_btns}
+    """ + sec_btns + """
   </div></div>
 </div>
 
 <div id="rowcnt"></div>
 <div class="wrap">
   <table id="tbl">
-    <thead><tr>{headers}</tr></thead>
-    <tbody id="tbody">{rows_html}</tbody>
+    <thead><tr>""" + headers + """</tr></thead>
+    <tbody id="tbody">""" + rows_html + """</tbody>
   </table>
 </div>
 </div>
-<script>{js}</script>
-</body></html>""".format(
-        css=CSS, js=JS,
-        run_ts=run_ts.replace("UTC","").strip(),
-        total=total, sb=sb_c, b=b_c, h=h_c, s=s_c, avg=avg,
-        sec_btns=sec_btns, headers=headers, rows_html=rows_html,
-    )
+<script>""" + JS + """</script>
+</body></html>""")
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -769,4 +764,6 @@ with tab3:
             file_name=f"moat_analysis_{datetime.now().strftime('%Y%m%d')}.csv",
             mime="text/csv",
         )
+
+
 
