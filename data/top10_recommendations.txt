@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-03-04 06:57:10
+  Generated: 2026-03-04 12:37:54
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -15,8 +15,8 @@
   │
   │  💰 PRICE & TARGET
   │     Current Price : $100.71
-  │     Analyst Target: $148.37  (35 analysts)
-  │     Upside        : +47.3%
+  │     Analyst Target: $148.77  (35 analysts)
+  │     Upside        : +47.7%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 31.0%
@@ -39,7 +39,7 @@
 
   ┌─ #2 PCTY  —  Paylocity Holding Corporation
   │  Sector: Technology                      Action: BUY
-  │  Base Score:  70.6   Conviction Score: 110.6   Mkt Cap: $6.2B
+  │  Base Score:  70.7   Conviction Score: 110.7   Mkt Cap: $6.2B
   │
   │  💰 PRICE & TARGET
   │     Current Price : $113.60
@@ -67,7 +67,7 @@
 
   ┌─ #3 QLYS  —  Qualys, Inc.
   │  Sector: Technology                      Action: BUY
-  │  Base Score:  69.5   Conviction Score: 110.5   Mkt Cap: $3.5B
+  │  Base Score:  69.6   Conviction Score: 110.6   Mkt Cap: $3.5B
   │
   │  💰 PRICE & TARGET
   │     Current Price : $97.39
@@ -149,7 +149,35 @@
   │     🏰 Wide Moat · 🚀 Accel Growth · 💎 Deep Value · 📊 Est. Rising · 💰 Income · 🔄 Capital Allocator · 📐 Margin Expand · 🔥 Momentum
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #6 COLL  —  Collegium Pharmaceutical, Inc.
+  ┌─ #6 TREE  —  LendingTree, Inc.
+  │  Sector: Financial Services              Action: BUY
+  │  Base Score:  68.4   Conviction Score: 107.4   Mkt Cap: $639M
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $46.75
+  │     Analyst Target: $70.67  (6 analysts)
+  │     Upside        : +51.2%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 76.0%
+  │     FCF Yield      : 9.2%
+  │     Operating Mgn  : 7.2%
+  │     Gross Margin   : 96.2%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 22.2%  ▲ accelerating (+26.6pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 1.52
+  │     Beta           : 2.30
+  │     PEG Ratio      : 0.00
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🏰 Wide Moat · 🚀 Accel Growth · 📊 Est. Rising · 📐 Margin Expand · ⚠️ High Beta · ⚠️ Weak FCF Quality
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #7 COLL  —  Collegium Pharmaceutical, Inc.
   │  Sector: Healthcare                      Action: BUY
   │  Base Score:  74.7   Conviction Score: 106.7   Mkt Cap: $1.3B
   │
@@ -177,7 +205,7 @@
   │     🏰 Wide Moat · 💎 Deep Value · 📊 Est. Rising · ✅ Clean Earnings · ⚠️ High Leverage
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #7 ELMD  —  Electromed, Inc.
+  ┌─ #8 ELMD  —  Electromed, Inc.
   │  Sector: Healthcare                      Action: BUY
   │  Base Score:  65.2   Conviction Score: 103.2   Mkt Cap: $200M
   │
@@ -205,63 +233,7 @@
   │     🏰 Wide Moat · 💎 Deep Value · 📊 Est. Rising · 🔄 Capital Allocator · 📐 Margin Expand
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #8 TREE  —  LendingTree, Inc.
-  │  Sector: Financial Services              Action: BUY
-  │  Base Score:  66.5   Conviction Score: 101.5   Mkt Cap: $639M
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $46.75
-  │     Analyst Target: $70.67  (6 analysts)
-  │     Upside        : +51.2%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 76.0%
-  │     FCF Yield      : 4.6%
-  │     Operating Mgn  : 7.2%
-  │     Gross Margin   : 96.2%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 22.2%  ▲ accelerating (+26.6pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 1.52
-  │     Beta           : N/A
-  │     PEG Ratio      : 0.00
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🏰 Wide Moat · 🚀 Accel Growth · 📊 Est. Rising · 📐 Margin Expand · ⚠️ Weak FCF Quality
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #9 ALSN  —  Allison Transmission Holdings, 
-  │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  73.4   Conviction Score: 100.4   Mkt Cap: $10.4B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $124.80
-  │     Analyst Target: $126.70  (10 analysts)
-  │     Upside        : +1.5%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 35.0%
-  │     FCF Yield      : 4.5%
-  │     Operating Mgn  : 27.3%
-  │     Gross Margin   : 48.6%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 20.4%  ▲ accelerating (+29.9pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 3.96
-  │     Beta           : 0.95
-  │     PEG Ratio      : 0.11
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🏰 Wide Moat · 🚀 Accel Growth · 💎 Deep Value · 📊 Est. Rising · 🔥 Momentum · ⚠️ High Leverage
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #10 GOOGL  —  Alphabet Inc.
+  ┌─ #9 GOOGL  —  Alphabet Inc.
   │  Sector: Communication Services          Action: BUY
   │  Base Score:  71.4   Conviction Score: 100.4   Mkt Cap: $3.7T
   │
@@ -289,19 +261,47 @@
   │     🏰 Wide Moat · 📊 Est. Rising · 💰 Income · 🔄 Capital Allocator · 🔥 Momentum · ⚠️ Weak FCF Quality
   └────────────────────────────────────────────────────────────────────
 
+  ┌─ #10 ALSN  —  Allison Transmission Holdings, 
+  │  Sector: Consumer Cyclical               Action: BUY
+  │  Base Score:  73.3   Conviction Score: 100.3   Mkt Cap: $10.4B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $124.80
+  │     Analyst Target: $126.70  (10 analysts)
+  │     Upside        : +1.5%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 35.0%
+  │     FCF Yield      : 4.5%
+  │     Operating Mgn  : 27.3%
+  │     Gross Margin   : 48.6%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 20.4%  ▲ accelerating (+29.9pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 3.96
+  │     Beta           : 0.95
+  │     PEG Ratio      : 0.11
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🏰 Wide Moat · 🚀 Accel Growth · 💎 Deep Value · 📊 Est. Rising · 🔥 Momentum · ⚠️ High Leverage
+  └────────────────────────────────────────────────────────────────────
+
 
   SUMMARY TABLE
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   PDD     PDD Holdings Inc.       74.8   47.3%    31%  0.03 Consumer Cyclical     
-  2   PCTY    Paylocity Holding Cor   70.6   50.0%    21%  0.14 Technology            
-  3   QLYS    Qualys, Inc.            69.5   42.2%    38%  0.09 Technology            
+  1   PDD     PDD Holdings Inc.       74.8   47.7%    31%  0.03 Consumer Cyclical     
+  2   PCTY    Paylocity Holding Cor   70.7   50.0%    21%  0.14 Technology            
+  3   QLYS    Qualys, Inc.            69.6   42.2%    38%  0.09 Technology            
   4   KGC     Kinross Gold Corporat   81.4   18.6%    31%  0.09 Basic Materials       
   5   AU      AngloGold Ashanti PLC   80.0    6.2%    34%  0.23 Basic Materials       
-  6   COLL    Collegium Pharmaceuti   74.7   34.6%    24%  3.10 Healthcare            
-  7   ELMD    Electromed, Inc.        65.2   54.3%    20%  0.00 Healthcare            
-  8   TREE    LendingTree, Inc.       66.5   51.2%    76%  1.52 Financial Services    
-  9   ALSN    Allison Transmission    73.4    1.5%    35%  3.96 Consumer Cyclical     
-  10  GOOGL   Alphabet Inc.           71.4   24.1%    36%  0.16 Communication Service 
+  6   TREE    LendingTree, Inc.       68.4   51.2%    76%  1.52 Financial Services    
+  7   COLL    Collegium Pharmaceuti   74.7   34.6%    24%  3.10 Healthcare            
+  8   ELMD    Electromed, Inc.        65.2   54.3%    20%  0.00 Healthcare            
+  9   GOOGL   Alphabet Inc.           71.4   24.1%    36%  0.16 Communication Service 
+  10  ALSN    Allison Transmission    73.3    1.5%    35%  3.96 Consumer Cyclical     
   ────────────────────────────────────────────────────────────────────
