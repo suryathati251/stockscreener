@@ -220,11 +220,16 @@ def build_html_report(df: pd.DataFrame, run_ts: str) -> str:
         shy = row.get("Shareholder_Yield")
         shy_cell = ('<td class="tc div-cell">' if (not _nan(shy) and float(shy) > 5) else '<td class="tc">') + fmt(shy, suffix="%", decimals=1) + "</td>"
 
+        # Sanitize values that go into HTML to prevent .format() crashes
+        tv_s = str(tv).replace("{", "&#123;").replace("}", "&#125;")
+        nv_s = str(nv).replace("{", "&#123;").replace("}", "&#125;")
+        fv_s = str(fv).replace("{", "&#123;").replace("}", "&#125;")
+
         cells = (
-            "<td><strong>{}</strong><br><small>{}</small></td>".format(tv, nv)
+            "<td><strong>" + tv_s + "</strong><br><small>" + nv_s + "</small></td>"
             + '<td class="tc">' + sb + "</td>"
             + '<td class="tc">' + ab + "</td>"
-            + '<td class="tc flag-cell">' + fv + "</td>"
+            + '<td class="tc flag-cell">' + fv_s + "</td>"
             + moat_cell
             + '<td class="tr">'  + fmt(row.get("Price"),        prefix="$")             + "</td>"
             + _ma_cell(row)
@@ -261,8 +266,10 @@ def build_html_report(df: pd.DataFrame, run_ts: str) -> str:
             + '<td class="tc"><small>' + sv + "</small></td>"
         )
         rows_html_parts.append(
-            '<tr class="{}" data-action="{}" data-sector="{}" data-ma="{}" data-score="{}" data-flags="{}" data-moat="{}">'.format(
-                rc, rec, sv, mas, score, flags_data, moat_label) + cells + "</tr>"
+            '<tr class="' + rc + '" data-action="' + rec + '" data-sector="' + sv +
+            '" data-ma="' + mas + '" data-score="' + str(score) + '" data-flags="' +
+            str(flags_data).replace('"',"'") + '" data-moat="' + moat_label + '">'
+            + cells + "</tr>"
         )
 
     rows_html = "\n".join(rows_html_parts)
@@ -764,6 +771,4 @@ with tab3:
             file_name=f"moat_analysis_{datetime.now().strftime('%Y%m%d')}.csv",
             mime="text/csv",
         )
-
-
 
