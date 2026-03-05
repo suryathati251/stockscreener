@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-03-04 22:55:20
+  Generated: 2026-03-05 06:57:57
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -15,8 +15,8 @@
   │
   │  💰 PRICE & TARGET
   │     Current Price : $101.19
-  │     Analyst Target: $148.77  (35 analysts)
-  │     Upside        : +47.0%
+  │     Analyst Target: $148.82  (35 analysts)
+  │     Upside        : +47.1%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 31.0%
@@ -294,7 +294,7 @@
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   PDD     PDD Holdings Inc.       78.2   47.0%    31%  0.03 Consumer Cyclical     
+  1   PDD     PDD Holdings Inc.       78.2   47.1%    31%  0.03 Consumer Cyclical     
   2   QLYS    Qualys, Inc.            72.0   41.2%    38%  0.09 Technology            
   3   PCTY    Paylocity Holding Cor   72.2   48.8%    21%  0.14 Technology            
   4   TREE    LendingTree, Inc.       72.5   49.2%    76%  1.52 Financial Services    
