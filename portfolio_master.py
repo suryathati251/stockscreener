@@ -800,8 +800,20 @@ def calculate_weighted_score(row, sector_medians):
         elif pr > 100:  total += w("payout_ratio") * -1.0
         elif pr > 80:   total += w("payout_ratio") * -0.5
 
+    # ── Rule of 40 bonus (weight 4) ──────────────────────────────────────
+    # Added on top of base score — rewards efficient growth without penalizing
+    # high-multiple stocks that are scaling well. Cap at +4 pts to keep it
+    # a signal boost, not a score driver.
+    r40 = row.get("Rule_Of_40")
+    if r40 is not None:
+        if   r40 > 60:  total += 4.0   # elite growers — full bonus
+        elif r40 > 40:  total += 2.5   # passes the bar
+        elif r40 > 20:  total += 1.0   # below bar but not a drag
+        elif r40 < -20: total -= 3.0   # burning cash with no growth — penalty
+        elif r40 < 0:   total -= 1.5
+
     # ── Normalize to 0–100 ────────────────────────────────────────────────
-    max_possible = float(TOTAL_WEIGHT)
+    max_possible = float(TOTAL_WEIGHT) + 4.0   # +4 accounts for Rule of 40 bonus ceiling
     score = ((total + max_possible) / (2 * max_possible)) * 100
     return min(max(round(score, 1), 0), 100)
 
@@ -838,6 +850,13 @@ def assign_composite_flag(row):
         flags.append("📈 Analyst Conviction")
     if dy and dy > 3 and (not de or de < 1.5):
         flags.append("💰 Income")
+    # Rule of 40 flag — highlights efficient growth companies
+    r40 = row.get("Rule_Of_40")
+    if r40 is not None:
+        if r40 > 60:
+            flags.append("📐 Rule of 40 Elite")   # >60 = top tier (NVDA, MSFT level)
+        elif r40 > 40:
+            flags.append("📐 Rule of 40")          # passes the standard bar
     if sf and sf > 20:
         flags.append("⚠️ High Short")
     if beta and beta > 2.0:
