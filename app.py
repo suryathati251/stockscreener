@@ -469,6 +469,7 @@ window.onload=function(){updateCount();};
     <button class="flag-filter-btn" data-flag="Deep Value"         onclick="toggleFlag(this)">💎 Deep Value</button>
     <button class="flag-filter-btn" data-flag="Analyst Conviction" onclick="toggleFlag(this)">📈 Analyst Conv.</button>
     <button class="flag-filter-btn" data-flag="Income"             onclick="toggleFlag(this)">💰 Income</button>
+    <button class="flag-filter-btn" data-flag="Rule of 40"         onclick="toggleFlag(this)">📐 Rule of 40</button>
   </div></div>
   <div class="fg"><div class="fl">Sector</div><div class="btn-row">
     <button id="btnSecAll" class="sec-btn active" onclick="toggleSecAll()">ALL</button>
