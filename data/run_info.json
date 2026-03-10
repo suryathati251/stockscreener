@@ -1,14 +1,14 @@
 {
-  "run_timestamp_utc": "2026-03-09 07:07 UTC",
-  "elapsed_minutes": 3.3,
+  "run_timestamp_utc": "2026-03-10 06:56 UTC",
+  "elapsed_minutes": 3.1,
   "total_stocks": 348,
   "strong_buy": 3,
-  "buy": 136,
-  "hold": 199,
+  "buy": 139,
+  "hold": 196,
   "sell": 10,
   "avg_score": 59.9,
-  "wide_moat_count": 169,
-  "narrow_moat_count": 155,
+  "wide_moat_count": 170,
+  "narrow_moat_count": 154,
   "hg_rocket_count": 7,
-  "hg_high_count": 260
+  "hg_high_count": 261
 }
