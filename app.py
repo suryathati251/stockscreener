@@ -254,97 +254,99 @@ def build_html_report(df: pd.DataFrame, run_ts: str) -> str:
     )
 
     CSS = """
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #0d1117; color: #c9d1d9; font-family: "Segoe UI", sans-serif; font-size: 13px; }
-h2 { font-size: 1.1rem; color: #58a6ff; margin-bottom: 4px; }
-.run-ts { font-size: 11px; color: #8b949e; }
+/* ── Reset & base ───────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{background:#0a0d13;color:#cdd9e5;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
 
-/* Stats row */
-.cards { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
-.stat-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 6px 12px; min-width: 70px; }
-.stat-card .num { font-size: 1.2rem; font-weight: 700; }
-.stat-card .lbl { font-size: .6rem; color: #8b949e; text-transform: uppercase; letter-spacing: .5px; }
+/* ── Stats row ──────────────────────────────────────────── */
+.cards{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.stat-card{background:#161b22;border:1px solid #21262d;border-radius:10px;padding:8px 12px;flex:1 1 60px;text-align:center;min-width:55px}
+.stat-card .num{font-size:1.15rem;font-weight:700;line-height:1;display:block}
+.stat-card .lbl{font-size:9px;color:#6e7681;text-transform:uppercase;letter-spacing:.6px;margin-top:2px;display:block}
 
-/* Top bar — search + toggle always visible */
-.topbar { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; flex-wrap: wrap; }
-input#srch { background:#161b22; border:1px solid #30363d; color:#c9d1d9; border-radius:6px; padding:7px 11px; flex:1; min-width:120px; outline:none; font-size:13px; }
-input#srch:focus { border-color:#58a6ff; }
-input#minScore { background:#161b22; border:1px solid #30363d; color:#c9d1d9; border-radius:6px; padding:7px 8px; width:62px; outline:none; font-size:13px; text-align:center; }
-.btn-toggle-filters { background:#161b22; border:1.5px solid #30363d; color:#c9d1d9; border-radius:6px; padding:7px 14px; cursor:pointer; font-size:13px; font-weight:600; white-space:nowrap; transition:all .15s; }
-.btn-toggle-filters.has-active { border-color:#58a6ff; color:#58a6ff; }
-.btn-csv { background:#238636; color:#fff; border:none; border-radius:6px; padding:7px 13px; cursor:pointer; font-size:13px; font-weight:600; white-space:nowrap; }
-.btn-csv:hover { background:#2ea043; }
+/* ── Top bar ─────────────────────────────────────────────── */
+.topbar{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+input#srch{background:#161b22;border:1px solid #21262d;color:#cdd9e5;border-radius:8px;padding:9px 12px;flex:1;min-width:0;outline:none;font-size:16px;-webkit-appearance:none}
+input#srch:focus{border-color:#58a6ff;background:#1c2230}
+input#minScore{background:#161b22;border:1px solid #21262d;color:#cdd9e5;border-radius:8px;padding:9px 8px;width:64px;outline:none;font-size:16px;text-align:center;-webkit-appearance:none}
+.btn-toggle-filters{background:#161b22;border:1.5px solid #21262d;color:#cdd9e5;border-radius:8px;padding:9px 14px;cursor:pointer;font-size:13px;font-weight:600;white-space:nowrap;-webkit-appearance:none}
+.btn-toggle-filters.has-active{border-color:#58a6ff;color:#58a6ff}
+.btn-csv{background:#238636;color:#fff;border:none;border-radius:8px;padding:9px 13px;cursor:pointer;font-size:13px;font-weight:600;white-space:nowrap;-webkit-appearance:none}
 
-/* Collapsible filter panel */
-.filter-panel { display:none; background:#0f1318; border:1px solid #30363d; border-radius:8px; padding:10px 12px; margin-bottom:8px; }
-.filter-panel.open { display:block; }
-.fg { margin-bottom: 10px; }
-.fl { font-size:.68rem; color:#8b949e; text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
-.btn-row { display:flex; flex-wrap:wrap; gap:5px; }
+/* ── Collapsible filter panel ────────────────────────────── */
+.filter-panel{display:none;background:#0d1117;border:1px solid #21262d;border-radius:10px;padding:12px;margin-bottom:10px}
+.filter-panel.open{display:block}
+.fg{margin-bottom:12px}
+.fl{font-size:10px;color:#6e7681;text-transform:uppercase;letter-spacing:.6px;font-weight:600;margin-bottom:6px}
+.btn-row{display:flex;flex-wrap:wrap;gap:6px}
 
-/* Action buttons */
-.act-btn { background:#161b22; border:1px solid #30363d; color:#8b949e; border-radius:6px; padding:5px 11px; cursor:pointer; font-size:12px; font-weight:600; transition:all .15s; }
-#btnAll.active { background:#30363d; color:#c9d1d9; border-color:#8b949e; }
-.act-btn[data-action="STRONG BUY"].active { background:#1f6feb; color:#fff; border-color:#1f6feb; }
-.act-btn[data-action="BUY"].active        { background:#238636; color:#fff; border-color:#238636; }
-.act-btn[data-action="HOLD"].active       { background:#9e6a03; color:#fff; border-color:#9e6a03; }
-.act-btn[data-action="SELL"].active       { background:#b62324; color:#fff; border-color:#b62324; }
+/* ── Filter buttons ──────────────────────────────────────── */
+.act-btn{background:#161b22;border:1px solid #21262d;color:#6e7681;border-radius:8px;padding:7px 12px;cursor:pointer;font-size:12px;font-weight:600;-webkit-appearance:none}
+#btnAll.active{background:#21262d;color:#cdd9e5;border-color:#30363d}
+.act-btn[data-action="STRONG BUY"].active{background:#1f4f98;color:#79c0ff;border-color:#1f6feb}
+.act-btn[data-action="BUY"].active{background:#1a3f27;color:#56d364;border-color:#238636}
+.act-btn[data-action="HOLD"].active{background:#3d2e00;color:#e3b341;border-color:#9e6a03}
+.act-btn[data-action="SELL"].active{background:#3d0f0f;color:#f85149;border-color:#b62324}
+.sec-btn{background:#161b22;border:1px solid #21262d;color:#6e7681;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:11px;-webkit-appearance:none}
+#btnSecAll.active,.sec-btn[data-sector].active{background:#1c2a3d;color:#58a6ff;border-color:#1f6feb}
+.moat-btn{background:#161b22;border:1px solid #21262d;color:#6e7681;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:11px;-webkit-appearance:none}
+.moat-btn[data-moat="Wide"].active{background:#2d1f5e;color:#a78bfa;border-color:#7c3aed}
+.moat-btn[data-moat="Narrow"].active{background:#1e1b4b;color:#818cf8;border-color:#4f46e5}
+.moat-btn[data-moat="Weak"].active{background:#1f2937;color:#9ca3af;border-color:#6b7280}
+.flag-filter-btn{background:#161b22;border:1px solid #21262d;color:#6e7681;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:11px;-webkit-appearance:none}
+.flag-filter-btn.active{background:#2a1f3d;color:#bc8cff;border-color:#bc8cff}
+.ma-filter-btn{background:#161b22;border:1.5px solid #1f6feb;color:#58a6ff;border-radius:8px;padding:7px 13px;cursor:pointer;font-size:12px;font-weight:700;-webkit-appearance:none}
+.ma-filter-btn.active{background:#58a6ff;color:#0a0d13}
 
-/* Sector buttons */
-.sec-btn { background:#161b22; border:1px solid #30363d; color:#8b949e; border-radius:6px; padding:4px 9px; cursor:pointer; font-size:11px; transition:all .15s; }
-#btnSecAll.active { background:#30363d; color:#c9d1d9; border-color:#8b949e; }
-.sec-btn[data-sector].active { background:#388bfd22; color:#58a6ff; border-color:#388bfd; }
+/* ── Table ───────────────────────────────────────────────── */
+.wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-height:78vh;border:1px solid #21262d;border-radius:10px}
+table{border-collapse:collapse;width:100%;white-space:nowrap}
+thead th{background:#161b22;color:#6e7681;position:sticky;top:0;z-index:9;padding:9px 8px;cursor:pointer;user-select:none;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid #21262d}
+thead th:hover{color:#58a6ff}
+thead th.asc::after{content:" ▲";font-size:8px;opacity:.7}
+thead th.desc::after{content:" ▼";font-size:8px;opacity:.7}
+thead th.new-col{color:#bc8cff}
+thead th.ma-col{color:#58a6ff}
+thead th.div-col{color:#e6b450}
+thead th.moat-col{color:#a78bfa}
+td{padding:7px 8px;border-bottom:1px solid #1a1f27;vertical-align:middle}
+td small{color:#6e7681;font-size:11px}
+.tc{text-align:center}.tr{text-align:right}
+.row-green{background:#0b1d10}.row-green:hover{background:#0e2615}
+.row-orange{background:#1a1200}.row-orange:hover{background:#221800}
+.row-red{background:#160808}.row-red:hover{background:#1e0c0c}
 
-.moat-btn { background:#161b22; border:1px solid #30363d; color:#8b949e; border-radius:6px; padding:4px 9px; cursor:pointer; font-size:11px; transition:all .15s; }
-.moat-btn[data-moat="Wide"].active   { background:#7c3aed33; color:#a78bfa; border-color:#7c3aed; }
-.moat-btn[data-moat="Narrow"].active { background:#4f46e533; color:#818cf8; border-color:#4f46e5; }
-.moat-btn[data-moat="Weak"].active   { background:#37415133; color:#9ca3af; border-color:#6b7280; }
-/* Flag buttons */
-.flag-filter-btn { background:#161b22; border:1px solid #30363d; color:#8b949e; border-radius:6px; padding:4px 9px; cursor:pointer; font-size:11px; transition:all .15s; }
-.flag-filter-btn.active { background:#bc8cff33; color:#bc8cff; border-color:#bc8cff; }
+/* ── Badges & status colors ──────────────────────────────── */
+.badge{font-size:11px;padding:3px 8px;border-radius:5px;font-weight:700}
+.score-strong{background:#1f4f98;color:#79c0ff}
+.score-buy{background:#1a3f27;color:#56d364}
+.score-hold{background:#3d2e00;color:#e3b341}
+.score-sell{background:#3d0f0f;color:#f85149}
+.div-cell{color:#e6b450;font-weight:600}
+.flag-cell{font-size:11px;max-width:200px;white-space:normal;line-height:1.5;color:#8b949e}
+.analyst-up{color:#3fb950;font-weight:600}
+.analyst-dn{color:#f85149;font-weight:600}
+.accel-up{color:#3fb950;font-size:11px}
+.accel-dn{color:#f85149;font-size:11px}
+.ma-above .ma-val{color:#3fb950;font-weight:600}
+.ma-above small{color:#3fb950}
+.ma-near .ma-val{color:#d29922;font-weight:600}
+.ma-near small{color:#d29922}
+.ma-below .ma-val{color:#f85149;font-weight:600}
+.ma-below small{color:#f85149}
+.moat-wide{background:#2d1f5e;color:#a78bfa}
+.moat-narrow{background:#1e1b4b;color:#818cf8}
+.moat-weak{background:#1f2937;color:#9ca3af}
+#rowcnt{font-size:11px;color:#6e7681;margin:4px 0 6px}
 
-/* MA button */
-.ma-filter-btn { background:#161b22; border:1.5px solid #58a6ff; color:#58a6ff; border-radius:6px; padding:5px 13px; cursor:pointer; font-size:12px; font-weight:700; transition:all .15s; }
-.ma-filter-btn.active { background:#58a6ff; color:#0d1117; }
-
-/* Table */
-.wrap { overflow-x:auto; max-height:78vh; border:1px solid #21262d; border-radius:8px; }
-table { border-collapse:collapse; width:100%; white-space:nowrap; }
-thead th { background:#161b22; color:#8b949e; position:sticky; top:0; z-index:9; padding:8px 7px; cursor:pointer; user-select:none; font-weight:600; border-bottom:1px solid #30363d; }
-thead th:hover { color:#58a6ff; }
-thead th.asc::after  { content:" ▲"; font-size:9px; }
-thead th.desc::after { content:" ▼"; font-size:9px; }
-thead th.new-col { color:#bc8cff; }
-thead th.ma-col  { color:#58a6ff; }
-thead th.div-col { color:#e6b450; }
-td { padding:6px 7px; border-bottom:1px solid #21262d; vertical-align:middle; }
-td small { color:#8b949e; font-size:11px; }
-.tc { text-align:center; } .tr { text-align:right; }
-.row-green  { background:#0d1f0f; } .row-green:hover  { background:#0f2a14 !important; }
-.row-orange { background:#1e1600; } .row-orange:hover { background:#2a1f00 !important; }
-.row-red    { background:#1c0707; } .row-red:hover    { background:#2a0d0d !important; }
-.badge { font-size:11px; padding:3px 7px; border-radius:4px; font-weight:600; }
-.score-strong { background:#1f6feb; color:#fff; }
-.score-buy    { background:#238636; color:#fff; }
-.score-hold   { background:#9e6a03; color:#fff; }
-.score-sell   { background:#b62324; color:#fff; }
-.div-cell   { color:#e6b450; font-weight:600; }
-.flag-cell  { font-size:11px; max-width:200px; white-space:normal; line-height:1.4; }
-.analyst-up { color:#3fb950; font-weight:600; }
-.analyst-dn { color:#f85149; font-weight:600; }
-.accel-up   { color:#3fb950; font-size:11px; }
-.accel-dn   { color:#f85149; font-size:11px; }
-.ma-above .ma-val { color:#3fb950; font-weight:600; }
-.ma-above small   { color:#3fb950; }
-.ma-near  .ma-val { color:#d29922; font-weight:600; }
-.ma-near  small   { color:#d29922; }
-.ma-below .ma-val { color:#f85149; font-weight:600; }
-.ma-below small   { color:#f85149; }
-#rowcnt { font-size:12px; color:#8b949e; margin:4px 0 4px; }
-.moat-wide   { background:#7c3aed; color:#fff; }
-.moat-narrow { background:#4f46e5; color:#fff; }
-.moat-weak   { background:#374151; color:#9ca3af; }
-thead th.moat-col { color:#a78bfa; }
+/* ── Mobile ──────────────────────────────────────────────── */
+@media(max-width:600px){
+  input#srch,input#minScore{font-size:16px}
+  .stat-card .num{font-size:1rem}
+  thead th{padding:7px 6px;font-size:10px}
+  td{padding:6px 6px}
+}
 """
 
     JS = """
@@ -422,31 +424,38 @@ window.onload=function(){updateCount();};
 """.replace("TOTAL", str(total))
 
     return """<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<style>{css}</style></head>
-<body><div style="padding:8px 10px">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0d13">
+<style>{css}</style>
+</head>
+<body>
+<div style="padding:10px 12px">
 
 <!-- Stats row -->
 <div class="cards">
-  <div class="stat-card"><div class="num">{total}</div><div class="lbl">Stocks</div></div>
-  <div class="stat-card" style="border-color:#1f6feb"><div class="num" style="color:#1f6feb">{sb}</div><div class="lbl">Str. Buy</div></div>
-  <div class="stat-card" style="border-color:#238636"><div class="num" style="color:#238636">{b}</div><div class="lbl">Buy</div></div>
-  <div class="stat-card" style="border-color:#9e6a03"><div class="num" style="color:#9e6a03">{h}</div><div class="lbl">Hold</div></div>
-  <div class="stat-card" style="border-color:#b62324"><div class="num" style="color:#b62324">{s}</div><div class="lbl">Sell</div></div>
-  <div class="stat-card"><div class="num">{avg}</div><div class="lbl">Avg Score</div></div>
-  <div class="stat-card" style="border-color:#30363d"><div class="num" style="font-size:.75rem;color:#8b949e">{run_ts}</div><div class="lbl">Last Run</div></div>
+  <div class="stat-card"><span class="num">{total}</span><span class="lbl">Stocks</span></div>
+  <div class="stat-card"><span class="num" style="color:#79c0ff">{sb}</span><span class="lbl">Str. Buy</span></div>
+  <div class="stat-card"><span class="num" style="color:#56d364">{b}</span><span class="lbl">Buy</span></div>
+  <div class="stat-card"><span class="num" style="color:#e3b341">{h}</span><span class="lbl">Hold</span></div>
+  <div class="stat-card"><span class="num" style="color:#f85149">{s}</span><span class="lbl">Sell</span></div>
+  <div class="stat-card"><span class="num">{avg}</span><span class="lbl">Avg Score</span></div>
+  <div class="stat-card"><span class="num" style="font-size:.7rem;color:#6e7681">{run_ts}</span><span class="lbl">Last Run</span></div>
 </div>
 
-<!-- Always-visible top bar: search + score + filter toggle + export -->
+<!-- Always-visible top bar -->
 <div class="topbar">
-  <input id="srch" type="text" placeholder="🔍 Ticker or name…" oninput="applyFilters()">
-  <input id="minScore" type="number" value="0" min="0" max="100" placeholder="Score≥" oninput="applyFilters()" title="Min score">
+  <input id="srch" type="search" autocomplete="off" autocorrect="off" spellcheck="false"
+         placeholder="🔍 Ticker or name…" oninput="applyFilters()">
+  <input id="minScore" type="number" value="0" min="0" max="100"
+         placeholder="≥Score" oninput="applyFilters()" title="Min score">
   <button id="btnFilters" class="btn-toggle-filters" onclick="toggleFilters()">▼ Filters</button>
   <button class="btn-csv" onclick="exportCSV()">⬇ CSV</button>
 </div>
 
-<!-- Collapsible filter panel (hidden by default on mobile) -->
+<!-- Collapsible filter panel -->
 <div id="filterPanel" class="filter-panel">
   <div class="fg"><div class="fl">🏰 Moat</div><div class="btn-row">
     <button class="moat-btn" data-moat="Wide"   onclick="toggleMoat(this)">🏰 Wide Moat</button>
@@ -455,10 +464,10 @@ window.onload=function(){updateCount();};
   </div></div>
   <div class="fg"><div class="fl">Action</div><div class="btn-row">
     <button id="btnAll" class="act-btn active" onclick="toggleAll()">ALL</button>
-    <button class="act-btn" data-action="STRONG BUY" onclick="toggleAction(this)">🟢 STRONG BUY</button>
-    <button class="act-btn" data-action="BUY"        onclick="toggleAction(this)">🔵 BUY</button>
-    <button class="act-btn" data-action="HOLD"       onclick="toggleAction(this)">🟡 HOLD</button>
-    <button class="act-btn" data-action="SELL"       onclick="toggleAction(this)">🔴 SELL</button>
+    <button class="act-btn" data-action="STRONG BUY" onclick="toggleAction(this)">⭐ Strong Buy</button>
+    <button class="act-btn" data-action="BUY"        onclick="toggleAction(this)">✅ Buy</button>
+    <button class="act-btn" data-action="HOLD"       onclick="toggleAction(this)">⏸ Hold</button>
+    <button class="act-btn" data-action="SELL"       onclick="toggleAction(this)">🔴 Sell</button>
   </div></div>
   <div class="fg"><div class="fl">200 DMA</div>
     <button id="btnMABelow" class="ma-filter-btn" onclick="toggleMA(this)">Below 200 MA</button>
@@ -484,6 +493,9 @@ window.onload=function(){updateCount();};
     <tbody id="tbody">{rows_html}</tbody>
   </table>
 </div>
+<p style="font-size:10px;color:#6e7681;margin-top:8px;padding-bottom:4px">
+  ⚠️ Quantitative screen only — not financial advice.
+</p>
 </div>
 <script>{js}</script>
 </body></html>""".format(
@@ -539,7 +551,7 @@ with dl2:
         )
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
-tab1, tab2, tab3, tab4 = st.tabs(["📋 Full Screener", "⭐ Top 10 Picks", "🏰 Moat Leaderboard", "🚀 Hypergrowth Hunter"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["📋 Full Screener", "⭐ Top 10 Picks", "🏰 Moat Leaderboard", "🚀 Hypergrowth Hunter", "🧙 Magic Formula"])
 
 with tab1:
     # Build and embed the full interactive HTML report
@@ -889,3 +901,218 @@ with tab4:
             file_name=f"hypergrowth_{datetime.now().strftime('%Y%m%d')}.csv",
             mime="text/csv",
         )
+
+with tab5:
+    st.subheader("🧙 Magic Formula — Joel Greenblatt")
+    st.caption(
+        "From *The Little Book That Still Beats the Market*. "
+        "Ranks stocks by **Earnings Yield** (cheap) + **Return on Capital** (quality). "
+        "Lowest combined rank = best pick. Financials, Utilities & Real Estate excluded per Greenblatt."
+    )
+
+    # ── Compute Magic Formula ranks from the loaded CSV ────────────────────────
+    _MF_EXCLUDE = {"Financial Services", "Utilities", "Real Estate"}
+
+    mf = df.copy()
+
+    # Earnings Yield proxy: 1/EV_EBITDA, fallback 1/PE_Fwd
+    def _ey(row):
+        ev = row.get("EV_EBITDA")
+        if ev is not None and not (isinstance(ev, float) and np.isnan(ev)) and float(ev) > 0:
+            return round((1.0 / float(ev)) * 100, 2)
+        pe = row.get("PE_Fwd")
+        if pe is not None and not (isinstance(pe, float) and np.isnan(pe)) and float(pe) > 0:
+            return round((1.0 / float(pe)) * 100, 2)
+        return None
+
+    # Return on Capital proxy: ROA, fallback ROE
+    def _roc(row):
+        roa = row.get("ROA")
+        if roa is not None and not (isinstance(roa, float) and np.isnan(roa)):
+            return float(roa)
+        roe = row.get("ROE")
+        if roe is not None and not (isinstance(roe, float) and np.isnan(roe)):
+            return float(roe)
+        return None
+
+    mf["MF_EY"]  = mf.apply(_ey,  axis=1)
+    mf["MF_ROC"] = mf.apply(_roc, axis=1)
+    mf["MF_Excluded"] = mf["Sector"].apply(lambda s: str(s) in _MF_EXCLUDE)
+
+    excl_count = int(mf["MF_Excluded"].sum())
+    eligible   = mf[~mf["MF_Excluded"]].dropna(subset=["MF_EY", "MF_ROC"])
+    eligible   = eligible[(eligible["MF_EY"] > 0) & (eligible["MF_ROC"] > 0)].copy()
+
+    if len(eligible) == 0:
+        st.warning("Not enough data to compute Magic Formula ranks. Re-run the analysis.")
+        st.stop()
+
+    eligible["MF_EY_Rank"]  = eligible["MF_EY"].rank(ascending=False, method="min").astype(int)
+    eligible["MF_ROC_Rank"] = eligible["MF_ROC"].rank(ascending=False, method="min").astype(int)
+    eligible["MF_Rank"]     = eligible["MF_EY_Rank"] + eligible["MF_ROC_Rank"]
+    eligible.sort_values("MF_Rank", ascending=True, inplace=True)
+    eligible.reset_index(drop=True, inplace=True)
+
+    # ── Filters ───────────────────────────────────────────────────────────────
+    mf_c1, mf_c2, mf_c3 = st.columns([1.5, 1.5, 2])
+    with mf_c1:
+        mf_sector = st.selectbox(
+            "Sector", ["All"] + sorted(eligible["Sector"].dropna().unique().tolist()),
+            key="mf_sector"
+        )
+    with mf_c2:
+        mf_action = st.selectbox(
+            "Action", ["All", "STRONG BUY", "BUY", "HOLD", "SELL"],
+            key="mf_action"
+        )
+    with mf_c3:
+        mf_top_n = st.slider("Show top N stocks", min_value=10, max_value=50, value=20, step=5)
+
+    mf_view = eligible.copy()
+    if mf_sector != "All":
+        mf_view = mf_view[mf_view["Sector"] == mf_sector]
+    if mf_action != "All":
+        mf_view = mf_view[mf_view["Action"] == mf_action]
+    mf_view = mf_view.head(mf_top_n)
+
+    # ── Summary metrics ───────────────────────────────────────────────────────
+    sm1, sm2, sm3, sm4 = st.columns(4)
+    sm1.metric("Eligible Stocks",  len(eligible))
+    sm2.metric("Excluded",         excl_count, help="Financials, Utilities, Real Estate")
+    sm3.metric("Avg Earnings Yield", f"{eligible['MF_EY'].mean():.1f}%")
+    sm4.metric("Avg Return on Capital", f"{eligible['MF_ROC'].mean():.1f}%")
+
+    st.markdown("---")
+
+    # ── Top N expander cards ──────────────────────────────────────────────────
+    if len(mf_view) == 0:
+        st.info("No stocks match the current filters.")
+    else:
+        st.caption(f"Showing top {len(mf_view)} stocks by Magic Formula combined rank · {excl_count} sectors excluded")
+
+        medals = {1: "🥇", 2: "🥈", 3: "🥉"}
+
+        for rank_pos, (_, row) in enumerate(mf_view.iterrows(), 1):
+            ticker     = str(row.get("Ticker", ""))
+            name       = str(row.get("Name", ticker))
+            sector     = str(row.get("Sector", ""))
+            action     = str(row.get("Action", ""))
+            ey         = row.get("MF_EY")
+            roc        = row.get("MF_ROC")
+            ey_rank    = row.get("MF_EY_Rank")
+            roc_rank   = row.get("MF_ROC_Rank")
+            mf_rank    = row.get("MF_Rank")
+            price      = row.get("Price")
+            mkt_cap    = row.get("Mkt_Cap", "N/A")
+            au         = row.get("Analyst_Upside")
+            score      = row.get("Score")
+            ev_ebitda  = row.get("EV_EBITDA")
+            roa        = row.get("ROA")
+            roe        = row.get("ROE")
+            moat_label = str(row.get("Moat_Label") or "—")
+            flags      = str(row.get("Composite_Flag") or "—")
+            rev_g      = row.get("Rev_Growth")
+            fcf        = row.get("FCF_Yield")
+            de         = row.get("Debt_Equity")
+
+            ey_src  = "EV/EBITDA" if (ev_ebitda and not (isinstance(ev_ebitda, float) and np.isnan(ev_ebitda)) and float(ev_ebitda) > 0) else "Fwd P/E"
+            roc_src = "ROA" if (roa and not (isinstance(roa, float) and np.isnan(roa))) else "ROE"
+            medal   = medals.get(rank_pos, f"#{rank_pos:02d}")
+
+            action_colors = {"STRONG BUY": "blue", "BUY": "green", "HOLD": "orange", "SELL": "red"}
+            action_color  = action_colors.get(action, "gray")
+
+            def _fs(v, suffix="%", dec=1):
+                try:
+                    return f"{float(v):.{dec}f}{suffix}" if v is not None and not (isinstance(v, float) and np.isnan(v)) else "N/A"
+                except Exception:
+                    return "N/A"
+
+            def _fpu(v):
+                try:
+                    fv = float(v)
+                    return f"+{fv:.1f}%" if fv >= 0 else f"{fv:.1f}%"
+                except Exception:
+                    return "N/A"
+
+            with st.expander(
+                f"{medal}  **{ticker}**  —  {name[:45]}"
+                f"  |  Magic Rank: **#{int(mf_rank)}**"
+                f"  |  EY: {_fs(ey)}  ROC: {_fs(roc)}"
+                f"  |  {action}",
+                expanded=(rank_pos <= 3),
+            ):
+                col1, col2, col3 = st.columns(3)
+
+                with col1:
+                    st.markdown("**🧙 Magic Formula**")
+                    st.metric("Combined Rank", f"#{int(mf_rank)}", help="Lower = better. Sum of EY rank + ROC rank.")
+                    st.write(f"Earnings Yield:  **{_fs(ey)}** (#{int(ey_rank)}) · via {ey_src}")
+                    st.write(f"Return on Cap:   **{_fs(roc)}** (#{int(roc_rank)}) · via {roc_src}")
+                    st.write(f"Sector:  {sector}  ·  Cap: {mkt_cap}")
+                    st.markdown(f"Action: **:{action_color}[{action}]**  ·  Score: **{_fs(score, suffix='', dec=0)}**")
+
+                with col2:
+                    st.markdown("**💰 Price & Analyst**")
+                    st.write(f"Price:  **${float(price):.2f}**" if price else "Price: N/A")
+                    au_str = _fpu(au)
+                    au_color = "green" if (au and float(au) >= 0) else "red"
+                    if au:
+                        st.markdown(f"Analyst Upside: **:{au_color}[{au_str}]**")
+                    st.write(f"EV/EBITDA: {_fs(ev_ebitda, suffix='x', dec=1)}")
+                    moat_icons = {"Wide": "🏰", "Narrow": "〰️", "Weak": "◽", "None": "—"}
+                    st.write(f"Moat: {moat_icons.get(moat_label,'—')} {moat_label}")
+
+                with col3:
+                    st.markdown("**📊 Quality Check**")
+                    st.write(f"ROE:        {_fs(roe)}")
+                    st.write(f"ROA:        {_fs(roa)}")
+                    st.write(f"FCF Yield:  {_fs(fcf)}")
+                    st.write(f"Rev Growth: {_fpu(rev_g)}")
+                    st.write(f"Debt/Equity:{_fs(de, suffix='', dec=2)}")
+
+                if flags and flags != "—":
+                    st.markdown(f"**🏷️ Signals:** {flags}")
+
+                st.caption(
+                    f"EY Rank #{int(ey_rank)} + ROC Rank #{int(roc_rank)} = Combined #{int(mf_rank)}  ·  "
+                    f"Lower combined rank = Greenblatt's preferred stock"
+                )
+
+    # ── Methodology note ──────────────────────────────────────────────────────
+    st.markdown("---")
+    with st.expander("📖 How the Magic Formula Works", expanded=False):
+        st.markdown("""
+**Joel Greenblatt's Magic Formula** from *The Little Book That Still Beats the Market* (2006):
+
+1. **Screen** for stocks with market cap > $50M *(we use our curated 344-stock universe)*
+2. **Exclude** Utilities, Financials, and Real Estate *(excluded {excl} stocks here)*
+3. **Rank by Earnings Yield** = EBIT ÷ Enterprise Value *(proxy: 1 ÷ EV/EBITDA or 1 ÷ Fwd P/E)*
+   - Higher EY = you're buying more earnings per dollar invested = cheaper
+4. **Rank by Return on Capital** = EBIT ÷ (Net Working Capital + Net Fixed Assets) *(proxy: ROA or ROE)*
+   - Higher ROC = company deploys capital more efficiently = better business
+5. **Add the two ranks** — lowest combined rank = the Magic Formula's top pick
+6. **Buy top 20–30 stocks**, hold for 1 year, then rebalance annually
+
+**Greenblatt's backtest (1988–2004):** ~30.8% annual return vs S&P 500's 12.4%.
+
+⚠️ *EY and ROC here are proxies from yfinance data, not exact Greenblatt calculations.
+Past performance does not guarantee future results. Not financial advice.*
+        """.format(excl=excl_count))
+
+    # ── Download ──────────────────────────────────────────────────────────────
+    mf_dl_cols = [
+        c for c in [
+            "Ticker", "Name", "Sector", "Action", "Score",
+            "MF_EY", "MF_ROC", "MF_EY_Rank", "MF_ROC_Rank", "MF_Rank",
+            "Price", "Mkt_Cap", "EV_EBITDA", "PE_Fwd", "ROA", "ROE",
+            "FCF_Yield", "Rev_Growth", "Debt_Equity",
+            "Moat_Label", "Analyst_Upside", "Composite_Flag",
+        ] if c in eligible.columns
+    ]
+    st.download_button(
+        "⬇️ Download Magic Formula CSV",
+        data=eligible[mf_dl_cols].to_csv(index=False).encode("utf-8"),
+        file_name=f"magic_formula_{datetime.now().strftime('%Y%m%d')}.csv",
+        mime="text/csv",
+    )
