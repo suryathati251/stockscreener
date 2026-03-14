@@ -1354,6 +1354,340 @@ def assign_hypergrowth_flag(row):
         return "🔥 HG High"
     return None
 
+
+# =============================================================================
+# MAGIC FORMULA — Joel Greenblatt ("The Little Book That Still Beats the Market")
+#
+# The Magic Formula ranks stocks on two metrics and combines the ranks:
+#
+#   1. Earnings Yield  = EBIT / Enterprise Value  (higher = cheaper)
+#      — Best proxy available: inverse of EV/EBITDA (1 / EV_EBITDA)
+#        Uses Op_Margin × implied revenue as fallback earnings proxy.
+#
+#   2. Return on Capital = EBIT / (Net Working Capital + Net Fixed Assets)
+#      — Best proxy: ROA (Return on Assets) — captures EBIT efficiency
+#        relative to total asset base. Falls back to ROE when ROA missing.
+#
+# Greenblatt excludes: financials, utilities, foreign ADRs, micro-caps.
+# We apply a soft filter: warn but still rank them so the user sees all.
+#
+# Combined Magic Rank = EY_Rank + ROC_Rank  (lower combined rank = better)
+# Top 20 by combined rank are surfaced in the Magic Formula tab.
+# =============================================================================
+
+# Sectors excluded by Greenblatt's original formula
+_MF_EXCLUDE_SECTORS = {"Financial Services", "Utilities", "Real Estate"}
+
+
+def calculate_magic_formula_ranks(df):
+    """
+    Given the full DataFrame, compute Earnings Yield, Return on Capital,
+    their individual ranks, combined Magic Rank, and return a new DataFrame
+    of eligible stocks sorted by Magic Rank ascending (best first).
+
+    Returns (mf_df, excluded_count) where mf_df contains all columns plus:
+      MF_EarningsYield   — 1/EV_EBITDA as proxy (%)
+      MF_ReturnOnCapital — ROA (or ROE fallback) as proxy (%)
+      MF_EY_Rank         — rank on earnings yield (1 = highest yield = best)
+      MF_ROC_Rank        — rank on return on capital (1 = highest ROC = best)
+      MF_Combined_Rank   — sum of two ranks (lower = better)
+      MF_Excluded        — True if Greenblatt would exclude this sector
+    """
+
+    work = df.copy()
+
+    # ── Step 1: Compute Earnings Yield proxy ─────────────────────────────────
+    # Greenblatt: EY = EBIT / EV.  We have EV/EBITDA → invert it.
+    # EY = 1 / EV_EBITDA  expressed as a percentage.
+    def _earnings_yield(row):
+        ev_ebitda = row.get("EV_EBITDA")
+        if ev_ebitda is not None and not _is_nan(ev_ebitda) and ev_ebitda > 0:
+            return round((1.0 / ev_ebitda) * 100, 2)
+        # Fallback: use Forward P/E inverted  (E/P)
+        pe = row.get("PE_Fwd")
+        if pe is not None and not _is_nan(pe) and pe > 0:
+            return round((1.0 / pe) * 100, 2)
+        return None
+
+    # ── Step 2: Compute Return on Capital proxy ───────────────────────────────
+    # Greenblatt: ROC = EBIT / (NWC + NFA).
+    # Best available proxy: ROA (uses total assets as denominator).
+    # Fallback: ROE (uses equity, slightly different but correlated).
+    def _return_on_capital(row):
+        roa = row.get("ROA")
+        if roa is not None and not _is_nan(roa):
+            return roa  # already in %
+        roe = row.get("ROE")
+        if roe is not None and not _is_nan(roe):
+            return roe  # fallback — less precise
+        return None
+
+    work["MF_EarningsYield"]   = work.apply(_earnings_yield,    axis=1)
+    work["MF_ReturnOnCapital"] = work.apply(_return_on_capital, axis=1)
+
+    # ── Step 3: Mark excluded sectors ────────────────────────────────────────
+    work["MF_Excluded"] = work["Sector"].apply(
+        lambda s: str(s) in _MF_EXCLUDE_SECTORS
+    )
+    excluded_count = int(work["MF_Excluded"].sum())
+
+    # Only rank eligible stocks (Greenblatt excludes financials/utilities/RE)
+    eligible = work[~work["MF_Excluded"]].copy()
+
+    # Need both metrics to rank
+    eligible = eligible.dropna(subset=["MF_EarningsYield", "MF_ReturnOnCapital"])
+
+    # Only include stocks with positive EY and positive ROC (Greenblatt requires this)
+    eligible = eligible[
+        (eligible["MF_EarningsYield"]   > 0) &
+        (eligible["MF_ReturnOnCapital"] > 0)
+    ].copy()
+
+    if len(eligible) == 0:
+        return work, excluded_count
+
+    # ── Step 4: Rank each metric (1 = best) ──────────────────────────────────
+    # Higher EY is better (more earnings per dollar of enterprise value)
+    eligible["MF_EY_Rank"]  = eligible["MF_EarningsYield"].rank(
+        ascending=False, method="min").astype(int)
+
+    # Higher ROC is better (more efficient capital allocation)
+    eligible["MF_ROC_Rank"] = eligible["MF_ReturnOnCapital"].rank(
+        ascending=False, method="min").astype(int)
+
+    # ── Step 5: Combined rank (lower = better) ────────────────────────────────
+    eligible["MF_Combined_Rank"] = eligible["MF_EY_Rank"] + eligible["MF_ROC_Rank"]
+
+    eligible.sort_values("MF_Combined_Rank", ascending=True, inplace=True)
+    eligible.reset_index(drop=True, inplace=True)
+
+    return eligible, excluded_count
+
+
+def _build_magic_formula_tab(df):
+    """Build HTML for the Magic Formula tab."""
+    mf_df, excl_count = calculate_magic_formula_ranks(df)
+    top20 = mf_df.head(20)
+    total_eligible = len(mf_df)
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    rows_html = ""
+    for rank_idx, (_, row) in enumerate(top20.iterrows(), 1):
+        ticker    = str(row.get("Ticker", ""))
+        name      = str(row.get("Name", ticker))
+        sector    = str(row.get("Sector", ""))
+        ey        = row.get("MF_EarningsYield")
+        roc       = row.get("MF_ReturnOnCapital")
+        ey_rank   = row.get("MF_EY_Rank")
+        roc_rank  = row.get("MF_ROC_Rank")
+        comb_rank = row.get("MF_Combined_Rank")
+        ev_ebitda = row.get("EV_EBITDA")
+        roa       = row.get("ROA")
+        flags     = str(row.get("Composite_Flag") or "—")
+        au        = row.get("Analyst_Upside")
+        score     = row.get("Score")
+        price     = row.get("Price")
+        mkt_cap   = str(row.get("Mkt_Cap") or "-")
+
+        ey_src  = "EV/EBITDA" if (ev_ebitda and not _is_nan(ev_ebitda) and ev_ebitda > 0) else "Fwd P/E"
+        roc_src = "ROA" if (roa and not _is_nan(roa)) else "ROE"
+        medal   = {1:"🥇",2:"🥈",3:"🥉"}.get(rank_idx, str(rank_idx))
+        au_cls  = "analyst-up" if (au and not _is_nan(au) and au >= 0) else "analyst-dn"
+
+        rows_html += """<tr>
+<td class="tc" style="font-size:13px">{medal}</td>
+<td><strong style="font-size:13px">{ticker}</strong><br><span style="font-size:11px;color:#6e7681">{name}</span></td>
+<td class="tc" style="font-weight:700;color:#a371f7;font-size:15px">{comb}</td>
+<td class="tc"><span style="color:#58a6ff;font-weight:600">{ey}</span><br><span style="font-size:10px;color:#6e7681">#{ey_r} · {ey_src}</span></td>
+<td class="tc"><span style="color:#3fb950;font-weight:600">{roc}</span><br><span style="font-size:10px;color:#6e7681">#{roc_r} · {roc_src}</span></td>
+<td class="tc">{price}</td>
+<td class="tc">{mkt_cap}</td>
+<td class="tc"><span class="{au_cls}">{au}</span></td>
+<td class="tc">{score}</td>
+<td class="flag-cell">{flags}</td>
+<td style="font-size:11px;color:#6e7681">{sector}</td>
+</tr>""".format(
+            medal=medal, ticker=ticker, name=name[:30],
+            comb=str(int(comb_rank)) if comb_rank else "-",
+            ey=("{:.2f}%".format(ey) if ey else "-"), ey_r=int(ey_rank) if ey_rank else "-", ey_src=ey_src,
+            roc=("{:.2f}%".format(roc) if roc else "-"), roc_r=int(roc_rank) if roc_rank else "-", roc_src=roc_src,
+            price=("${:.2f}".format(price) if price else "-"), mkt_cap=mkt_cap,
+            au_cls=au_cls, au=("{:+.1f}%".format(au) if (au and not _is_nan(au)) else "-"),
+            score=str(score) if score else "-", flags=flags, sector=sector,
+        )
+
+    return """<div id="tab-magic" class="tab-panel">
+<div class="tab-content">
+  <div class="info-card">
+    <h2 style="color:#a371f7">🧙 Magic Formula — Top 20</h2>
+    <p>Based on <em>The Little Book That Still Beats the Market</em> by Joel Greenblatt.<br>
+    Ranks {eligible} eligible stocks on Earnings Yield + Return on Capital. {excl_count} excluded (Financials, Utilities, Real Estate).<br>Generated: {ts}</p>
+    <div class="pill-row">
+      <div class="pill"><span class="p-num" style="color:#58a6ff">EY</span><span class="p-lbl">1÷EV/EBITDA</span></div>
+      <div class="pill"><span class="p-num" style="color:#3fb950">ROC</span><span class="p-lbl">ROA proxy</span></div>
+      <div class="pill"><span class="p-num" style="color:#a371f7">Rank</span><span class="p-lbl">Lower = Better</span></div>
+    </div>
+    <p style="font-size:11px;margin:8px 0 0">⚠️ Proxy calculations — not exact Greenblatt. Verify with official filings.</p>
+  </div>
+  <div class="data-table-wrap">
+  <table class="data-table">
+  <thead><tr>
+    <th>#</th><th>Ticker</th>
+    <th style="color:#a371f7">Combined ↑</th>
+    <th style="color:#58a6ff">Earnings Yield</th>
+    <th style="color:#3fb950">Return on Capital</th>
+    <th>Price</th><th>Mkt Cap</th><th>Analyst ↑</th><th>Score</th><th>Flags</th><th>Sector</th>
+  </tr></thead>
+  <tbody>{rows}</tbody>
+  </table>
+  </div>
+  <div class="note-card" style="background:#130d1f;border-color:#a371f744">
+    <strong style="color:#a371f7">📖 Greenblatt's 6-Step Process</strong><br>
+    1. Screen large-cap stocks &nbsp;·&nbsp; 2. Exclude financials, utilities, ADRs &nbsp;·&nbsp;
+    3. Rank by Earnings Yield (highest = #1) &nbsp;·&nbsp; 4. Rank by Return on Capital (highest = #1) &nbsp;·&nbsp;
+    5. Add ranks — lowest combined wins &nbsp;·&nbsp; 6. Buy top 20–30, hold 1 year, rebalance<br>
+    <span style="color:#6e7681">Backtest 1988–2004: ~30.8%/yr vs S&amp;P 12.4%. Past performance ≠ future results.</span>
+  </div>
+</div></div>""".format(eligible=total_eligible, excl_count=excl_count, ts=ts, rows=rows_html)
+    top20 = mf_df.head(20)
+    total_eligible = len(mf_df)
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    rows_html = ""
+    for rank_idx, (_, row) in enumerate(top20.iterrows(), 1):
+        ticker    = str(row.get("Ticker", ""))
+        name      = str(row.get("Name", ticker))
+        sector    = str(row.get("Sector", ""))
+        price     = row.get("Price")
+        mkt_cap   = str(row.get("Mkt_Cap") or "-")
+        ey        = row.get("MF_EarningsYield")
+        roc       = row.get("MF_ReturnOnCapital")
+        ey_rank   = row.get("MF_EY_Rank")
+        roc_rank  = row.get("MF_ROC_Rank")
+        comb_rank = row.get("MF_Combined_Rank")
+        ev_ebitda = row.get("EV_EBITDA")
+        pe_fwd    = row.get("PE_Fwd")
+        roe       = row.get("ROE")
+        roa       = row.get("ROA")
+        flags     = str(row.get("Composite_Flag") or "—")
+        au        = row.get("Analyst_Upside")
+        score     = row.get("Score")
+
+        # Data source indicator
+        ey_src  = "EV/EBITDA" if (ev_ebitda and not _is_nan(ev_ebitda) and ev_ebitda > 0) else "Fwd P/E"
+        roc_src = "ROA" if (roa and not _is_nan(roa)) else "ROE"
+
+        price_s   = "${:.2f}".format(price)   if price  else "-"
+        ey_s      = "{:.2f}%".format(ey)      if ey     else "-"
+        roc_s     = "{:.2f}%".format(roc)     if roc    else "-"
+        ey_r_s    = "#{}".format(int(ey_rank))  if ey_rank  else "-"
+        roc_r_s   = "#{}".format(int(roc_rank)) if roc_rank else "-"
+        comb_s    = str(int(comb_rank))        if comb_rank else "-"
+        score_s   = str(score)                 if score  else "-"
+        au_s      = "{:+.1f}%".format(au)     if (au and not _is_nan(au)) else "-"
+        au_cls    = "analyst-up" if (au and not _is_nan(au) and au >= 0) else "analyst-dn"
+
+        # Medal emoji for top 3
+        medal = {1: "🥇", 2: "🥈", 3: "🥉"}.get(rank_idx, str(rank_idx))
+
+        rows_html += """<tr>
+  <td class="tc" style="font-weight:700;font-size:14px">{medal}</td>
+  <td><strong>{ticker}</strong><br><small>{name}</small></td>
+  <td class="tc" style="font-weight:700;color:#f0b429">{comb}</td>
+  <td class="tc">{ey} <small style="color:#8b949e">({ey_r})</small><br><small style="color:#8b949e">{ey_src}</small></td>
+  <td class="tc">{roc} <small style="color:#8b949e">({roc_r})</small><br><small style="color:#8b949e">{roc_src}</small></td>
+  <td class="tc">{price}</td>
+  <td class="tc">{mkt_cap}</td>
+  <td class="tc"><span class="{au_cls}">{au}</span></td>
+  <td class="tc"><span style="background:#1f2937;padding:2px 7px;border-radius:4px">{score}</span></td>
+  <td class="tc flag-cell">{flags}</td>
+  <td class="tc" style="color:#8b949e;font-size:11px">{sector}</td>
+</tr>
+""".format(
+            medal=medal, ticker=ticker, name=name[:35],
+            comb=comb_s, ey=ey_s, ey_r=ey_r_s, ey_src=ey_src,
+            roc=roc_s, roc_r=roc_r_s, roc_src=roc_src,
+            price=price_s, mkt_cap=mkt_cap, au=au_s, au_cls=au_cls,
+            score=score_s, flags=flags, sector=sector,
+        )
+
+    html = """
+<div id="tab-magic" class="tab-panel" style="display:none;padding:0 20px 30px">
+
+  <!-- Header card -->
+  <div style="background:#161b22;border:1px solid #30363d;border-radius:10px;padding:18px 22px;margin:16px 0 20px">
+    <h2 style="color:#f0b429;margin:0 0 6px;font-size:1.2rem">🧙 Magic Formula — Top 20 Stocks</h2>
+    <p style="color:#8b949e;font-size:12px;margin:0 0 10px">
+      Based on <em>The Little Book That Still Beats the Market</em> by Joel Greenblatt (2006, updated 2010).<br>
+      Ranks {eligible} eligible stocks on two metrics and picks the best combined rank.
+      {excl_count} stocks excluded (Financials, Utilities, Real Estate per Greenblatt).
+      Generated: {ts}
+    </p>
+    <div style="display:flex;gap:30px;flex-wrap:wrap;font-size:12px">
+      <div>
+        <strong style="color:#58a6ff">📊 Earnings Yield</strong> = EBIT / Enterprise Value<br>
+        <span style="color:#8b949e">Proxy: 1 ÷ (EV/EBITDA) or 1 ÷ (Fwd P/E). Higher = cheaper.</span>
+      </div>
+      <div>
+        <strong style="color:#3fb950">🏭 Return on Capital</strong> = EBIT / (Net Working Capital + Net Fixed Assets)<br>
+        <span style="color:#8b949e">Proxy: ROA (or ROE fallback). Higher = better capital efficiency.</span>
+      </div>
+      <div>
+        <strong style="color:#f0b429">🏆 Combined Rank</strong> = EY Rank + ROC Rank (lower is better)<br>
+        <span style="color:#8b949e">Greenblatt: buy top 20–30 yearly, hold 1 year, rebalance.</span>
+      </div>
+    </div>
+    <p style="color:#6e7681;font-size:11px;margin:10px 0 0">
+      ⚠️ Quantitative screen only — not financial advice. Data from yfinance; EY &amp; ROC are proxies, not exact Greenblatt calculations.
+      Always verify with official filings before investing.
+    </p>
+  </div>
+
+  <!-- Top 20 table -->
+  <div style="overflow-x:auto;border:1px solid #21262d;border-radius:8px">
+  <table style="border-collapse:collapse;width:100%;white-space:nowrap;font-size:13px">
+  <thead>
+    <tr style="background:#161b22;color:#8b949e">
+      <th style="padding:9px 8px">Rank</th>
+      <th style="padding:9px 8px">Ticker</th>
+      <th style="padding:9px 8px;color:#f0b429">Combined Rank ↑</th>
+      <th style="padding:9px 8px;color:#58a6ff">Earnings Yield</th>
+      <th style="padding:9px 8px;color:#3fb950">Return on Capital</th>
+      <th style="padding:9px 8px">Price</th>
+      <th style="padding:9px 8px">Mkt Cap</th>
+      <th style="padding:9px 8px">Analyst Upside</th>
+      <th style="padding:9px 8px">Our Score</th>
+      <th style="padding:9px 8px">Flags</th>
+      <th style="padding:9px 8px">Sector</th>
+    </tr>
+  </thead>
+  <tbody>
+{rows}
+  </tbody>
+  </table>
+  </div>
+
+  <!-- Greenblatt methodology note -->
+  <div style="background:#0d1f2e;border:1px solid #1f6feb44;border-radius:8px;padding:14px 18px;margin-top:18px;font-size:12px;color:#8b949e">
+    <strong style="color:#58a6ff">📖 How Greenblatt's Magic Formula Works</strong><br><br>
+    1. Screen for stocks with market cap &gt; $50M (we screen 344 curated stocks).<br>
+    2. Exclude utilities, financials, and foreign ADRs (excluded {excl_count} here).<br>
+    3. Rank all remaining stocks by <strong>Earnings Yield</strong> (highest = rank 1).<br>
+    4. Rank all remaining stocks by <strong>Return on Capital</strong> (highest = rank 1).<br>
+    5. Add the two ranks together. <strong>Lowest combined rank = best Magic Formula stock.</strong><br>
+    6. Buy the top 20–30 stocks. Hold for 1 year. Rebalance annually.<br><br>
+    <span style="color:#6e7681">Greenblatt's backtest (1988–2004) showed ~30.8% annual return vs S&amp;P 500's 12.4%. Past performance does not guarantee future results.</span>
+  </div>
+</div>
+""".format(
+        eligible=total_eligible,
+        excl_count=excl_count,
+        ts=ts,
+        rows=rows_html,
+    )
+    return html
+
+
 # =============================================================================
 # TOP 10 RECOMMENDATIONS
 # =============================================================================
@@ -1571,6 +1905,414 @@ def print_top10_report(top10, output_file=None):
 # =============================================================================
 # HTML REPORT
 # =============================================================================
+
+def _build_top10_tab(df):
+    """Build HTML content for the Top 10 Picks tab."""
+    top10 = generate_top10_recommendations(df, n=10)
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    if not top10:
+        return '<div id="tab-top10" class="tab-panel"><div class="tab-content"><p style="color:#6e7681">No picks meet the quality threshold yet.</p></div></div>'
+
+    cards_html = ""
+    for i, r in enumerate(top10, 1):
+        medal  = {1:"🥇",2:"🥈",3:"🥉"}.get(i,"#{:02d}".format(i))
+        action = r["action"]
+        a_cls  = {"STRONG BUY":"bg-info","BUY":"bg-success"}.get(action,"bg-warning")
+
+        def _pct(v,plus=False):
+            if v is None: return "-"
+            return ("{:+.1f}%" if plus else "{:.1f}%").format(v)
+        def _p(v):
+            return "${:.2f}".format(v) if v is not None else "-"
+        def _f(v,d=2):
+            return "{:.{}f}".format(v,d) if v is not None else "-"
+
+        upside_s = _pct(r["upside"],plus=True)
+        upside_c = "#3fb950" if (r["upside"] and r["upside"]>=0) else "#f85149"
+
+        accel_html = ""
+        if r["rev_g"] is not None and r["rev_prev"] is not None:
+            diff = r["rev_g"] - r["rev_prev"]
+            if diff > 5:   accel_html = ' <span style="color:#3fb950;font-size:10px">▲{:+.1f}pp</span>'.format(diff)
+            elif diff < -5: accel_html = ' <span style="color:#f85149;font-size:10px">▼{:.1f}pp</span>'.format(diff)
+
+        moat_s = "{} {:.0f}".format(r["moat_label"], r["moat_score"]) if r["moat_score"] is not None else r["moat_label"]
+
+        cards_html += """
+<div class="pick-card">
+  <div class="pick-header">
+    <div class="pick-title">
+      <span class="pick-medal">{medal}</span>
+      <div>
+        <div class="pick-ticker">{ticker} <span class="badge {a_cls}" style="font-size:10px">{action}</span></div>
+        <div class="pick-name">{name} &nbsp;·&nbsp; {sector}</div>
+      </div>
+    </div>
+    <div class="pick-meta">
+      <div class="pick-scores">Base <strong>{base}</strong> &nbsp; Conv <strong style="color:#f0b429">{conv}</strong></div>
+      <div style="font-size:11px;color:#6e7681">{mkt_cap}</div>
+    </div>
+  </div>
+  <div class="pick-grid">
+    <div class="pick-box">
+      <div class="pick-box-title">💰 Price &amp; Target</div>
+      <div class="pick-kv"><span class="k">Price</span><span class="v">{price}</span></div>
+      <div class="pick-kv"><span class="k">Target</span><span class="v">{target}</span></div>
+      <div class="pick-kv"><span class="k">Analysts</span><span class="v">{ac}</span></div>
+      <div class="pick-upside" style="color:{upside_c}">{upside}</div>
+    </div>
+    <div class="pick-box">
+      <div class="pick-box-title">📊 Quality</div>
+      <div class="pick-kv"><span class="k">ROE</span><span class="v">{roe}</span></div>
+      <div class="pick-kv"><span class="k">FCF Yield</span><span class="v">{fcf}</span></div>
+      <div class="pick-kv"><span class="k">Op Margin</span><span class="v">{op}</span></div>
+      <div class="pick-kv"><span class="k">Gross Mgn</span><span class="v">{gross}</span></div>
+    </div>
+    <div class="pick-box">
+      <div class="pick-box-title">🚀 Growth</div>
+      <div class="pick-kv"><span class="k">Rev Growth</span><span class="v">{rev}{accel}</span></div>
+      <div class="pick-kv"><span class="k">EPS Surprise</span><span class="v">{eps}</span></div>
+    </div>
+    <div class="pick-box">
+      <div class="pick-box-title">🛡️ Risk</div>
+      <div class="pick-kv"><span class="k">D/E</span><span class="v">{de}</span></div>
+      <div class="pick-kv"><span class="k">Beta</span><span class="v">{beta}</span></div>
+      <div class="pick-kv"><span class="k">PEG</span><span class="v">{peg}</span></div>
+    </div>
+    <div class="pick-box" style="grid-column:1/-1">
+      <div class="pick-box-title">🏰 Moat &amp; Signals</div>
+      <div style="font-size:12px;color:#e6b450;margin-bottom:4px">{moat}</div>
+      <div style="font-size:11px;color:#6e7681;line-height:1.5">{flags}</div>
+    </div>
+  </div>
+</div>""".format(
+            medal=medal, ticker=r["ticker"], name=r["name"][:35],
+            action=action, a_cls=a_cls, sector=r["sector"],
+            base=r["base_score"], conv=r["conv_score"], mkt_cap=r["mkt_cap"],
+            price=_p(r["price"]), target=_p(r["target"]),
+            ac=str(int(r["analyst_count"])) if r["analyst_count"] is not None else "-",
+            upside=upside_s, upside_c=upside_c,
+            roe=_pct(r["roe"]), fcf=_pct(r["fcf"]), op=_pct(r["op_m"]),
+            gross=_pct(r["gross_m"]),
+            rev=_pct(r["rev_g"]), accel=accel_html,
+            eps=("{:+.1f}%".format(r["eps_s"]) if r["eps_s"] is not None else "-"),
+            de=_f(r["de"]), beta=_f(r["beta"]), peg=_f(r["peg"]),
+            moat=moat_s,
+            flags=r["flags"] if r["flags"]!="—" else "No signal flags",
+        )
+
+    return """<div id="tab-top10" class="tab-panel">
+<div class="tab-content">
+  <div class="info-card">
+    <h2 style="color:#f0b429">🏆 Top 10 Stock Picks</h2>
+    <p>Conviction-scored · max 2 per sector · analyst coverage ≥ 3 · base score ≥ 55<br>Generated: {ts}</p>
+    <p style="font-size:11px;margin:0">⚠️ Quantitative screen only — not financial advice.</p>
+  </div>
+{cards}
+</div></div>""".format(ts=ts, cards=cards_html)
+
+
+def _build_moat_tab(df):
+    """Build HTML content for the Moat Leaderboard tab."""
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    moat_df = df[df["Moat_Score"].notna()].copy()
+    moat_df = moat_df[moat_df["Moat_Score"]>0].sort_values("Moat_Score",ascending=False).head(30)
+    wide_c   = int((df["Moat_Label"]=="Wide").sum())
+    narrow_c = int((df["Moat_Label"]=="Narrow").sum())
+    weak_c   = int((df["Moat_Label"]=="Weak").sum())
+
+    if moat_df.empty:
+        return '<div id="tab-moat" class="tab-panel"><div class="tab-content"><p style="color:#6e7681">No moat data yet.</p></div></div>'
+
+    rows_html = ""
+    for i,(_, row) in enumerate(moat_df.iterrows(),1):
+        ticker    = str(row.get("Ticker",""))
+        name      = str(row.get("Name",ticker))
+        sector    = str(row.get("Sector",""))
+        ms        = row.get("Moat_Score"); ml = str(row.get("Moat_Label") or "None")
+        brand     = row.get("Moat_Brand"); sw = row.get("Moat_Switching"); net = row.get("Moat_Network")
+        au        = row.get("Analyst_Upside"); sc = row.get("Score")
+        lc = {"Wide":"#f0b429","Narrow":"#58a6ff","Weak":"#8b949e"}.get(ml,"#6e7681")
+        icon = {"Wide":"🏰","Narrow":"〰️","Weak":"🔹"}.get(ml,"·")
+        au_cls = "analyst-up" if (au and not _is_nan(au) and au>=0) else "analyst-dn"
+
+        def _bar(v, color):
+            if v is None: return ""
+            pct = max(0,min(100,float(v)))
+            return '<div class="bar-wrap"><div class="bar-fill" style="background:{};width:{:.0f}%"></div></div>'.format(color,pct)
+
+        rows_html += """<tr>
+<td class="tc" style="color:#6e7681;font-size:11px;font-weight:600">{i}</td>
+<td><strong style="font-size:13px">{ticker}</strong><br><span style="font-size:11px;color:#6e7681">{name}</span></td>
+<td class="tc" style="color:{lc};font-weight:700">{icon} {ml}</td>
+<td class="tc" style="font-weight:700;font-size:15px;color:{lc}">{ms}</td>
+<td class="tc"><span style="color:#e6b450;font-size:12px">{brand}</span>{bbar}</td>
+<td class="tc"><span style="color:#58a6ff;font-size:12px">{sw}</span>{swbar}</td>
+<td class="tc"><span style="color:#3fb950;font-size:12px">{net}</span>{netbar}</td>
+<td class="tc"><span class="{au_cls}">{au}</span></td>
+<td class="tc"><span style="color:#cdd9e5">{sc}</span></td>
+<td style="font-size:11px;color:#6e7681">{sector}</td>
+</tr>""".format(
+            i=i, ticker=ticker, name=name[:30], lc=lc, icon=icon, ml=ml,
+            ms="{:.1f}".format(ms) if ms else "-",
+            brand="{:.1f}".format(brand) if brand else "-",
+            bbar=_bar(brand,"#e6b45066"),
+            sw="{:.1f}".format(sw) if sw else "-",
+            swbar=_bar(sw,"#58a6ff66"),
+            net="{:.1f}".format(net) if net else "-",
+            netbar=_bar(net,"#3fb95066"),
+            au_cls=au_cls,
+            au=("{:+.1f}%".format(au) if (au and not _is_nan(au)) else "-"),
+            sc=str(sc) if sc else "-", sector=sector,
+        )
+
+    return """<div id="tab-moat" class="tab-panel">
+<div class="tab-content">
+  <div class="info-card">
+    <h2 style="color:#e6b450">🏰 Moat Leaderboard — Top 30</h2>
+    <p>Ranked by Economic Moat Score (0–100). Three pillars: Brand · Switching Costs · Network Effects<br>Generated: {ts}</p>
+    <div class="pill-row">
+      <div class="pill"><span class="p-num" style="color:#f0b429">{wide}</span><span class="p-lbl">🏰 Wide</span></div>
+      <div class="pill"><span class="p-num" style="color:#58a6ff">{narrow}</span><span class="p-lbl">〰️ Narrow</span></div>
+      <div class="pill"><span class="p-num" style="color:#8b949e">{weak}</span><span class="p-lbl">🔹 Weak</span></div>
+    </div>
+  </div>
+  <div class="data-table-wrap">
+  <table class="data-table">
+  <thead><tr>
+    <th>#</th><th>Ticker</th><th>Moat</th><th>Score</th>
+    <th style="color:#e6b450">🏷 Brand</th>
+    <th style="color:#58a6ff">🔄 Switch</th>
+    <th style="color:#3fb950">🌐 Network</th>
+    <th>Analyst ↑</th><th>Score</th><th>Sector</th>
+  </tr></thead>
+  <tbody>{rows}</tbody>
+  </table>
+  </div>
+  <div class="note-card">
+    <strong>Pillar Methodology</strong> — each 0–33 pts &nbsp;·&nbsp;
+    Wide ≥ 65 &nbsp;·&nbsp; Narrow ≥ 45 &nbsp;·&nbsp; Weak ≥ 28<br>
+    <span style="color:#e6b450">Brand</span>: gross margin vs sector, op margin, FCF &nbsp;·&nbsp;
+    <span style="color:#58a6ff">Switch</span>: rev stability, ROE consistency, debt &nbsp;·&nbsp;
+    <span style="color:#3fb950">Network</span>: rev growth, accel, inst ownership
+  </div>
+</div></div>""".format(ts=ts,wide=wide_c,narrow=narrow_c,weak=weak_c,rows=rows_html)
+
+
+def _build_hypergrowth_tab(df):
+    """Build HTML content for the Hypergrowth Hunter tab."""
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    hg_df = df[df["HG_Score"].notna()].copy()
+    hg_df = hg_df[hg_df["HG_Score"]>0].sort_values("HG_Score",ascending=False).head(25)
+    rocket_c   = int((df["HG_Label"]=="🚀 Rocket").sum())
+    high_c     = int((df["HG_Label"]=="🔥 High").sum())
+    emerging_c = int((df["HG_Label"]=="📈 Emerging").sum())
+
+    if hg_df.empty:
+        return '<div id="tab-hg" class="tab-panel"><div class="tab-content"><p style="color:#6e7681">No hypergrowth data yet.</p></div></div>'
+
+    rows_html = ""
+    for i,(_, row) in enumerate(hg_df.iterrows(),1):
+        ticker   = str(row.get("Ticker",""))
+        name     = str(row.get("Name",ticker))
+        sector   = str(row.get("Sector",""))
+        hg       = row.get("HG_Score"); hl = str(row.get("HG_Label") or "—")
+        gr       = row.get("HG_Growth"); lv = row.get("HG_Leverage")
+        pmf      = row.get("HG_PMF");   disc = row.get("HG_Discovery")
+        rev_g    = row.get("Rev_Growth"); r40 = row.get("Rule_Of_40")
+        streak   = row.get("Rev_Accel_Streak")
+        au       = row.get("Analyst_Upside"); sc = row.get("Score")
+        lc = {"🚀 Rocket":"#f0b429","🔥 High":"#f85149","📈 Emerging":"#3fb950"}.get(hl,"#8b949e")
+        au_cls = "analyst-up" if (au and not _is_nan(au) and au>=0) else "analyst-dn"
+
+        def _bar(v, color, mx=25):
+            if v is None: return ""
+            pct = max(0,min(100,(float(v)/mx)*100))
+            return '<div class="bar-wrap"><div class="bar-fill" style="background:{};width:{:.0f}%"></div></div>'.format(color,pct)
+
+        rows_html += """<tr>
+<td class="tc" style="color:#6e7681;font-size:11px;font-weight:600">{i}</td>
+<td><strong style="font-size:13px">{ticker}</strong><br><span style="font-size:11px;color:#6e7681">{name}</span></td>
+<td class="tc" style="color:{lc};font-weight:700;font-size:11px">{hl}</td>
+<td class="tc" style="font-weight:700;font-size:15px;color:{lc}">{hg}</td>
+<td class="tc"><span style="color:#f0b429;font-size:12px">{gr}</span>{grbar}</td>
+<td class="tc"><span style="color:#58a6ff;font-size:12px">{lv}</span>{lvbar}</td>
+<td class="tc"><span style="color:#3fb950;font-size:12px">{pmf}</span>{pmfbar}</td>
+<td class="tc"><span style="color:#a371f7;font-size:12px">{disc}</span>{discbar}</td>
+<td class="tc">{rev}</td>
+<td class="tc">{r40}</td>
+<td class="tc">{streak}</td>
+<td class="tc"><span class="{au_cls}">{au}</span></td>
+<td class="tc">{sc}</td>
+<td style="font-size:11px;color:#6e7681">{sector}</td>
+</tr>""".format(
+            i=i,ticker=ticker,name=name[:30],lc=lc,hl=hl,
+            hg="{:.1f}".format(hg) if hg else "-",
+            gr="{:.1f}".format(gr) if gr else "-",   grbar=_bar(gr,"#f0b42966"),
+            lv="{:.1f}".format(lv) if lv else "-",   lvbar=_bar(lv,"#58a6ff66"),
+            pmf="{:.1f}".format(pmf) if pmf else "-",pmfbar=_bar(pmf,"#3fb95066"),
+            disc="{:.1f}".format(disc) if disc else "-",discbar=_bar(disc,"#a371f766"),
+            rev=("{:.1f}%".format(rev_g) if rev_g else "-"),
+            r40=("{:.1f}".format(r40) if r40 else "-"),
+            streak=("{}Q".format(int(streak)) if streak is not None else "-"),
+            au_cls=au_cls,
+            au=("{:+.1f}%".format(au) if (au and not _is_nan(au)) else "-"),
+            sc=str(sc) if sc else "-",sector=sector,
+        )
+
+    return """<div id="tab-hg" class="tab-panel">
+<div class="tab-content">
+  <div class="info-card">
+    <h2 style="color:#f85149">🚀 Hypergrowth Hunter — Top 25</h2>
+    <p>Exceptional growth trajectories. Valuation-agnostic — early 10x stocks always look expensive.<br>Generated: {ts}</p>
+    <div class="pill-row">
+      <div class="pill"><span class="p-num" style="color:#f0b429">{rocket}</span><span class="p-lbl">🚀 Rocket</span></div>
+      <div class="pill"><span class="p-num" style="color:#f85149">{high}</span><span class="p-lbl">🔥 High</span></div>
+      <div class="pill"><span class="p-num" style="color:#3fb950">{emerging}</span><span class="p-lbl">📈 Emerging</span></div>
+    </div>
+  </div>
+  <div class="data-table-wrap">
+  <table class="data-table">
+  <thead><tr>
+    <th>#</th><th>Ticker</th><th>Label</th><th>HG Score</th>
+    <th style="color:#f0b429">📈 Growth</th>
+    <th style="color:#58a6ff">⚙️ Leverage</th>
+    <th style="color:#3fb950">🎯 PMF</th>
+    <th style="color:#a371f7">🔍 Discovery</th>
+    <th>Rev Growth</th><th>Rule of 40</th><th>Accel</th>
+    <th>Analyst ↑</th><th>Score</th><th>Sector</th>
+  </tr></thead>
+  <tbody>{rows}</tbody>
+  </table>
+  </div>
+  <div class="note-card" style="background:#120810;border-color:#f8514933">
+    <strong style="color:#f85149">Four pillars (25 pts each)</strong><br>
+    <span style="color:#f0b429">📈 Growth</span>: Rev growth, vs sector, accel streak, GM expansion &nbsp;·&nbsp;
+    <span style="color:#58a6ff">⚙️ Leverage</span>: Op leverage, Rule of 40, R&amp;D &nbsp;·&nbsp;
+    <span style="color:#3fb950">🎯 PMF</span>: Deferred rev, EPS surprise, analyst conviction &nbsp;·&nbsp;
+    <span style="color:#a371f7">🔍 Discovery</span>: Inst ownership, short squeeze, analyst count<br>
+    🚀 Rocket ≥ 70 &nbsp;·&nbsp; 🔥 High ≥ 50 &nbsp;·&nbsp; 📈 Emerging ≥ 35
+  </div>
+</div></div>""".format(ts=ts,rocket=rocket_c,high=high_c,emerging=emerging_c,rows=rows_html)
+
+    if not top10:
+        return """<div id="tab-top10" class="tab-panel" style="display:none;padding:20px">
+<p style="color:#8b949e">No Top 10 picks available — not enough stocks meet the quality threshold.</p></div>"""
+
+    cards_html = ""
+    for i, r in enumerate(top10, 1):
+        medal   = {1: "🥇", 2: "🥈", 3: "🥉"}.get(i, "#{:02d}".format(i))
+        action  = r["action"]
+        a_color = {"STRONG BUY": "#1f6feb", "BUY": "#238636"}.get(action, "#9e6a03")
+        a_bg    = {"STRONG BUY": "#0d2044", "BUY": "#0d2616"}.get(action, "#1e1600")
+
+        upside_s = "{:+.1f}%".format(r["upside"]) if r["upside"] is not None else "N/A"
+        upside_color = "#3fb950" if (r["upside"] and r["upside"] >= 0) else "#f85149"
+        price_s  = "${:.2f}".format(r["price"])   if r["price"]  is not None else "N/A"
+        target_s = "${:.2f}".format(r["target"])  if r["target"] is not None else "N/A"
+        roe_s    = "{:.1f}%".format(r["roe"])     if r["roe"]    is not None else "-"
+        fcf_s    = "{:.1f}%".format(r["fcf"])     if r["fcf"]    is not None else "-"
+        rev_s    = "{:.1f}%".format(r["rev_g"])   if r["rev_g"]  is not None else "-"
+        op_s     = "{:.1f}%".format(r["op_m"])    if r["op_m"]   is not None else "-"
+        de_s     = "{:.2f}".format(r["de"])        if r["de"]     is not None else "-"
+        beta_s   = "{:.2f}".format(r["beta"])      if r["beta"]   is not None else "-"
+        peg_s    = "{:.2f}".format(r["peg"])       if r["peg"]    is not None else "-"
+        eps_s    = "{:+.1f}%".format(r["eps_s"])  if r["eps_s"]  is not None else "-"
+        ac_s     = str(int(r["analyst_count"]))   if r["analyst_count"] is not None else "-"
+        moat_s   = "{} ({:.0f})".format(r["moat_label"], r["moat_score"]) if r["moat_score"] is not None else r["moat_label"]
+
+        # Revenue acceleration indicator
+        accel_html = ""
+        if r["rev_g"] is not None and r["rev_prev"] is not None:
+            diff = r["rev_g"] - r["rev_prev"]
+            if diff > 5:
+                accel_html = ' <span style="color:#3fb950;font-size:11px">▲ +{:.1f}pp</span>'.format(diff)
+            elif diff < -5:
+                accel_html = ' <span style="color:#f85149;font-size:11px">▼ {:.1f}pp</span>'.format(diff)
+
+        cards_html += """
+<div style="background:#161b22;border:1px solid #30363d;border-radius:10px;padding:16px 20px;margin-bottom:14px">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px">
+    <!-- Left: ticker + name -->
+    <div>
+      <span style="font-size:1.3rem;font-weight:700;margin-right:8px">{medal}</span>
+      <span style="font-size:1.15rem;font-weight:700;color:#c9d1d9">{ticker}</span>
+      <span style="color:#8b949e;font-size:12px;margin-left:6px">{name}</span>
+      <span style="background:{a_bg};color:{a_color};border:1px solid {a_color};border-radius:4px;font-size:11px;font-weight:700;padding:2px 8px;margin-left:8px">{action}</span>
+    </div>
+    <!-- Right: scores -->
+    <div style="text-align:right;font-size:12px">
+      <span style="color:#8b949e">Base Score: </span><strong style="color:#58a6ff">{base}</strong>
+      &nbsp;·&nbsp;
+      <span style="color:#8b949e">Conviction: </span><strong style="color:#f0b429">{conv}</strong>
+      &nbsp;·&nbsp;
+      <span style="color:#8b949e">{sector}</span>
+      &nbsp;·&nbsp;
+      <span style="color:#8b949e">{mkt_cap}</span>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:14px">
+    <!-- Price & Target -->
+    <div style="background:#0d1117;border-radius:6px;padding:10px 12px">
+      <div style="color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">💰 Price &amp; Target</div>
+      <div style="font-size:13px"><span style="color:#8b949e">Now:</span> <strong>{price}</strong></div>
+      <div style="font-size:13px"><span style="color:#8b949e">Target:</span> <strong>{target}</strong> <small style="color:#8b949e">({ac} analysts)</small></div>
+      <div style="font-size:15px;font-weight:700;color:{upside_color}">{upside}</div>
+    </div>
+    <!-- Quality -->
+    <div style="background:#0d1117;border-radius:6px;padding:10px 12px">
+      <div style="color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">📊 Quality</div>
+      <div style="font-size:12px;display:flex;justify-content:space-between"><span style="color:#8b949e">ROE</span><strong>{roe}</strong></div>
+      <div style="font-size:12px;display:flex;justify-content:space-between"><span style="color:#8b949e">FCF Yield</span><strong>{fcf}</strong></div>
+      <div style="font-size:12px;display:flex;justify-content:space-between"><span style="color:#8b949e">Op Margin</span><strong>{op}</strong></div>
+      <div style="font-size:12px;display:flex;justify-content:space-between"><span style="color:#8b949e">Gross Mgn</span><strong>{gross}</strong></div>
+    </div>
+    <!-- Growth -->
+    <div style="background:#0d1117;border-radius:6px;padding:10px 12px">
+      <div style="color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">🚀 Growth</div>
+      <div style="font-size:12px;display:flex;justify-content:space-between"><span style="color:#8b949e">Rev Growth</span><strong>{rev}{accel}</strong></div>
+      <div style="font-size:12px;display:flex;justify-content:space-between"><span style="color:#8b949e">EPS Surprise</span><strong>{eps}</strong></div>
+    </div>
+    <!-- Risk -->
+    <div style="background:#0d1117;border-radius:6px;padding:10px 12px">
+      <div style="color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">🛡️ Risk</div>
+      <div style="font-size:12px;display:flex;justify-content:space-between"><span style="color:#8b949e">D/E</span><strong>{de}</strong></div>
+      <div style="font-size:12px;display:flex;justify-content:space-between"><span style="color:#8b949e">Beta</span><strong>{beta}</strong></div>
+      <div style="font-size:12px;display:flex;justify-content:space-between"><span style="color:#8b949e">PEG</span><strong>{peg}</strong></div>
+    </div>
+    <!-- Moat & Flags -->
+    <div style="background:#0d1117;border-radius:6px;padding:10px 12px">
+      <div style="color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">🏰 Moat &amp; Signals</div>
+      <div style="font-size:12px;color:#e6b450;margin-bottom:4px">{moat}</div>
+      <div style="font-size:11px;color:#8b949e;line-height:1.5">{flags}</div>
+    </div>
+  </div>
+</div>""".format(
+            medal=medal, ticker=r["ticker"], name=r["name"][:40],
+            action=action, a_color=a_color, a_bg=a_bg,
+            base=r["base_score"], conv=r["conv_score"],
+            sector=r["sector"], mkt_cap=r["mkt_cap"],
+            price=price_s, target=target_s, ac=ac_s,
+            upside=upside_s, upside_color=upside_color,
+            roe=roe_s, fcf=fcf_s, op=op_s,
+            gross="{:.1f}%".format(r["gross_m"]) if r["gross_m"] is not None else "-",
+            rev=rev_s, accel=accel_html, eps=eps_s,
+            de=de_s, beta=beta_s, peg=peg_s,
+            moat=moat_s, flags=r["flags"] if r["flags"] != "—" else "No signal flags",
+        )
+
+    return """<div id="tab-top10" class="tab-panel" style="display:none;padding:0 20px 30px">
+  <div style="background:#161b22;border:1px solid #30363d;border-radius:10px;padding:14px 20px;margin:16px 0 20px">
+    <h2 style="color:#f0b429;margin:0 0 4px;font-size:1.2rem">🏆 Top 10 Stock Picks</h2>
+    <p style="color:#8b949e;font-size:12px;margin:0">Conviction-scored rankings · max 2 per sector · analyst coverage ≥ 3 · base score ≥ 55 · Generated: {ts}</p>
+    <p style="color:#6e7681;font-size:11px;margin:6px 0 0">⚠️ Quantitative screen only — not financial advice. Always do your own due diligence.</p>
+  </div>
+{cards}
+</div>""".format(ts=ts, cards=cards_html)
+
+
 _JS = r"""
 var sortDir = {};
 function toggleAction(btn) { btn.classList.toggle('active'); applyFilters(); }
@@ -1643,61 +2385,147 @@ window.onload = updateCount;
 """
 
 _CSS = """
-*{box-sizing:border-box}
-body{background:#0d1117;color:#c9d1d9;font-family:"Segoe UI",sans-serif;font-size:13px;margin:0}
-h1{font-size:1.45rem;color:#58a6ff;margin-bottom:.4rem}
-.version-badge{font-size:11px;background:#1f6feb;color:#fff;padding:2px 8px;border-radius:10px;margin-left:8px;vertical-align:middle}
-.stat-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:10px 16px;display:inline-block;margin:0 6px 8px 0;min-width:90px}
-.stat-card .num{font-size:1.5rem;font-weight:700;line-height:1.1}
-.stat-card .lbl{font-size:.68rem;color:#8b949e;text-transform:uppercase;letter-spacing:.5px}
-.toolbar{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:10px}
-.filter-group{display:flex;flex-direction:column;gap:5px}
-.filter-label{font-size:.7rem;color:#8b949e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:1px}
-.btn-row{display:flex;gap:5px;flex-wrap:wrap}
-.act-btn{background:#161b22;border:1px solid #30363d;color:#8b949e;border-radius:6px;padding:5px 13px;cursor:pointer;font-size:12px;font-weight:600;transition:all .15s;white-space:nowrap}
-.act-btn:hover{border-color:#58a6ff;color:#c9d1d9}
-#btnAll.active{background:#30363d;color:#c9d1d9;border-color:#8b949e}
-.act-btn[data-action="STRONG BUY"].active{background:#1f6feb;color:#fff;border-color:#1f6feb}
-.act-btn[data-action="BUY"].active{background:#238636;color:#fff;border-color:#238636}
-.act-btn[data-action="HOLD"].active{background:#9e6a03;color:#fff;border-color:#9e6a03}
-.act-btn[data-action="SELL"].active{background:#b62324;color:#fff;border-color:#b62324}
-.sec-btn{background:#161b22;border:1px solid #30363d;color:#8b949e;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:11px;font-weight:500;transition:all .15s;white-space:nowrap}
-.sec-btn:hover{border-color:#58a6ff;color:#c9d1d9}
-#btnSecAll.active,.sec-btn[data-sector].active{background:#388bfd22;color:#58a6ff;border-color:#388bfd}
-input#srch{background:#161b22;border:1px solid #30363d;color:#c9d1d9;border-radius:6px;padding:6px 12px;width:220px;outline:none}
-input#srch:focus{border-color:#58a6ff}
-.btn-csv{background:#238636;color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;font-size:13px;align-self:flex-end}
-.wrap{overflow-x:auto;max-height:80vh;border:1px solid #21262d;border-radius:8px}
-table{border-collapse:collapse;width:100%;white-space:nowrap}
-thead th{background:#161b22;color:#8b949e;position:sticky;top:0;z-index:9;padding:8px 7px;cursor:pointer;user-select:none;font-weight:600}
+/* ── Reset & Base ──────────────────────────────────────────────────────── */
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{background:#0a0d13;color:#cdd9e5;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:14px;margin:0;min-height:100vh}
+
+/* ── Header ────────────────────────────────────────────────────────────── */
+.site-header{background:linear-gradient(135deg,#0d1117 0%,#161b22 100%);border-bottom:1px solid #21262d;padding:16px 16px 12px;position:sticky;top:0;z-index:100}
+.header-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.site-title{font-size:1.25rem;font-weight:700;color:#58a6ff;margin:0;letter-spacing:-.3px}
+.version-badge{font-size:10px;background:#1f6feb;color:#fff;padding:2px 7px;border-radius:20px;margin-left:6px;vertical-align:middle;letter-spacing:.3px}
+.header-meta{font-size:11px;color:#6e7681;margin:4px 0 0}
+
+/* ── Stat row ──────────────────────────────────────────────────────────── */
+.stat-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.stat-card{background:#161b22;border:1px solid #21262d;border-radius:10px;padding:10px 14px;flex:1 1 70px;min-width:60px;text-align:center}
+.stat-card .num{font-size:1.4rem;font-weight:700;line-height:1;display:block}
+.stat-card .lbl{font-size:10px;color:#6e7681;text-transform:uppercase;letter-spacing:.6px;margin-top:3px;display:block}
+
+/* ── Tab bar ────────────────────────────────────────────────────────────── */
+.tab-bar{display:flex;background:#0d1117;border-bottom:1px solid #21262d;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{flex:0 0 auto;background:none;border:none;border-bottom:2px solid transparent;color:#6e7681;font-size:12px;font-weight:600;padding:12px 14px;cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s;letter-spacing:.2px}
+.tab-btn:hover{color:#cdd9e5}
+.tab-btn.active{color:#58a6ff;border-bottom-color:#58a6ff}
+.tab-btn.t-top10.active{color:#f0b429;border-bottom-color:#f0b429}
+.tab-btn.t-moat.active{color:#e6b450;border-bottom-color:#e6b450}
+.tab-btn.t-hg.active{color:#f85149;border-bottom-color:#f85149}
+.tab-btn.t-magic.active{color:#a371f7;border-bottom-color:#a371f7}
+.tab-panel{display:none}
+
+/* ── Screener toolbar ───────────────────────────────────────────────────── */
+.screener-toolbar{padding:12px 16px 8px;display:flex;flex-direction:column;gap:10px}
+.filter-group{display:flex;flex-direction:column;gap:6px}
+.filter-label{font-size:10px;color:#6e7681;text-transform:uppercase;letter-spacing:.6px;font-weight:600}
+.btn-row{display:flex;gap:6px;flex-wrap:wrap}
+.act-btn{background:#161b22;border:1px solid #21262d;color:#6e7681;border-radius:8px;padding:7px 13px;cursor:pointer;font-size:12px;font-weight:600;transition:all .15s;white-space:nowrap;-webkit-appearance:none}
+.act-btn:active{opacity:.8}
+#btnAll.active{background:#21262d;color:#cdd9e5;border-color:#30363d}
+.act-btn[data-action="STRONG BUY"].active{background:#1f4f98;color:#fff;border-color:#1f6feb}
+.act-btn[data-action="BUY"].active{background:#1a3f27;color:#3fb950;border-color:#238636}
+.act-btn[data-action="HOLD"].active{background:#3d2e00;color:#e3b341;border-color:#9e6a03}
+.act-btn[data-action="SELL"].active{background:#3d0f0f;color:#f85149;border-color:#b62324}
+.sec-btn{background:#161b22;border:1px solid #21262d;color:#6e7681;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:11px;font-weight:500;white-space:nowrap;-webkit-appearance:none}
+#btnSecAll.active,.sec-btn.active{background:#1c2a3d;color:#58a6ff;border-color:#1f6feb}
+.search-row{display:flex;gap:8px;align-items:center}
+input#srch{background:#161b22;border:1px solid #21262d;color:#cdd9e5;border-radius:8px;padding:9px 13px;flex:1;min-width:0;outline:none;font-size:14px;-webkit-appearance:none}
+input#srch:focus{border-color:#58a6ff;background:#1c2230}
+.btn-csv{background:#238636;color:#fff;border:none;border-radius:8px;padding:9px 14px;cursor:pointer;font-size:13px;font-weight:600;white-space:nowrap;-webkit-appearance:none}
+#rowcnt{font-size:11px;color:#6e7681;padding:0 16px 6px}
+
+/* ── Data table ─────────────────────────────────────────────────────────── */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-top:1px solid #21262d}
+table{border-collapse:collapse;width:100%;white-space:nowrap;font-size:13px}
+thead th{background:#161b22;color:#6e7681;position:sticky;top:0;z-index:9;padding:10px 8px;cursor:pointer;user-select:none;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid #21262d}
 thead th:hover{color:#58a6ff}
-thead th.asc::after{content:" ▲";font-size:9px}
-thead th.desc::after{content:" ▼";font-size:9px}
+thead th.asc::after{content:" ▲";font-size:8px;opacity:.7}
+thead th.desc::after{content:" ▼";font-size:8px;opacity:.7}
+td{padding:8px 8px;border-bottom:1px solid #1a1f27;vertical-align:middle}
+td small{color:#6e7681;font-size:11px}
+.tc{text-align:center}.tr{text-align:right}
+.row-green{background:#0b1d10}.row-green:hover{background:#0e2615}
+.row-orange{background:#1a1200}.row-orange:hover{background:#221800}
+.row-red{background:#160808}.row-red:hover{background:#1e0c0c}
+.badge{font-size:11px;padding:3px 8px;border-radius:5px;font-weight:700;letter-spacing:.2px}
+.score-strong{background:#1f4f98;color:#79c0ff}
+.score-buy{background:#1a3f27;color:#56d364}
+.score-hold{background:#3d2e00;color:#e3b341}
+.score-sell{background:#3d0f0f;color:#f85149}
+.bg-success{background:#1a3f27!important;color:#56d364!important}
+.bg-info{background:#1f4f98!important;color:#79c0ff!important}
+.bg-warning{background:#3d2e00!important;color:#e3b341!important}
+.bg-danger{background:#3d0f0f!important;color:#f85149!important}
 .ma-above .ma-val{color:#3fb950;font-weight:600}
 .ma-below .ma-val{color:#f85149;font-weight:600}
 .ma-near  .ma-val{color:#d29922;font-weight:600}
-td{padding:6px 7px;border-bottom:1px solid #21262d;vertical-align:middle}
-td small{color:#8b949e;font-size:11px}
-.tc{text-align:center}.tr{text-align:right}
-.row-green{background:#0d1f0f}.row-green:hover{background:#0f2a14!important}
-.row-orange{background:#1e1600}.row-orange:hover{background:#2a1f00!important}
-.row-red{background:#1c0707}.row-red:hover{background:#2a0d0d!important}
-.badge{font-size:11px;padding:3px 7px;border-radius:4px;font-weight:600}
-.score-strong{background:#1f6feb;color:#fff}
-.score-buy{background:#238636;color:#fff}
-.score-hold{background:#9e6a03;color:#fff}
-.score-sell{background:#b62324;color:#fff}
-.bg-success{background:#238636!important;color:#fff}
-.bg-info{background:#1f6feb!important;color:#fff}
-.bg-warning{background:#9e6a03!important;color:#fff}
-.bg-danger{background:#b62324!important;color:#fff}
 .div-cell{color:#e6b450;font-weight:600}
-.flag-cell{font-size:11px;max-width:200px;white-space:normal;line-height:1.4}
+.flag-cell{font-size:11px;max-width:180px;white-space:normal;line-height:1.5;color:#8b949e}
 .analyst-up{color:#3fb950;font-weight:600}
 .analyst-dn{color:#f85149;font-weight:600}
 .accel-up{color:#3fb950;font-size:11px}
 .accel-dn{color:#f85149;font-size:11px}
-#rowcnt{font-size:12px;color:#8b949e;margin-top:6px}
+
+/* ── Card panels (Top10, Moat, HG, Magic) ──────────────────────────────── */
+.tab-content{padding:16px}
+.info-card{background:#161b22;border:1px solid #21262d;border-radius:12px;padding:16px;margin-bottom:16px}
+.info-card h2{margin:0 0 6px;font-size:1.05rem;font-weight:700}
+.info-card p{color:#6e7681;font-size:12px;margin:0 0 8px;line-height:1.5}
+.pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.pill{display:flex;flex-direction:column;align-items:center;background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:8px 12px;min-width:60px}
+.pill .p-num{font-size:1.2rem;font-weight:700;line-height:1}
+.pill .p-lbl{font-size:10px;color:#6e7681;text-transform:uppercase;letter-spacing:.4px;margin-top:3px}
+.note-card{background:#0d1520;border:1px solid #1f3a5f;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:12px;color:#6e7681;line-height:1.6}
+.note-card strong{color:#58a6ff}
+
+/* ── Responsive data tables inside tabs ────────────────────────────────── */
+.data-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid #21262d;border-radius:10px;margin-top:4px}
+.data-table{border-collapse:collapse;width:100%;white-space:nowrap;font-size:12px}
+.data-table thead th{background:#161b22;color:#6e7681;padding:10px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #21262d;white-space:nowrap}
+.data-table tbody td{padding:9px 10px;border-bottom:1px solid #1a1f27;vertical-align:middle}
+.data-table tbody tr:last-child td{border-bottom:none}
+.data-table tbody tr:hover{background:#1a1f2a}
+
+/* ── Top10 pick cards ───────────────────────────────────────────────────── */
+.pick-card{background:#161b22;border:1px solid #21262d;border-radius:12px;padding:16px;margin-bottom:12px;transition:border-color .15s}
+.pick-card:hover{border-color:#30363d}
+.pick-header{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pick-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pick-medal{font-size:1.3rem;line-height:1}
+.pick-ticker{font-size:1.1rem;font-weight:700;color:#cdd9e5}
+.pick-name{font-size:11px;color:#6e7681;margin-top:1px}
+.pick-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.pick-scores{font-size:11px;color:#6e7681}
+.pick-scores strong{color:#58a6ff}
+.action-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px;letter-spacing:.3px}
+.pick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.pick-box{background:#0d1117;border:1px solid #1a1f27;border-radius:8px;padding:10px 12px}
+.pick-box-title{font-size:9px;color:#6e7681;text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:7px}
+.pick-kv{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:3px}
+.pick-kv .k{color:#6e7681}
+.pick-kv .v{font-weight:600;color:#cdd9e5}
+.pick-upside{font-size:1.1rem;font-weight:700;margin-top:4px}
+
+/* ── Pillar mini-bars ────────────────────────────────────────────────────── */
+.bar-wrap{margin-top:4px;height:4px;background:#1a1f27;border-radius:2px;overflow:hidden}
+.bar-fill{height:4px;border-radius:2px;transition:width .3s}
+
+/* ── Disclaimer ─────────────────────────────────────────────────────────── */
+.disclaimer{font-size:11px;color:#6e7681;padding:10px 16px 20px;line-height:1.5}
+
+/* ── Mobile overrides ───────────────────────────────────────────────────── */
+@media(max-width:600px){
+  .site-title{font-size:1.05rem}
+  .stat-card .num{font-size:1.1rem}
+  .stat-card{padding:8px 10px}
+  .tab-btn{font-size:11px;padding:10px 11px}
+  .pick-grid{grid-template-columns:1fr 1fr}
+  input#srch{font-size:16px}/* prevents iOS zoom */
+  .data-table{font-size:11px}
+  .data-table thead th{padding:8px 7px}
+  .data-table tbody td{padding:7px 7px}
+}
 """
 
 
@@ -1821,63 +2649,107 @@ def generate_html_report(df):
         "D/E", "Beta", "Div Yield%", "200 DMA", "From Low%",
         "Short Float%", "Flags", "Sector",
     ]
-    th_row = "".join('<th onclick="sortCol({})">{}</th>'.format(i, h) for i, h in enumerate(headers))
+    th_row = "".join('<th onclick="sortCol({})">{}</th>'.format(i, hdr) for i, hdr in enumerate(headers))
+
+    top10_tab_html = _build_top10_tab(df)
+    moat_tab_html  = _build_moat_tab(df)
+    hg_tab_html    = _build_hypergrowth_tab(df)
+    magic_tab_html = _build_magic_formula_tab(df)
+
+    tab_js = """
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.style.display='none';});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  var p=document.getElementById(id);if(p)p.style.display='block';
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+"""
 
     return """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Portfolio Analysis — {ts}</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0d13">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Portfolio Analysis</title>
 <style>{css}</style>
 </head>
 <body>
-<div style="padding:16px 20px 0">
-<h1>📊 Portfolio Analysis <span class="version-badge">Master v3</span></h1>
-<p style="color:#8b949e;font-size:12px;margin:0 0 12px">Generated: {ts} &nbsp;·&nbsp; {total} stocks screened</p>
-<div>
-  <div class="stat-card"><div class="num" style="color:#1f6feb">{sb}</div><div class="lbl">Strong Buy</div></div>
-  <div class="stat-card"><div class="num" style="color:#238636">{b}</div><div class="lbl">Buy</div></div>
-  <div class="stat-card"><div class="num" style="color:#9e6a03">{h}</div><div class="lbl">Hold</div></div>
-  <div class="stat-card"><div class="num" style="color:#f85149">{s}</div><div class="lbl">Sell</div></div>
-  <div class="stat-card"><div class="num">{avg_sc}</div><div class="lbl">Avg Score</div></div>
-</div>
-<div class="toolbar">
-  <div class="filter-group">
-    <div class="filter-label">Action</div>
-    <div class="btn-row">
-      <button id="btnAll" class="act-btn active" onclick="toggleAll()">All</button>
-      <button class="act-btn" data-action="STRONG BUY" onclick="toggleAction(this)">⭐ Strong Buy</button>
-      <button class="act-btn" data-action="BUY" onclick="toggleAction(this)">✅ Buy</button>
-      <button class="act-btn" data-action="HOLD" onclick="toggleAction(this)">⏸ Hold</button>
-      <button class="act-btn" data-action="SELL" onclick="toggleAction(this)">🔴 Sell</button>
+
+<!-- ══ STICKY HEADER ══════════════════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-row">
+    <h1 class="site-title">📊 Portfolio Analysis <span class="version-badge">v3</span></h1>
+    <div style="font-size:11px;color:#6e7681">{ts}</div>
+  </div>
+  <div class="stat-row">
+    <div class="stat-card"><span class="num" style="color:#79c0ff">{sb}</span><span class="lbl">Strong Buy</span></div>
+    <div class="stat-card"><span class="num" style="color:#56d364">{b}</span><span class="lbl">Buy</span></div>
+    <div class="stat-card"><span class="num" style="color:#e3b341">{h}</span><span class="lbl">Hold</span></div>
+    <div class="stat-card"><span class="num" style="color:#f85149">{s}</span><span class="lbl">Sell</span></div>
+    <div class="stat-card"><span class="num">{avg_sc}</span><span class="lbl">Avg Score</span></div>
+    <div class="stat-card"><span class="num">{total}</span><span class="lbl">Stocks</span></div>
+  </div>
+</header>
+
+<!-- ══ TAB BAR ════════════════════════════════════════════════════════════ -->
+<nav class="tab-bar" role="tablist">
+  <button class="tab-btn active"   role="tab" onclick="switchTab('tab-screener',this)">📊 Screener</button>
+  <button class="tab-btn t-top10"  role="tab" onclick="switchTab('tab-top10',this)">🏆 Top 10</button>
+  <button class="tab-btn t-moat"   role="tab" onclick="switchTab('tab-moat',this)">🏰 Moat</button>
+  <button class="tab-btn t-hg"     role="tab" onclick="switchTab('tab-hg',this)">🚀 Hypergrowth</button>
+  <button class="tab-btn t-magic"  role="tab" onclick="switchTab('tab-magic',this)">🧙 Magic Formula</button>
+</nav>
+
+<!-- ══ TAB 1: FULL SCREENER ══════════════════════════════════════════════ -->
+<div id="tab-screener" class="tab-panel" style="display:block">
+  <div class="screener-toolbar">
+    <div class="filter-group">
+      <div class="filter-label">Action</div>
+      <div class="btn-row">
+        <button id="btnAll" class="act-btn active" onclick="toggleAll()">All</button>
+        <button class="act-btn" data-action="STRONG BUY" onclick="toggleAction(this)">⭐ Strong Buy</button>
+        <button class="act-btn" data-action="BUY" onclick="toggleAction(this)">✅ Buy</button>
+        <button class="act-btn" data-action="HOLD" onclick="toggleAction(this)">⏸ Hold</button>
+        <button class="act-btn" data-action="SELL" onclick="toggleAction(this)">🔴 Sell</button>
+      </div>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Sector</div>
+      <div class="btn-row">{sec_btns}</div>
+    </div>
+    <div class="search-row">
+      <input id="srch" type="search" autocomplete="off" autocorrect="off" spellcheck="false"
+             placeholder="Search ticker or name…" oninput="applyFilters()">
+      <button class="btn-csv" onclick="exportCSV()">⬇ CSV</button>
     </div>
   </div>
-  <div class="filter-group">
-    <div class="filter-label">Sector</div>
-    <div class="btn-row">{sec_btns}</div>
+  <div id="rowcnt" style="font-size:11px;color:#6e7681;padding:0 16px 6px"></div>
+  <div class="table-wrap">
+  <table>
+    <thead><tr>{th_row}</tr></thead>
+    <tbody id="tbody">{rows_html}</tbody>
+  </table>
   </div>
-  <div class="filter-group" style="margin-top:auto">
-    <input id="srch" type="text" placeholder="Search ticker / name…" oninput="applyFilters()">
-  </div>
-  <button class="btn-csv" onclick="exportCSV()">⬇ Export CSV</button>
+  <p class="disclaimer">⚠️ Scores are a quantitative screening tool only — not financial advice. Always do qualitative due diligence before investing.</p>
 </div>
-<p id="rowcnt"></p>
-<p style="font-size:11px;color:#8b949e">⚠️ Scores are a quantitative screening tool only — not financial advice. Always do qualitative due diligence.</p>
-</div>
-<div class="wrap" style="margin:0 20px 20px">
-<table>
-<thead><tr>{th_row}</tr></thead>
-<tbody id="tbody">
-{rows_html}
-</tbody>
-</table>
-</div>
-<script>{js}</script>
+
+<!-- ══ TAB 2–5 ════════════════════════════════════════════════════════════ -->
+{top10_tab_html}
+{moat_tab_html}
+{hg_tab_html}
+{magic_tab_html}
+
+<script>{js}{tab_js}</script>
 </body>
 </html>""".format(
-        ts=ts, css=_CSS, total=total, sb=sb, b=b, h=h, s=s, avg_sc=avg_sc,
-        sec_btns=sec_btns, th_row=th_row, rows_html=rows_html, js=js,
+        css=_CSS, ts=ts, total=total, sb=sb, b=b, h=h, s=s, avg_sc=avg_sc,
+        sec_btns=sec_btns, th_row=th_row, rows_html=rows_html,
+        js=js, tab_js=tab_js,
+        top10_tab_html=top10_tab_html, moat_tab_html=moat_tab_html,
+        hg_tab_html=hg_tab_html, magic_tab_html=magic_tab_html,
     )
 
 
