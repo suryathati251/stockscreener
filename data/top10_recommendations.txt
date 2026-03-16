@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-03-14 04:52:45
+  Generated: 2026-03-16 07:23:20
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -9,9 +9,37 @@
   ⚠️  DISCLAIMER: Quantitative screen only — not financial advice.
       Always do your own due diligence before investing.
 
-  ┌─ #1 AU  —  AngloGold Ashanti PLC
+  ┌─ #1 PDD  —  PDD Holdings Inc.
+  │  Sector: Consumer Cyclical               Action: BUY
+  │  Base Score:  77.6   Conviction Score: 118.6   Mkt Cap: $145.7B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $102.65
+  │     Analyst Target: $148.59  (35 analysts)
+  │     Upside        : +44.8%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 31.0%
+  │     FCF Yield      : 60.0%
+  │     Operating Mgn  : 23.1%
+  │     Gross Margin   : 56.6%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 9.0%  ▲ accelerating (+15.0pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 0.03
+  │     Beta           : 0.05
+  │     PEG Ratio      : 0.47
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 📈 Analyst Conviction
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #2 AU  —  AngloGold Ashanti PLC
   │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  82.6   Conviction Score: 118.6   Mkt Cap: $47.9B
+  │  Base Score:  82.4   Conviction Score: 118.4   Mkt Cap: $47.9B
   │
   │  💰 PRICE & TARGET
   │     Current Price : $94.89
@@ -35,34 +63,6 @@
   │
   │  🏷️  SIGNAL FLAGS
   │     🚀 Rocket · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💎 Deep Value · 💰 Income · 📐 Rule of 40 Elite
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #2 PDD  —  PDD Holdings Inc.
-  │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  77.6   Conviction Score: 118.6   Mkt Cap: $145.7B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $102.65
-  │     Analyst Target: $148.66  (35 analysts)
-  │     Upside        : +44.8%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 31.0%
-  │     FCF Yield      : 60.0%
-  │     Operating Mgn  : 23.1%
-  │     Gross Margin   : 56.6%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 9.0%  ▲ accelerating (+15.0pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.03
-  │     Beta           : 0.05
-  │     PEG Ratio      : 0.47
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 📈 Analyst Conviction
   └────────────────────────────────────────────────────────────────────
 
   ┌─ #3 PCTY  —  Paylocity Holding Corporation
@@ -123,7 +123,7 @@
 
   ┌─ #5 KGC  —  Kinross Gold Corporation
   │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  82.8   Conviction Score: 114.8   Mkt Cap: $36.9B
+  │  Base Score:  82.7   Conviction Score: 114.7   Mkt Cap: $36.9B
   │
   │  💰 PRICE & TARGET
   │     Current Price : $30.57
@@ -151,7 +151,7 @@
 
   ┌─ #6 PRI  —  Primerica, Inc.
   │  Sector: Financial Services              Action: BUY
-  │  Base Score:  72.6   Conviction Score: 104.6   Mkt Cap: $7.9B
+  │  Base Score:  72.5   Conviction Score: 104.5   Mkt Cap: $7.9B
   │
   │  💰 PRICE & TARGET
   │     Current Price : $249.11
@@ -294,12 +294,12 @@
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   AU      AngloGold Ashanti PLC   82.6   33.2%    34%  0.23 Basic Materials       
-  2   PDD     PDD Holdings Inc.       77.6   44.8%    31%  0.03 Consumer Cyclical     
+  1   PDD     PDD Holdings Inc.       77.6   44.8%    31%  0.03 Consumer Cyclical     
+  2   AU      AngloGold Ashanti PLC   82.4   33.2%    34%  0.23 Basic Materials       
   3   PCTY    Paylocity Holding Cor   73.2   55.2%    21%  0.14 Technology            
   4   GEN     Gen Digital Inc.        75.9   50.8%    27%  3.63 Technology            
-  5   KGC     Kinross Gold Corporat   82.8   33.8%    31%  0.09 Basic Materials       
-  6   PRI     Primerica, Inc.         72.6   16.1%    32%  0.78 Financial Services    
+  5   KGC     Kinross Gold Corporat   82.7   33.8%    31%  0.09 Basic Materials       
+  6   PRI     Primerica, Inc.         72.5   16.1%    32%  0.78 Financial Services    
   7   APAM    Artisan Partners Asse   74.5   18.6%    49%  0.40 Financial Services    
   8   COLL    Collegium Pharmaceuti   70.2   56.0%    24%  3.10 Healthcare            
   9   APP     Applovin Corporation    70.2   41.4%   213%  1.72 Communication Service 
