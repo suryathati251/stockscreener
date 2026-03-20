@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-03-19 07:03:36
+  Generated: 2026-03-20 07:01:13
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -11,16 +11,16 @@
 
   ┌─ #1 PDD  —  PDD Holdings Inc.
   │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  77.5   Conviction Score: 118.5   Mkt Cap: $143.0B
+  │  Base Score:  77.6   Conviction Score: 122.6   Mkt Cap: $138.3B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $100.72
-  │     Analyst Target: $148.30  (35 analysts)
-  │     Upside        : +47.2%
+  │     Current Price : $97.43
+  │     Analyst Target: $148.47  (35 analysts)
+  │     Upside        : +52.4%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 31.0%
-  │     FCF Yield      : 61.2%
+  │     FCF Yield      : 63.2%
   │     Operating Mgn  : 23.1%
   │     Gross Margin   : 56.6%
   │
@@ -31,24 +31,52 @@
   │  🛡️  RISK
   │     Debt/Equity    : 0.03
   │     Beta           : 0.05
-  │     PEG Ratio      : 0.46
+  │     PEG Ratio      : 0.45
   │
   │  🏷️  SIGNAL FLAGS
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 📈 Analyst Conviction
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #2 AU  —  AngloGold Ashanti PLC
+  ┌─ #2 KGC  —  Kinross Gold Corporation
   │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  82.3   Conviction Score: 118.3   Mkt Cap: $46.7B
+  │  Base Score:  84.5   Conviction Score: 120.5   Mkt Cap: $33.1B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $92.39
+  │     Current Price : $27.42
+  │     Analyst Target: $40.89  (11 analysts)
+  │     Upside        : +49.1%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 31.0%
+  │     FCF Yield      : 7.3%
+  │     Operating Mgn  : 49.2%
+  │     Gross Margin   : 66.7%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 42.9%  ▲ accelerating (+22.6pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 0.09
+  │     Beta           : 1.32
+  │     PEG Ratio      : 0.04
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💎 Deep Value · 💰 Income · 📐 Rule of 40 Elite
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #3 AU  —  AngloGold Ashanti PLC
+  │  Sector: Basic Materials                 Action: STRONG BUY
+  │  Base Score:  83.0   Conviction Score: 119.0   Mkt Cap: $43.3B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $85.69
   │     Analyst Target: $126.43  (7 analysts)
-  │     Upside        : +36.8%
+  │     Upside        : +47.5%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 34.0%
-  │     FCF Yield      : 4.6%
+  │     FCF Yield      : 5.0%
   │     Operating Mgn  : 47.2%
   │     Gross Margin   : 49.3%
   │
@@ -59,24 +87,24 @@
   │  🛡️  RISK
   │     Debt/Equity    : 0.23
   │     Beta           : 0.55
-  │     PEG Ratio      : 0.12
+  │     PEG Ratio      : 0.11
   │
   │  🏷️  SIGNAL FLAGS
   │     🚀 Rocket · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💎 Deep Value · 💰 Income · 📐 Rule of 40 Elite
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #3 PCTY  —  Paylocity Holding Corporation
+  ┌─ #4 PCTY  —  Paylocity Holding Corporation
   │  Sector: Technology                      Action: BUY
-  │  Base Score:  73.2   Conviction Score: 117.2   Mkt Cap: $6.0B
+  │  Base Score:  72.4   Conviction Score: 116.4   Mkt Cap: $6.0B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $109.72
+  │     Current Price : $110.90
   │     Analyst Target: $169.76  (21 analysts)
-  │     Upside        : +54.7%
+  │     Upside        : +53.1%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 21.0%
-  │     FCF Yield      : 6.3%
+  │     FCF Yield      : 6.2%
   │     Operating Mgn  : 5.4%
   │     Gross Margin   : 69.1%
   │
@@ -93,14 +121,14 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💎 Deep Value · 📈 Analyst Conviction · 📐 Rule of 40 · ⚠️ Below 200 DMA
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #4 GEN  —  Gen Digital Inc.
+  ┌─ #5 GEN  —  Gen Digital Inc.
   │  Sector: Technology                      Action: BUY
-  │  Base Score:  76.0   Conviction Score: 116.0   Mkt Cap: $12.7B
+  │  Base Score:  75.9   Conviction Score: 115.9   Mkt Cap: $12.7B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $20.58
+  │     Current Price : $20.56
   │     Analyst Target: $31.19  (11 analysts)
-  │     Upside        : +51.5%
+  │     Upside        : +51.7%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 27.0%
@@ -121,42 +149,14 @@
   │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · 📐 Rule of 40 · ⚠️ High Leverage · ⚠️ Below 200 DMA
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #5 KGC  —  Kinross Gold Corporation
-  │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  83.4   Conviction Score: 115.4   Mkt Cap: $34.9B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $28.95
-  │     Analyst Target: $40.89  (11 analysts)
-  │     Upside        : +41.2%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 31.0%
-  │     FCF Yield      : 6.9%
-  │     Operating Mgn  : 49.2%
-  │     Gross Margin   : 66.7%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 42.9%  ▲ accelerating (+22.6pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.09
-  │     Beta           : 1.32
-  │     PEG Ratio      : 0.04
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💎 Deep Value · 💰 Income · 📐 Rule of 40 Elite
-  └────────────────────────────────────────────────────────────────────
-
   ┌─ #6 ALSN  —  Allison Transmission Holdings, 
   │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  73.5   Conviction Score: 104.5   Mkt Cap: $9.4B
+  │  Base Score:  73.5   Conviction Score: 104.5   Mkt Cap: $9.3B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $113.27
+  │     Current Price : $112.19
   │     Analyst Target: $130.50  (10 analysts)
-  │     Upside        : +15.2%
+  │     Upside        : +16.3%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 35.0%
@@ -179,12 +179,12 @@
 
   ┌─ #7 PRI  —  Primerica, Inc.
   │  Sector: Financial Services              Action: BUY
-  │  Base Score:  72.4   Conviction Score: 104.4   Mkt Cap: $7.9B
+  │  Base Score:  72.5   Conviction Score: 104.5   Mkt Cap: $7.8B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $248.46
+  │     Current Price : $247.02
   │     Analyst Target: $289.33  (6 analysts)
-  │     Upside        : +16.4%
+  │     Upside        : +17.1%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 32.0%
@@ -205,42 +205,14 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 💰 Income · 📐 Rule of 40
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #8 COLL  —  Collegium Pharmaceutical, Inc.
-  │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  70.3   Conviction Score: 103.3   Mkt Cap: $1.1B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $34.80
-  │     Analyst Target: $53.83  (6 analysts)
-  │     Upside        : +54.7%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 24.0%
-  │     FCF Yield      : 29.1%
-  │     Operating Mgn  : 30.0%
-  │     Gross Margin   : 88.5%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 12.9%  → stable
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 3.10
-  │     Beta           : 0.68
-  │     PEG Ratio      : 0.15
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · 📐 Rule of 40 · ⚠️ High Leverage
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #9 APAM  —  Artisan Partners Asset Manageme
+  ┌─ #8 APAM  —  Artisan Partners Asset Manageme
   │  Sector: Financial Services              Action: BUY
-  │  Base Score:  74.2   Conviction Score: 103.2   Mkt Cap: $2.5B
+  │  Base Score:  73.5   Conviction Score: 102.5   Mkt Cap: $2.5B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $36.01
+  │     Current Price : $36.07
   │     Analyst Target: $42.00  (4 analysts)
-  │     Upside        : +16.6%
+  │     Upside        : +16.4%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 49.0%
@@ -261,14 +233,14 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 💰 Income
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #10 APP  —  Applovin Corporation
+  ┌─ #9 APP  —  Applovin Corporation
   │  Sector: Communication Services          Action: BUY
-  │  Base Score:  70.2   Conviction Score: 101.2   Mkt Cap: $149.6B
+  │  Base Score:  70.2   Conviction Score: 101.2   Mkt Cap: $148.7B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $442.57
+  │     Current Price : $439.92
   │     Analyst Target: $648.57  (28 analysts)
-  │     Upside        : +46.5%
+  │     Upside        : +47.4%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 213.0%
@@ -289,19 +261,47 @@
   │     🔥 HG High · 🏰 Wide Moat · 🚀 Accel Growth · 📈 Analyst Conviction · 📐 Rule of 40 Elite · ⚠️ High Beta
   └────────────────────────────────────────────────────────────────────
 
+  ┌─ #10 HRMY  —  Harmony Biosciences Holdings, I
+  │  Sector: Healthcare                      Action: BUY
+  │  Base Score:  66.7   Conviction Score: 100.7   Mkt Cap: $1.6B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $27.81
+  │     Analyst Target: $42.00  (11 analysts)
+  │     Upside        : +51.0%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 21.0%
+  │     FCF Yield      : 13.2%
+  │     Operating Mgn  : 15.8%
+  │     Gross Margin   : 77.2%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 21.1%  ▼ decelerating (-8.5pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 0.19
+  │     Beta           : 0.91
+  │     PEG Ratio      : N/A
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 📐 Rule of 40 · ⚠️ High Short
+  └────────────────────────────────────────────────────────────────────
+
 
   SUMMARY TABLE
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   PDD     PDD Holdings Inc.       77.5   47.2%    31%  0.03 Consumer Cyclical     
-  2   AU      AngloGold Ashanti PLC   82.3   36.8%    34%  0.23 Basic Materials       
-  3   PCTY    Paylocity Holding Cor   73.2   54.7%    21%  0.14 Technology            
-  4   GEN     Gen Digital Inc.        76.0   51.5%    27%  3.63 Technology            
-  5   KGC     Kinross Gold Corporat   83.4   41.2%    31%  0.09 Basic Materials       
-  6   ALSN    Allison Transmission    73.5   15.2%    35%  3.96 Consumer Cyclical     
-  7   PRI     Primerica, Inc.         72.4   16.4%    32%  0.78 Financial Services    
-  8   COLL    Collegium Pharmaceuti   70.3   54.7%    24%  3.10 Healthcare            
-  9   APAM    Artisan Partners Asse   74.2   16.6%    49%  0.40 Financial Services    
-  10  APP     Applovin Corporation    70.2   46.5%   213%  1.72 Communication Service 
+  1   PDD     PDD Holdings Inc.       77.6   52.4%    31%  0.03 Consumer Cyclical     
+  2   KGC     Kinross Gold Corporat   84.5   49.1%    31%  0.09 Basic Materials       
+  3   AU      AngloGold Ashanti PLC   83.0   47.5%    34%  0.23 Basic Materials       
+  4   PCTY    Paylocity Holding Cor   72.4   53.1%    21%  0.14 Technology            
+  5   GEN     Gen Digital Inc.        75.9   51.7%    27%  3.63 Technology            
+  6   ALSN    Allison Transmission    73.5   16.3%    35%  3.96 Consumer Cyclical     
+  7   PRI     Primerica, Inc.         72.5   17.1%    32%  0.78 Financial Services    
+  8   APAM    Artisan Partners Asse   73.5   16.4%    49%  0.40 Financial Services    
+  9   APP     Applovin Corporation    70.2   47.4%   213%  1.72 Communication Service 
+  10  HRMY    Harmony Biosciences H   66.7   51.0%    21%  0.19 Healthcare            
   ────────────────────────────────────────────────────────────────────
