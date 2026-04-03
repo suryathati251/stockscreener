@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-04-02 07:18:20
+  Generated: 2026-04-03 07:14:44
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -11,16 +11,16 @@
 
   ┌─ #1 QLYS  —  Qualys, Inc.
   │  Sector: Technology                      Action: BUY
-  │  Base Score:  73.5   Conviction Score: 118.5   Mkt Cap: $3.1B
+  │  Base Score:  73.5   Conviction Score: 118.5   Mkt Cap: $3.2B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $86.20
+  │     Current Price : $88.36
   │     Analyst Target: $138.53  (19 analysts)
-  │     Upside        : +60.7%
+  │     Upside        : +56.8%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 38.0%
-  │     FCF Yield      : 8.4%
+  │     FCF Yield      : 8.2%
   │     Operating Mgn  : 33.6%
   │     Gross Margin   : 82.8%
   │
@@ -31,80 +31,24 @@
   │  🛡️  RISK
   │     Debt/Equity    : 0.09
   │     Beta           : 0.60
-  │     PEG Ratio      : 0.52
+  │     PEG Ratio      : 0.53
   │
   │  🏷️  SIGNAL FLAGS
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 📈 Analyst Conviction · 📐 Rule of 40 · ⚠️ Below 200 DMA
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #2 PCTY  —  Paylocity Holding Corporation
-  │  Sector: Technology                      Action: BUY
-  │  Base Score:  73.3   Conviction Score: 117.3   Mkt Cap: $5.7B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $105.18
-  │     Analyst Target: $168.33  (21 analysts)
-  │     Upside        : +60.0%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 21.0%
-  │     FCF Yield      : 6.6%
-  │     Operating Mgn  : 5.4%
-  │     Gross Margin   : 69.1%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 28.2%  ▲ accelerating (+38.4pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.14
-  │     Beta           : 0.60
-  │     PEG Ratio      : 0.09
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💎 Deep Value · 📈 Analyst Conviction · 📐 Rule of 40 · ⚠️ Below 200 DMA
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #3 AU  —  AngloGold Ashanti PLC
-  │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  79.4   Conviction Score: 111.4   Mkt Cap: $52.3B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $103.52
-  │     Analyst Target: $121.86  (7 analysts)
-  │     Upside        : +17.7%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 34.0%
-  │     FCF Yield      : 5.0%
-  │     Operating Mgn  : 48.0%
-  │     Gross Margin   : 49.3%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 75.3%  ▲ accelerating (+52.2pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.23
-  │     Beta           : 0.55
-  │     PEG Ratio      : 0.13
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🚀 Rocket · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💎 Deep Value · 💰 Income · 📐 Rule of 40 Elite
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #4 PDD  —  PDD Holdings Inc.
+  ┌─ #2 PDD  —  PDD Holdings Inc.
   │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  74.4   Conviction Score: 111.4   Mkt Cap: $144.5B
+  │  Base Score:  75.7   Conviction Score: 115.7   Mkt Cap: $143.2B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $101.78
-  │     Analyst Target: $142.50  (33 analysts)
-  │     Upside        : +40.0%
+  │     Current Price : $100.87
+  │     Analyst Target: $142.76  (33 analysts)
+  │     Upside        : +41.5%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 27.0%
-  │     FCF Yield      : 57.6%
+  │     FCF Yield      : 58.1%
   │     Operating Mgn  : 22.4%
   │     Gross Margin   : 56.3%
   │
@@ -121,18 +65,74 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 📈 Analyst Conviction
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #5 KGC  —  Kinross Gold Corporation
+  ┌─ #3 AU  —  AngloGold Ashanti PLC
   │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  82.6   Conviction Score: 110.6   Mkt Cap: $38.5B
+  │  Base Score:  79.5   Conviction Score: 115.5   Mkt Cap: $51.1B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $32.02
+  │     Current Price : $101.22
+  │     Analyst Target: $121.86  (7 analysts)
+  │     Upside        : +20.4%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 34.0%
+  │     FCF Yield      : 5.1%
+  │     Operating Mgn  : 48.0%
+  │     Gross Margin   : 49.3%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 75.3%  ▲ accelerating (+52.2pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 0.23
+  │     Beta           : 0.55
+  │     PEG Ratio      : 0.12
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🚀 Rocket · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💎 Deep Value · 💰 Income · 📐 Rule of 40 Elite
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #4 GEN  —  Gen Digital Inc.
+  │  Sector: Technology                      Action: BUY
+  │  Base Score:  75.4   Conviction Score: 115.4   Mkt Cap: $11.6B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $18.89
+  │     Analyst Target: $31.19  (11 analysts)
+  │     Upside        : +65.1%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 27.0%
+  │     FCF Yield      : 11.3%
+  │     Operating Mgn  : 35.8%
+  │     Gross Margin   : 78.8%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 25.8%  ▲ accelerating (+5.0pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 3.63
+  │     Beta           : 1.09
+  │     PEG Ratio      : 0.32
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · 📐 Rule of 40 · ⚠️ High Leverage · ⚠️ Below 200 DMA
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #5 KGC  —  Kinross Gold Corporation
+  │  Sector: Basic Materials                 Action: STRONG BUY
+  │  Base Score:  82.7   Conviction Score: 110.7   Mkt Cap: $37.9B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $31.51
   │     Analyst Target: $40.34  (11 analysts)
-  │     Upside        : +26.0%
+  │     Upside        : +28.0%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 31.0%
-  │     FCF Yield      : 6.2%
+  │     FCF Yield      : 6.3%
   │     Operating Mgn  : 49.2%
   │     Gross Margin   : 66.7%
   │
@@ -151,12 +151,12 @@
 
   ┌─ #6 APP  —  Applovin Corporation
   │  Sector: Communication Services          Action: BUY
-  │  Base Score:  70.2   Conviction Score: 105.2   Mkt Cap: $131.1B
+  │  Base Score:  69.3   Conviction Score: 104.3   Mkt Cap: $130.6B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $387.84
+  │     Current Price : $386.37
   │     Analyst Target: $645.74  (27 analysts)
-  │     Upside        : +66.5%
+  │     Upside        : +67.1%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 213.0%
@@ -179,16 +179,16 @@
 
   ┌─ #7 THC  —  Tenet Healthcare Corporation
   │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  67.9   Conviction Score: 103.9   Mkt Cap: $16.7B
+  │  Base Score:  67.8   Conviction Score: 103.8   Mkt Cap: $16.5B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $190.27
+  │     Current Price : $188.17
   │     Analyst Target: $261.38  (21 analysts)
-  │     Upside        : +37.4%
+  │     Upside        : +38.9%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 27.0%
-  │     FCF Yield      : 10.0%
+  │     FCF Yield      : 10.1%
   │     Operating Mgn  : 17.5%
   │     Gross Margin   : 41.4%
   │
@@ -199,7 +199,7 @@
   │  🛡️  RISK
   │     Debt/Equity    : 1.61
   │     Beta           : 1.41
-  │     PEG Ratio      : 0.65
+  │     PEG Ratio      : 0.64
   │
   │  🏷️  SIGNAL FLAGS
   │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · 📈 Analyst Conviction
@@ -207,16 +207,16 @@
 
   ┌─ #8 COLL  —  Collegium Pharmaceutical, Inc.
   │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  70.7   Conviction Score: 103.7   Mkt Cap: $1.1B
+  │  Base Score:  70.7   Conviction Score: 103.7   Mkt Cap: $1.0B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $33.25
+  │     Current Price : $32.31
   │     Analyst Target: $54.17  (6 analysts)
-  │     Upside        : +62.9%
+  │     Upside        : +67.7%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 24.0%
-  │     FCF Yield      : 30.5%
+  │     FCF Yield      : 31.3%
   │     Operating Mgn  : 30.0%
   │     Gross Margin   : 88.5%
   │
@@ -227,7 +227,7 @@
   │  🛡️  RISK
   │     Debt/Equity    : 3.10
   │     Beta           : 0.68
-  │     PEG Ratio      : 0.15
+  │     PEG Ratio      : 0.14
   │
   │  🏷️  SIGNAL FLAGS
   │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · 📐 Rule of 40 · ⚠️ High Leverage
@@ -235,16 +235,16 @@
 
   ┌─ #9 TREE  —  LendingTree, Inc.
   │  Sector: Financial Services              Action: BUY
-  │  Base Score:  68.6   Conviction Score: 101.6   Mkt Cap: $585M
+  │  Base Score:  69.5   Conviction Score: 102.5   Mkt Cap: $565M
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $42.21
+  │     Current Price : $40.75
   │     Analyst Target: $70.67  (6 analysts)
-  │     Upside        : +67.4%
+  │     Upside        : +73.4%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 76.0%
-  │     FCF Yield      : 11.2%
+  │     FCF Yield      : 11.6%
   │     Operating Mgn  : 7.2%
   │     Gross Margin   : 96.2%
   │
@@ -266,9 +266,9 @@
   │  Base Score:  71.0   Conviction Score: 100.0   Mkt Cap: $3.6T
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $297.39
+  │     Current Price : $295.77
   │     Analyst Target: $376.93  (56 analysts)
-  │     Upside        : +26.8%
+  │     Upside        : +27.4%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 36.0%
@@ -294,14 +294,14 @@
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   QLYS    Qualys, Inc.            73.5   60.7%    38%  0.09 Technology            
-  2   PCTY    Paylocity Holding Cor   73.3   60.0%    21%  0.14 Technology            
-  3   AU      AngloGold Ashanti PLC   79.4   17.7%    34%  0.23 Basic Materials       
-  4   PDD     PDD Holdings Inc.       74.4   40.0%    27%  0.01 Consumer Cyclical     
-  5   KGC     Kinross Gold Corporat   82.6   26.0%    31%  0.09 Basic Materials       
-  6   APP     Applovin Corporation    70.2   66.5%   213%  1.72 Communication Service 
-  7   THC     Tenet Healthcare Corp   67.9   37.4%    27%  1.61 Healthcare            
-  8   COLL    Collegium Pharmaceuti   70.7   62.9%    24%  3.10 Healthcare            
-  9   TREE    LendingTree, Inc.       68.6   67.4%    76%  1.53 Financial Services    
-  10  GOOGL   Alphabet Inc.           71.0   26.8%    36%  0.16 Communication Service 
+  1   QLYS    Qualys, Inc.            73.5   56.8%    38%  0.09 Technology            
+  2   PDD     PDD Holdings Inc.       75.7   41.5%    27%  0.01 Consumer Cyclical     
+  3   AU      AngloGold Ashanti PLC   79.5   20.4%    34%  0.23 Basic Materials       
+  4   GEN     Gen Digital Inc.        75.4   65.1%    27%  3.63 Technology            
+  5   KGC     Kinross Gold Corporat   82.7   28.0%    31%  0.09 Basic Materials       
+  6   APP     Applovin Corporation    69.3   67.1%   213%  1.72 Communication Service 
+  7   THC     Tenet Healthcare Corp   67.8   38.9%    27%  1.61 Healthcare            
+  8   COLL    Collegium Pharmaceuti   70.7   67.7%    24%  3.10 Healthcare            
+  9   TREE    LendingTree, Inc.       69.5   73.4%    76%  1.53 Financial Services    
+  10  GOOGL   Alphabet Inc.           71.0   27.4%    36%  0.16 Communication Service 
   ────────────────────────────────────────────────────────────────────
