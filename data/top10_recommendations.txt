@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-04-03 07:14:44
+  Generated: 2026-04-06 07:48:55
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -15,8 +15,8 @@
   │
   │  💰 PRICE & TARGET
   │     Current Price : $88.36
-  │     Analyst Target: $138.53  (19 analysts)
-  │     Upside        : +56.8%
+  │     Analyst Target: $135.91  (19 analysts)
+  │     Upside        : +53.8%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 38.0%
@@ -30,7 +30,7 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 0.09
-  │     Beta           : 0.60
+  │     Beta           : 0.61
   │     PEG Ratio      : 0.53
   │
   │  🏷️  SIGNAL FLAGS
@@ -43,8 +43,8 @@
   │
   │  💰 PRICE & TARGET
   │     Current Price : $100.87
-  │     Analyst Target: $142.76  (33 analysts)
-  │     Upside        : +41.5%
+  │     Analyst Target: $142.42  (33 analysts)
+  │     Upside        : +41.2%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 27.0%
@@ -58,7 +58,7 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 0.01
-  │     Beta           : 0.05
+  │     Beta           : 0.06
   │     PEG Ratio      : N/A
   │
   │  🏷️  SIGNAL FLAGS
@@ -86,7 +86,7 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 0.23
-  │     Beta           : 0.55
+  │     Beta           : 0.68
   │     PEG Ratio      : 0.12
   │
   │  🏷️  SIGNAL FLAGS
@@ -114,7 +114,7 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 3.63
-  │     Beta           : 1.09
+  │     Beta           : 1.15
   │     PEG Ratio      : 0.32
   │
   │  🏷️  SIGNAL FLAGS
@@ -142,7 +142,7 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 0.09
-  │     Beta           : 1.32
+  │     Beta           : 1.40
   │     PEG Ratio      : 0.04
   │
   │  🏷️  SIGNAL FLAGS
@@ -177,9 +177,37 @@
   │     🔥 HG High · 🏰 Wide Moat · 🚀 Accel Growth · 📈 Analyst Conviction · 📐 Rule of 40 Elite · ⚠️ High Beta · ⚠️ Below 200 DMA
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #7 THC  —  Tenet Healthcare Corporation
+  ┌─ #7 PRI  —  Primerica, Inc.
+  │  Sector: Financial Services              Action: BUY
+  │  Base Score:  71.9   Conviction Score: 103.9   Mkt Cap: $8.0B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $253.85
+  │     Analyst Target: $295.33  (6 analysts)
+  │     Upside        : +16.3%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 32.0%
+  │     FCF Yield      : 14.1%
+  │     Operating Mgn  : 30.8%
+  │     Gross Margin   : 70.9%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 8.0%  → stable
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 0.78
+  │     Beta           : 0.90
+  │     PEG Ratio      : 0.54
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 💰 Income · 📐 Rule of 40
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #8 THC  —  Tenet Healthcare Corporation
   │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  67.8   Conviction Score: 103.8   Mkt Cap: $16.5B
+  │  Base Score:  67.6   Conviction Score: 103.6   Mkt Cap: $16.5B
   │
   │  💰 PRICE & TARGET
   │     Current Price : $188.17
@@ -198,16 +226,16 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 1.61
-  │     Beta           : 1.41
+  │     Beta           : 1.50
   │     PEG Ratio      : 0.64
   │
   │  🏷️  SIGNAL FLAGS
   │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · 📈 Analyst Conviction
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #8 COLL  —  Collegium Pharmaceutical, Inc.
+  ┌─ #9 COLL  —  Collegium Pharmaceutical, Inc.
   │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  70.7   Conviction Score: 103.7   Mkt Cap: $1.0B
+  │  Base Score:  69.8   Conviction Score: 102.8   Mkt Cap: $1.0B
   │
   │  💰 PRICE & TARGET
   │     Current Price : $32.31
@@ -226,14 +254,14 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 3.10
-  │     Beta           : 0.68
+  │     Beta           : 0.77
   │     PEG Ratio      : 0.14
   │
   │  🏷️  SIGNAL FLAGS
   │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · 📐 Rule of 40 · ⚠️ High Leverage
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #9 TREE  —  LendingTree, Inc.
+  ┌─ #10 TREE  —  LendingTree, Inc.
   │  Sector: Financial Services              Action: BUY
   │  Base Score:  69.5   Conviction Score: 102.5   Mkt Cap: $565M
   │
@@ -254,39 +282,11 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 1.53
-  │     Beta           : 2.30
+  │     Beta           : 2.15
   │     PEG Ratio      : 0.00
   │
   │  🏷️  SIGNAL FLAGS
   │     🔥 HG High · 🏰 Wide Moat · ⚠️ High Beta · ⚠️ Below 200 DMA
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #10 GOOGL  —  Alphabet Inc.
-  │  Sector: Communication Services          Action: BUY
-  │  Base Score:  71.0   Conviction Score: 100.0   Mkt Cap: $3.6T
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $295.77
-  │     Analyst Target: $376.93  (56 analysts)
-  │     Upside        : +27.4%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 36.0%
-  │     FCF Yield      : 1.1%
-  │     Operating Mgn  : 31.6%
-  │     Gross Margin   : 59.6%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 18.0%  → stable
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.16
-  │     Beta           : 1.11
-  │     PEG Ratio      : 0.74
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · 📈 Analyst Conviction · 💰 Income
   └────────────────────────────────────────────────────────────────────
 
 
@@ -294,14 +294,14 @@
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   QLYS    Qualys, Inc.            73.5   56.8%    38%  0.09 Technology            
-  2   PDD     PDD Holdings Inc.       75.7   41.5%    27%  0.01 Consumer Cyclical     
+  1   QLYS    Qualys, Inc.            73.5   53.8%    38%  0.09 Technology            
+  2   PDD     PDD Holdings Inc.       75.7   41.2%    27%  0.01 Consumer Cyclical     
   3   AU      AngloGold Ashanti PLC   79.5   20.4%    34%  0.23 Basic Materials       
   4   GEN     Gen Digital Inc.        75.4   65.1%    27%  3.63 Technology            
   5   KGC     Kinross Gold Corporat   82.7   28.0%    31%  0.09 Basic Materials       
   6   APP     Applovin Corporation    69.3   67.1%   213%  1.72 Communication Service 
-  7   THC     Tenet Healthcare Corp   67.8   38.9%    27%  1.61 Healthcare            
-  8   COLL    Collegium Pharmaceuti   70.7   67.7%    24%  3.10 Healthcare            
-  9   TREE    LendingTree, Inc.       69.5   73.4%    76%  1.53 Financial Services    
-  10  GOOGL   Alphabet Inc.           71.0   27.4%    36%  0.16 Communication Service 
+  7   PRI     Primerica, Inc.         71.9   16.3%    32%  0.78 Financial Services    
+  8   THC     Tenet Healthcare Corp   67.6   38.9%    27%  1.61 Healthcare            
+  9   COLL    Collegium Pharmaceuti   69.8   67.7%    24%  3.10 Healthcare            
+  10  TREE    LendingTree, Inc.       69.5   73.4%    76%  1.53 Financial Services    
   ────────────────────────────────────────────────────────────────────
