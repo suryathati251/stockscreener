@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-04-17 07:52:36
+  Generated: 2026-04-20 08:13:04
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -9,46 +9,18 @@
   ⚠️  DISCLAIMER: Quantitative screen only — not financial advice.
       Always do your own due diligence before investing.
 
-  ┌─ #1 TSM  —  Taiwan Semiconductor Manufactur
-  │  Sector: Technology                      Action: STRONG BUY
-  │  Base Score:  85.2   Conviction Score: 121.2   Mkt Cap: $1.9T
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $363.35
-  │     Analyst Target: $456.62  (18 analysts)
-  │     Upside        : +25.7%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 37.0%
-  │     FCF Yield      : 38.3%
-  │     Operating Mgn  : 58.1%
-  │     Gross Margin   : 61.9%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 35.1%  ▲ accelerating (+17.2pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.17
-  │     Beta           : 1.25
-  │     PEG Ratio      : 1.27
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 📈 Analyst Conviction · 💰 Income · 📐 Rule of 40
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #2 PDD  —  PDD Holdings Inc.
+  ┌─ #1 PDD  —  PDD Holdings Inc.
   │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  77.0   Conviction Score: 121.0   Mkt Cap: $147.2B
+  │  Base Score:  77.7   Conviction Score: 121.7   Mkt Cap: $148.8B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $103.71
-  │     Analyst Target: $142.97  (33 analysts)
-  │     Upside        : +37.9%
+  │     Current Price : $104.79
+  │     Analyst Target: $143.00  (33 analysts)
+  │     Upside        : +36.5%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 27.0%
-  │     FCF Yield      : 56.5%
+  │     FCF Yield      : 55.9%
   │     Operating Mgn  : 22.4%
   │     Gross Margin   : 56.3%
   │
@@ -65,46 +37,74 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 📈 Analyst Conviction
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #3 QLYS  —  Qualys, Inc.
-  │  Sector: Technology                      Action: BUY
-  │  Base Score:  72.8   Conviction Score: 117.8   Mkt Cap: $3.0B
+  ┌─ #2 TSM  —  Taiwan Semiconductor Manufactur
+  │  Sector: Technology                      Action: STRONG BUY
+  │  Base Score:  84.3   Conviction Score: 116.3   Mkt Cap: $1.9T
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $84.09
-  │     Analyst Target: $130.44  (19 analysts)
-  │     Upside        : +55.1%
+  │     Current Price : $370.50
+  │     Analyst Target: $457.73  (18 analysts)
+  │     Upside        : +23.5%
   │
   │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 38.0%
-  │     FCF Yield      : 8.6%
-  │     Operating Mgn  : 33.6%
-  │     Gross Margin   : 82.8%
+  │     ROE            : 36.0%
+  │     FCF Yield      : 37.5%
+  │     Operating Mgn  : 58.1%
+  │     Gross Margin   : 61.9%
   │
   │  🚀 GROWTH
-  │     Revenue Growth : 10.1%  → stable
+  │     Revenue Growth : 35.1%  ▲ accelerating (+17.2pp)
   │     EPS Surprise   : N/A
   │
   │  🛡️  RISK
-  │     Debt/Equity    : 0.09
-  │     Beta           : 0.61
-  │     PEG Ratio      : 0.50
+  │     Debt/Equity    : 0.17
+  │     Beta           : 1.25
+  │     PEG Ratio      : 1.23
   │
   │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 📈 Analyst Conviction · 📐 Rule of 40 · ⚠️ Below 200 DMA
+  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💰 Income · 📐 Rule of 40
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #3 GEN  —  Gen Digital Inc.
+  │  Sector: Technology                      Action: BUY
+  │  Base Score:  75.7   Conviction Score: 111.7   Mkt Cap: $12.4B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $20.12
+  │     Analyst Target: $30.01  (11 analysts)
+  │     Upside        : +49.2%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 27.0%
+  │     FCF Yield      : 10.6%
+  │     Operating Mgn  : 35.8%
+  │     Gross Margin   : 78.8%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 25.8%  ▲ accelerating (+5.0pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 3.63
+  │     Beta           : 1.15
+  │     PEG Ratio      : 0.49
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · 📐 Rule of 40 · ⚠️ High Leverage · ⚠️ Below 200 DMA
   └────────────────────────────────────────────────────────────────────
 
   ┌─ #4 AU  —  AngloGold Ashanti PLC
   │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  79.9   Conviction Score: 111.9   Mkt Cap: $52.6B
+  │  Base Score:  78.0   Conviction Score: 106.0   Mkt Cap: $55.1B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $104.23
+  │     Current Price : $109.15
   │     Analyst Target: $120.57  (7 analysts)
-  │     Upside        : +15.7%
+  │     Upside        : +10.5%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 34.0%
-  │     FCF Yield      : 4.9%
+  │     FCF Yield      : 4.7%
   │     Operating Mgn  : 48.0%
   │     Gross Margin   : 49.3%
   │
@@ -115,24 +115,52 @@
   │  🛡️  RISK
   │     Debt/Equity    : 0.23
   │     Beta           : 0.68
-  │     PEG Ratio      : 0.14
+  │     PEG Ratio      : 0.78
   │
   │  🏷️  SIGNAL FLAGS
-  │     🚀 Rocket · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💎 Deep Value · 💰 Income · 📐 Rule of 40 Elite
+  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💎 Deep Value · 💰 Income · 📐 Rule of 40 Elite
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #5 KGC  —  Kinross Gold Corporation
-  │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  79.8   Conviction Score: 103.8   Mkt Cap: $40.7B
+  ┌─ #5 COLL  —  Collegium Pharmaceutical, Inc.
+  │  Sector: Healthcare                      Action: BUY
+  │  Base Score:  70.3   Conviction Score: 103.3   Mkt Cap: $1.1B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $33.87
+  │     Current Price : $34.41
+  │     Analyst Target: $54.17  (6 analysts)
+  │     Upside        : +57.4%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 24.0%
+  │     FCF Yield      : 28.8%
+  │     Operating Mgn  : 30.0%
+  │     Gross Margin   : 88.9%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 12.9%  → stable
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 3.10
+  │     Beta           : 0.77
+  │     PEG Ratio      : 0.15
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · 📐 Rule of 40 · ⚠️ High Short · ⚠️ High Leverage
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #6 KGC  —  Kinross Gold Corporation
+  │  Sector: Basic Materials                 Action: STRONG BUY
+  │  Base Score:  78.5   Conviction Score: 102.5   Mkt Cap: $42.0B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $34.94
   │     Analyst Target: $40.48  (11 analysts)
-  │     Upside        : +19.5%
+  │     Upside        : +15.9%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 31.0%
-  │     FCF Yield      : 5.9%
+  │     FCF Yield      : 5.7%
   │     Operating Mgn  : 49.2%
   │     Gross Margin   : 66.7%
   │
@@ -149,74 +177,18 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💰 Income · 📐 Rule of 40 Elite
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #6 COLL  —  Collegium Pharmaceutical, Inc.
-  │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  70.4   Conviction Score: 103.4   Mkt Cap: $1.1B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $33.04
-  │     Analyst Target: $54.17  (6 analysts)
-  │     Upside        : +64.0%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 24.0%
-  │     FCF Yield      : 30.0%
-  │     Operating Mgn  : 30.0%
-  │     Gross Margin   : 88.5%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 12.9%  → stable
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 3.10
-  │     Beta           : 0.77
-  │     PEG Ratio      : 0.15
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · 📐 Rule of 40 · ⚠️ High Short · ⚠️ High Leverage
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #7 THC  —  Tenet Healthcare Corporation
-  │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  67.3   Conviction Score: 103.3   Mkt Cap: $16.9B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $192.00
-  │     Analyst Target: $262.90  (21 analysts)
-  │     Upside        : +36.9%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 27.0%
-  │     FCF Yield      : 9.9%
-  │     Operating Mgn  : 17.5%
-  │     Gross Margin   : 41.4%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 8.9%  ▲ accelerating (+7.6pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 1.61
-  │     Beta           : 1.50
-  │     PEG Ratio      : 0.66
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · 📈 Analyst Conviction
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #8 HIG  —  The Hartford Insurance Group, I
+  ┌─ #7 HIG  —  The Hartford Insurance Group, I
   │  Sector: Financial Services              Action: BUY
-  │  Base Score:  74.8   Conviction Score: 100.8   Mkt Cap: $38.1B
+  │  Base Score:  74.8   Conviction Score: 100.8   Mkt Cap: $38.6B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $138.28
+  │     Current Price : $139.84
   │     Analyst Target: $150.20  (20 analysts)
-  │     Upside        : +8.6%
+  │     Upside        : +7.4%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 22.0%
-  │     FCF Yield      : 15.2%
+  │     FCF Yield      : 15.1%
   │     Operating Mgn  : 20.0%
   │     Gross Margin   : 37.4%
   │
@@ -233,46 +205,74 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 💰 Income
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #9 GFF  —  Griffon Corporation
-  │  Sector: Industrials                     Action: BUY
-  │  Base Score:  66.1   Conviction Score:  99.1   Mkt Cap: $3.9B
+  ┌─ #8 BCRX  —  BioCryst Pharmaceuticals, Inc.
+  │  Sector: Healthcare                      Action: BUY
+  │  Base Score:  69.7   Conviction Score: 100.7   Mkt Cap: $2.4B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $83.84
-  │     Analyst Target: $114.14  (7 analysts)
-  │     Upside        : +36.1%
+  │     Current Price : $9.50
+  │     Analyst Target: $21.40  (10 analysts)
+  │     Upside        : +125.3%
   │
   │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 27.0%
-  │     FCF Yield      : 5.8%
-  │     Operating Mgn  : 17.5%
-  │     Gross Margin   : 41.8%
+  │     ROE            : N/A
+  │     FCF Yield      : 10.8%
+  │     Operating Mgn  : 65.6%
+  │     Gross Margin   : 79.1%
   │
   │  🚀 GROWTH
-  │     Revenue Growth : 2.6%  ▼ decelerating (-5.6pp)
+  │     Revenue Growth : 209.1%  ▲ accelerating (+199.6pp)
   │     EPS Surprise   : N/A
   │
   │  🛡️  RISK
-  │     Debt/Equity    : 14.21
-  │     Beta           : 1.30
-  │     PEG Ratio      : 0.54
+  │     Debt/Equity    : N/A
+  │     Beta           : 0.69
+  │     PEG Ratio      : 9.39
   │
   │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · ⚠️ High Leverage
+  │     🚀 Rocket · 🏰 Wide Moat · 🚀 Accel Growth · 📐 Rule of 40 Elite
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #9 HNI  —  HNI Corporation
+  │  Sector: Consumer Cyclical               Action: BUY
+  │  Base Score:  66.5   Conviction Score:  98.5   Mkt Cap: $2.7B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $37.94
+  │     Analyst Target: $72.00  (4 analysts)
+  │     Upside        : +89.8%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 4.0%
+  │     FCF Yield      : 5.7%
+  │     Operating Mgn  : 7.3%
+  │     Gross Margin   : 41.5%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 38.3%  ▲ accelerating (+24.3pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 0.87
+  │     Beta           : 1.01
+  │     PEG Ratio      : 0.47
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · 🚀 Accel Growth · 💎 Deep Value · 💰 Income · 📐 Rule of 40
   └────────────────────────────────────────────────────────────────────
 
   ┌─ #10 APAM  —  Artisan Partners Asset Manageme
   │  Sector: Financial Services              Action: BUY
-  │  Base Score:  74.0   Conviction Score:  99.0   Mkt Cap: $2.6B
+  │  Base Score:  72.6   Conviction Score:  97.6   Mkt Cap: $2.7B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $36.96
+  │     Current Price : $37.68
   │     Analyst Target: $39.50  (4 analysts)
-  │     Upside        : +6.9%
+  │     Upside        : +4.8%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 49.0%
-  │     FCF Yield      : 7.4%
+  │     FCF Yield      : 7.3%
   │     Operating Mgn  : 39.2%
   │     Gross Margin   : 45.8%
   │
@@ -283,7 +283,7 @@
   │  🛡️  RISK
   │     Debt/Equity    : 0.40
   │     Beta           : 1.75
-  │     PEG Ratio      : 0.25
+  │     PEG Ratio      : 0.26
   │
   │  🏷️  SIGNAL FLAGS
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 💰 Income
@@ -294,14 +294,14 @@
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   TSM     Taiwan Semiconductor    85.2   25.7%    37%  0.17 Technology            
-  2   PDD     PDD Holdings Inc.       77.0   37.9%    27%  0.01 Consumer Cyclical     
-  3   QLYS    Qualys, Inc.            72.8   55.1%    38%  0.09 Technology            
-  4   AU      AngloGold Ashanti PLC   79.9   15.7%    34%  0.23 Basic Materials       
-  5   KGC     Kinross Gold Corporat   79.8   19.5%    31%  0.09 Basic Materials       
-  6   COLL    Collegium Pharmaceuti   70.4   64.0%    24%  3.10 Healthcare            
-  7   THC     Tenet Healthcare Corp   67.3   36.9%    27%  1.61 Healthcare            
-  8   HIG     The Hartford Insuranc   74.8    8.6%    22%  0.24 Financial Services    
-  9   GFF     Griffon Corporation     66.1   36.1%    27% 14.21 Industrials           
-  10  APAM    Artisan Partners Asse   74.0    6.9%    49%  0.40 Financial Services    
+  1   PDD     PDD Holdings Inc.       77.7   36.5%    27%  0.01 Consumer Cyclical     
+  2   TSM     Taiwan Semiconductor    84.3   23.5%    36%  0.17 Technology            
+  3   GEN     Gen Digital Inc.        75.7   49.2%    27%  3.63 Technology            
+  4   AU      AngloGold Ashanti PLC   78.0   10.5%    34%  0.23 Basic Materials       
+  5   COLL    Collegium Pharmaceuti   70.3   57.4%    24%  3.10 Healthcare            
+  6   KGC     Kinross Gold Corporat   78.5   15.9%    31%  0.09 Basic Materials       
+  7   HIG     The Hartford Insuranc   74.8    7.4%    22%  0.24 Financial Services    
+  8   BCRX    BioCryst Pharmaceutic   69.7  125.3%   N/A%   N/A Healthcare            
+  9   HNI     HNI Corporation         66.5   89.8%     4%  0.87 Consumer Cyclical     
+  10  APAM    Artisan Partners Asse   72.6    4.8%    49%  0.40 Financial Services    
   ────────────────────────────────────────────────────────────────────
