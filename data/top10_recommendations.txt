@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-04-22 07:53:25
+  Generated: 2026-04-23 07:59:28
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -11,16 +11,16 @@
 
   ┌─ #1 PDD  —  PDD Holdings Inc.
   │  Sector: Consumer Cyclical               Action: STRONG BUY
-  │  Base Score:  78.4   Conviction Score: 122.4   Mkt Cap: $140.5B
+  │  Base Score:  78.3   Conviction Score: 122.3   Mkt Cap: $142.0B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $98.99
-  │     Analyst Target: $142.83  (33 analysts)
-  │     Upside        : +44.3%
+  │     Current Price : $100.05
+  │     Analyst Target: $142.58  (33 analysts)
+  │     Upside        : +42.5%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 27.0%
-  │     FCF Yield      : 59.2%
+  │     FCF Yield      : 58.6%
   │     Operating Mgn  : 22.4%
   │     Gross Margin   : 56.3%
   │
@@ -39,16 +39,16 @@
 
   ┌─ #2 TSM  —  Taiwan Semiconductor Manufactur
   │  Sector: Technology                      Action: STRONG BUY
-  │  Base Score:  85.3   Conviction Score: 121.3   Mkt Cap: $1.9T
+  │  Base Score:  84.2   Conviction Score: 120.2   Mkt Cap: $2.0T
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $368.08
+  │     Current Price : $387.44
   │     Analyst Target: $463.45  (18 analysts)
-  │     Upside        : +25.9%
+  │     Upside        : +19.6%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 36.0%
-  │     FCF Yield      : 37.8%
+  │     FCF Yield      : 35.9%
   │     Operating Mgn  : 58.1%
   │     Gross Margin   : 61.9%
   │
@@ -62,21 +62,21 @@
   │     PEG Ratio      : 1.18
   │
   │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 📈 Analyst Conviction · 💰 Income · 📐 Rule of 40
+  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💰 Income · 📐 Rule of 40
   └────────────────────────────────────────────────────────────────────
 
   ┌─ #3 AU  —  AngloGold Ashanti PLC
   │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  80.3   Conviction Score: 116.3   Mkt Cap: $50.7B
+  │  Base Score:  80.4   Conviction Score: 116.4   Mkt Cap: $49.9B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $100.45
+  │     Current Price : $98.87
   │     Analyst Target: $120.57  (7 analysts)
-  │     Upside        : +20.0%
+  │     Upside        : +21.9%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 34.0%
-  │     FCF Yield      : 5.1%
+  │     FCF Yield      : 5.2%
   │     Operating Mgn  : 48.0%
   │     Gross Margin   : 49.3%
   │
@@ -95,12 +95,12 @@
 
   ┌─ #4 GEN  —  Gen Digital Inc.
   │  Sector: Technology                      Action: BUY
-  │  Base Score:  75.7   Conviction Score: 115.7   Mkt Cap: $12.3B
+  │  Base Score:  75.8   Conviction Score: 115.8   Mkt Cap: $12.3B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $19.91
+  │     Current Price : $19.99
   │     Analyst Target: $30.01  (11 analysts)
-  │     Upside        : +50.7%
+  │     Upside        : +50.1%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 27.0%
@@ -123,16 +123,16 @@
 
   ┌─ #5 KGC  —  Kinross Gold Corporation
   │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  80.8   Conviction Score: 108.8   Mkt Cap: $38.5B
+  │  Base Score:  79.8   Conviction Score: 107.8   Mkt Cap: $39.2B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $32.06
+  │     Current Price : $32.59
   │     Analyst Target: $40.50  (11 analysts)
-  │     Upside        : +26.3%
+  │     Upside        : +24.3%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 31.0%
-  │     FCF Yield      : 6.2%
+  │     FCF Yield      : 6.1%
   │     Operating Mgn  : 49.2%
   │     Gross Margin   : 66.7%
   │
@@ -154,13 +154,13 @@
   │  Base Score:  70.4   Conviction Score: 103.4   Mkt Cap: $1.1B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $33.27
+  │     Current Price : $33.06
   │     Analyst Target: $54.17  (6 analysts)
-  │     Upside        : +62.8%
+  │     Upside        : +63.9%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 24.0%
-  │     FCF Yield      : 29.8%
+  │     FCF Yield      : 30.0%
   │     Operating Mgn  : 30.0%
   │     Gross Margin   : 88.9%
   │
@@ -177,46 +177,18 @@
   │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · 📐 Rule of 40 · ⚠️ High Short · ⚠️ High Leverage
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #7 HIG  —  The Hartford Insurance Group, I
-  │  Sector: Financial Services              Action: BUY
-  │  Base Score:  74.9   Conviction Score: 100.9   Mkt Cap: $38.4B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $139.15
-  │     Analyst Target: $150.20  (20 analysts)
-  │     Upside        : +7.9%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 22.0%
-  │     FCF Yield      : 15.1%
-  │     Operating Mgn  : 20.0%
-  │     Gross Margin   : 37.4%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 6.7%  → stable
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.24
-  │     Beta           : 0.53
-  │     PEG Ratio      : 0.12
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 💰 Income
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #8 BCRX  —  BioCryst Pharmaceuticals, Inc.
+  ┌─ #7 BCRX  —  BioCryst Pharmaceuticals, Inc.
   │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  69.3   Conviction Score: 100.3   Mkt Cap: $2.2B
+  │  Base Score:  70.1   Conviction Score: 101.1   Mkt Cap: $2.3B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $8.58
+  │     Current Price : $9.01
   │     Analyst Target: $21.40  (10 analysts)
-  │     Upside        : +149.4%
+  │     Upside        : +137.5%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : N/A
-  │     FCF Yield      : 11.9%
+  │     FCF Yield      : 11.3%
   │     Operating Mgn  : 65.6%
   │     Gross Margin   : 79.1%
   │
@@ -233,18 +205,46 @@
   │     🚀 Rocket · 🏰 Wide Moat · 🚀 Accel Growth · 📐 Rule of 40 Elite
   └────────────────────────────────────────────────────────────────────
 
+  ┌─ #8 HIG  —  The Hartford Insurance Group, I
+  │  Sector: Financial Services              Action: BUY
+  │  Base Score:  75.0   Conviction Score: 101.0   Mkt Cap: $38.1B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $138.11
+  │     Analyst Target: $150.20  (20 analysts)
+  │     Upside        : +8.8%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 22.0%
+  │     FCF Yield      : 15.2%
+  │     Operating Mgn  : 20.0%
+  │     Gross Margin   : 37.4%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 6.7%  → stable
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 0.24
+  │     Beta           : 0.53
+  │     PEG Ratio      : 0.12
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 💰 Income
+  └────────────────────────────────────────────────────────────────────
+
   ┌─ #9 HNI  —  HNI Corporation
   │  Sector: Consumer Cyclical               Action: BUY
   │  Base Score:  66.5   Conviction Score:  98.5   Mkt Cap: $2.7B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $37.30
+  │     Current Price : $37.21
   │     Analyst Target: $72.00  (4 analysts)
-  │     Upside        : +93.0%
+  │     Upside        : +93.5%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 4.0%
-  │     FCF Yield      : 5.8%
+  │     FCF Yield      : 5.9%
   │     Operating Mgn  : 7.3%
   │     Gross Margin   : 41.5%
   │
@@ -266,13 +266,13 @@
   │  Base Score:  73.2   Conviction Score:  98.2   Mkt Cap: $2.7B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $37.93
+  │     Current Price : $38.44
   │     Analyst Target: $39.50  (4 analysts)
-  │     Upside        : +4.1%
+  │     Upside        : +2.8%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 49.0%
-  │     FCF Yield      : 7.2%
+  │     FCF Yield      : 7.1%
   │     Operating Mgn  : 39.2%
   │     Gross Margin   : 45.8%
   │
@@ -283,7 +283,7 @@
   │  🛡️  RISK
   │     Debt/Equity    : 0.40
   │     Beta           : 1.75
-  │     PEG Ratio      : 0.26
+  │     PEG Ratio      : 0.27
   │
   │  🏷️  SIGNAL FLAGS
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 💰 Income
@@ -294,14 +294,14 @@
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   PDD     PDD Holdings Inc.       78.4   44.3%    27%  0.01 Consumer Cyclical     
-  2   TSM     Taiwan Semiconductor    85.3   25.9%    36%  0.17 Technology            
-  3   AU      AngloGold Ashanti PLC   80.3   20.0%    34%  0.23 Basic Materials       
-  4   GEN     Gen Digital Inc.        75.7   50.7%    27%  3.63 Technology            
-  5   KGC     Kinross Gold Corporat   80.8   26.3%    31%  0.09 Basic Materials       
-  6   COLL    Collegium Pharmaceuti   70.4   62.8%    24%  3.10 Healthcare            
-  7   HIG     The Hartford Insuranc   74.9    7.9%    22%  0.24 Financial Services    
-  8   BCRX    BioCryst Pharmaceutic   69.3  149.4%   N/A%   N/A Healthcare            
-  9   HNI     HNI Corporation         66.5   93.0%     4%  0.87 Consumer Cyclical     
-  10  APAM    Artisan Partners Asse   73.2    4.1%    49%  0.40 Financial Services    
+  1   PDD     PDD Holdings Inc.       78.3   42.5%    27%  0.01 Consumer Cyclical     
+  2   TSM     Taiwan Semiconductor    84.2   19.6%    36%  0.17 Technology            
+  3   AU      AngloGold Ashanti PLC   80.4   21.9%    34%  0.23 Basic Materials       
+  4   GEN     Gen Digital Inc.        75.8   50.1%    27%  3.63 Technology            
+  5   KGC     Kinross Gold Corporat   79.8   24.3%    31%  0.09 Basic Materials       
+  6   COLL    Collegium Pharmaceuti   70.4   63.9%    24%  3.10 Healthcare            
+  7   BCRX    BioCryst Pharmaceutic   70.1  137.5%   N/A%   N/A Healthcare            
+  8   HIG     The Hartford Insuranc   75.0    8.8%    22%  0.24 Financial Services    
+  9   HNI     HNI Corporation         66.5   93.5%     4%  0.87 Consumer Cyclical     
+  10  APAM    Artisan Partners Asse   73.2    2.8%    49%  0.40 Financial Services    
   ────────────────────────────────────────────────────────────────────
