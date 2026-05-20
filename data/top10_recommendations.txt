@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-05-19 09:49:56
+  Generated: 2026-05-20 09:40:16
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -11,16 +11,16 @@
 
   ┌─ #1 AU  —  AngloGold Ashanti PLC
   │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  82.6   Conviction Score: 126.6   Mkt Cap: $47.3B
+  │  Base Score:  82.8   Conviction Score: 126.8   Mkt Cap: $45.2B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $93.47
+  │     Current Price : $89.34
   │     Analyst Target: $123.29  (7 analysts)
-  │     Upside        : +31.9%
+  │     Upside        : +38.0%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 43.0%
-  │     FCF Yield      : 7.5%
+  │     FCF Yield      : 7.9%
   │     Operating Mgn  : 56.1%
   │     Gross Margin   : 53.5%
   │
@@ -39,21 +39,21 @@
 
   ┌─ #2 TSM  —  Taiwan Semiconductor Manufactur
   │  Sector: Technology                      Action: STRONG BUY
-  │  Base Score:  84.3   Conviction Score: 120.3   Mkt Cap: $2.1T
+  │  Base Score:  84.2   Conviction Score: 120.2   Mkt Cap: $2.0T
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $395.95
+  │     Current Price : $392.61
   │     Analyst Target: $467.84  (18 analysts)
-  │     Upside        : +18.2%
+  │     Upside        : +19.2%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 36.0%
-  │     FCF Yield      : 35.0%
+  │     FCF Yield      : 35.3%
   │     Operating Mgn  : 58.1%
   │     Gross Margin   : 61.9%
   │
   │  🚀 GROWTH
-  │     Revenue Growth : 35.1%  ▲ accelerating (+17.2pp)
+  │     Revenue Growth : 35.1%  ▲ accelerating (+23.1pp)
   │     EPS Surprise   : N/A
   │
   │  🛡️  RISK
@@ -65,46 +65,18 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💰 Income · 📐 Rule of 40
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #3 PDD  —  PDD Holdings Inc.
-  │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  76.3   Conviction Score: 118.3   Mkt Cap: $135.2B
+  ┌─ #3 KGC  —  Kinross Gold Corporation
+  │  Sector: Basic Materials                 Action: STRONG BUY
+  │  Base Score:  80.1   Conviction Score: 116.1   Mkt Cap: $32.8B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $94.97
-  │     Analyst Target: $142.77  (33 analysts)
+  │     Current Price : $27.44
+  │     Analyst Target: $41.23  (11 analysts)
   │     Upside        : +50.3%
   │
   │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 27.0%
-  │     FCF Yield      : 63.3%
-  │     Operating Mgn  : 21.1%
-  │     Gross Margin   : 56.3%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 12.0%  → stable
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.01
-  │     Beta           : 0.03
-  │     PEG Ratio      : 0.68
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 📈 Analyst Conviction
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #4 KGC  —  Kinross Gold Corporation
-  │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  81.8   Conviction Score: 113.8   Mkt Cap: $34.0B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $28.51
-  │     Analyst Target: $41.23  (11 analysts)
-  │     Upside        : +44.6%
-  │
-  │  📊 QUALITY & PROFITABILITY
   │     ROE            : 35.0%
-  │     FCF Yield      : 8.4%
+  │     FCF Yield      : 8.7%
   │     Operating Mgn  : 55.1%
   │     Gross Margin   : 68.7%
   │
@@ -121,14 +93,42 @@
   │     🚀 Rocket · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💰 Income · 📐 Rule of 40 Elite
   └────────────────────────────────────────────────────────────────────
 
+  ┌─ #4 PDD  —  PDD Holdings Inc.
+  │  Sector: Consumer Cyclical               Action: BUY
+  │  Base Score:  76.3   Conviction Score: 114.3   Mkt Cap: $138.6B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $97.34
+  │     Analyst Target: $142.85  (33 analysts)
+  │     Upside        : +46.8%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 27.0%
+  │     FCF Yield      : 61.8%
+  │     Operating Mgn  : 21.1%
+  │     Gross Margin   : 56.3%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 12.0%  → stable
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 0.01
+  │     Beta           : 0.03
+  │     PEG Ratio      : 0.68
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 📈 Analyst Conviction
+  └────────────────────────────────────────────────────────────────────
+
   ┌─ #5 COLL  —  Collegium Pharmaceutical, Inc.
   │  Sector: Healthcare                      Action: BUY
   │  Base Score:  71.3   Conviction Score: 108.3   Mkt Cap: $1.1B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $33.65
+  │     Current Price : $33.62
   │     Analyst Target: $54.33  (6 analysts)
-  │     Upside        : +61.5%
+  │     Upside        : +61.6%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 27.0%
@@ -151,16 +151,16 @@
 
   ┌─ #6 PGY  —  Pagaya Technologies Ltd.
   │  Sector: Technology                      Action: BUY
-  │  Base Score:  71.6   Conviction Score: 107.6   Mkt Cap: $1.1B
+  │  Base Score:  71.6   Conviction Score: 107.6   Mkt Cap: $1.0B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $12.87
+  │     Current Price : $12.64
   │     Analyst Target: $26.90  (10 analysts)
-  │     Upside        : +109.0%
+  │     Upside        : +112.8%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 16.0%
-  │     FCF Yield      : 17.4%
+  │     FCF Yield      : 17.7%
   │     Operating Mgn  : 25.2%
   │     Gross Margin   : 42.9%
   │
@@ -177,46 +177,18 @@
   │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · ⚠️ High Beta · ⚠️ Below 200 DMA
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #7 ZVRA  —  Zevra Therapeutics, Inc.
-  │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  69.7   Conviction Score: 106.7   Mkt Cap: $617M
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $10.43
-  │     Analyst Target: $23.00  (9 analysts)
-  │     Upside        : +120.5%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 101.0%
-  │     FCF Yield      : 4.2%
-  │     Operating Mgn  : 24.4%
-  │     Gross Margin   : 86.1%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 77.5%  ▲ accelerating (+45.6pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.01
-  │     Beta           : 0.88
-  │     PEG Ratio      : 10.67
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🚀 Rocket · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 📐 Rule of 40 Elite
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #8 TREE  —  LendingTree, Inc.
+  ┌─ #7 TREE  —  LendingTree, Inc.
   │  Sector: Financial Services              Action: BUY
-  │  Base Score:  69.7   Conviction Score: 105.7   Mkt Cap: $506M
+  │  Base Score:  70.4   Conviction Score: 106.4   Mkt Cap: $496M
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $36.25
+  │     Current Price : $35.53
   │     Analyst Target: $65.83  (6 analysts)
-  │     Upside        : +81.6%
+  │     Upside        : +85.3%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 89.0%
-  │     FCF Yield      : 12.2%
+  │     FCF Yield      : 12.4%
   │     Operating Mgn  : 9.8%
   │     Gross Margin   : 96.3%
   │
@@ -233,12 +205,40 @@
   │     🔥 HG High · 🏰 Wide Moat · 📐 Rule of 40 · ⚠️ High Beta · ⚠️ Below 200 DMA
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #9 EXPE  —  Expedia Group, Inc.
-  │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  66.6   Conviction Score: 105.6   Mkt Cap: $25.8B
+  ┌─ #8 ZVRA  —  Zevra Therapeutics, Inc.
+  │  Sector: Healthcare                      Action: BUY
+  │  Base Score:  68.6   Conviction Score: 105.6   Mkt Cap: $603M
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $214.99
+  │     Current Price : $10.20
+  │     Analyst Target: $23.00  (9 analysts)
+  │     Upside        : +125.5%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 101.0%
+  │     FCF Yield      : 4.3%
+  │     Operating Mgn  : 24.4%
+  │     Gross Margin   : 86.1%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 77.5%  ▲ accelerating (+45.6pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 0.01
+  │     Beta           : 0.88
+  │     PEG Ratio      : 10.67
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🚀 Rocket · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 📐 Rule of 40 Elite
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #9 EXPE  —  Expedia Group, Inc.
+  │  Sector: Consumer Cyclical               Action: BUY
+  │  Base Score:  66.5   Conviction Score: 105.5   Mkt Cap: $25.8B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $215.00
   │     Analyst Target: $286.32  (34 analysts)
   │     Upside        : +33.2%
   │
@@ -263,16 +263,16 @@
 
   ┌─ #10 ISSC  —  Innovative Solutions and Suppor
   │  Sector: Industrials                     Action: BUY
-  │  Base Score:  72.6   Conviction Score: 104.6   Mkt Cap: $291M
+  │  Base Score:  72.6   Conviction Score: 104.6   Mkt Cap: $281M
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $16.26
+  │     Current Price : $15.69
   │     Analyst Target: $28.25  (4 analysts)
-  │     Upside        : +73.7%
+  │     Upside        : +80.0%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 33.0%
-  │     FCF Yield      : 2.6%
+  │     FCF Yield      : 2.7%
   │     Operating Mgn  : 28.9%
   │     Gross Margin   : 50.8%
   │
@@ -294,14 +294,14 @@
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   AU      AngloGold Ashanti PLC   82.6   31.9%    43%  0.22 Basic Materials       
-  2   TSM     Taiwan Semiconductor    84.3   18.2%    36%  0.18 Technology            
-  3   PDD     PDD Holdings Inc.       76.3   50.3%    27%  0.01 Consumer Cyclical     
-  4   KGC     Kinross Gold Corporat   81.8   44.6%    35%  0.08 Basic Materials       
-  5   COLL    Collegium Pharmaceuti   71.3   61.5%    27%  2.98 Healthcare            
-  6   PGY     Pagaya Technologies L   71.6  109.0%    16%  1.47 Technology            
-  7   ZVRA    Zevra Therapeutics, I   69.7  120.5%   101%  0.01 Healthcare            
-  8   TREE    LendingTree, Inc.       69.7   81.6%    89%  1.44 Financial Services    
-  9   EXPE    Expedia Group, Inc.     66.6   33.2%    71%  2.57 Consumer Cyclical     
-  10  ISSC    Innovative Solutions    72.6   73.7%    33%  0.34 Industrials           
+  1   AU      AngloGold Ashanti PLC   82.8   38.0%    43%  0.22 Basic Materials       
+  2   TSM     Taiwan Semiconductor    84.2   19.2%    36%  0.18 Technology            
+  3   KGC     Kinross Gold Corporat   80.1   50.3%    35%  0.08 Basic Materials       
+  4   PDD     PDD Holdings Inc.       76.3   46.8%    27%  0.01 Consumer Cyclical     
+  5   COLL    Collegium Pharmaceuti   71.3   61.6%    27%  2.98 Healthcare            
+  6   PGY     Pagaya Technologies L   71.6  112.8%    16%  1.47 Technology            
+  7   TREE    LendingTree, Inc.       70.4   85.3%    89%  1.44 Financial Services    
+  8   ZVRA    Zevra Therapeutics, I   68.6  125.5%   101%  0.01 Healthcare            
+  9   EXPE    Expedia Group, Inc.     66.5   33.2%    71%  2.57 Consumer Cyclical     
+  10  ISSC    Innovative Solutions    72.6   80.0%    33%  0.34 Industrials           
   ────────────────────────────────────────────────────────────────────
