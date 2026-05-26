@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-05-25 10:12:16
+  Generated: 2026-05-26 10:02:12
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -71,8 +71,8 @@
   │
   │  💰 PRICE & TARGET
   │     Current Price : $94.52
-  │     Analyst Target: $143.25  (33 analysts)
-  │     Upside        : +51.6%
+  │     Analyst Target: $143.23  (33 analysts)
+  │     Upside        : +51.5%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 27.0%
@@ -296,7 +296,7 @@
   ────────────────────────────────────────────────────────────────────
   1   AU      AngloGold Ashanti PLC   82.7   36.0%    43%  0.22 Basic Materials       
   2   TSM     Taiwan Semiconductor    84.3   15.7%    36%  0.18 Technology            
-  3   PDD     PDD Holdings Inc.       76.6   51.6%    27%  0.01 Consumer Cyclical     
+  3   PDD     PDD Holdings Inc.       76.6   51.5%    27%  0.01 Consumer Cyclical     
   4   KGC     Kinross Gold Corporat   81.7   45.7%    35%  0.08 Basic Materials       
   5   ADBE    Adobe Inc.              74.4   33.7%    59%  0.58 Technology            
   6   COLL    Collegium Pharmaceuti   71.3   59.5%    27%  2.98 Healthcare            
