@@ -1,5 +1,5 @@
 {
-  "run_timestamp_utc": "2026-06-12 10:18 UTC",
+  "run_timestamp_utc": "2026-06-15 12:20 UTC",
   "elapsed_minutes": 4.1,
   "total_stocks": 345,
   "strong_buy": 4,
@@ -7,8 +7,8 @@
   "hold": 175,
   "sell": 18,
   "avg_score": 60.1,
-  "wide_moat_count": 168,
-  "narrow_moat_count": 160,
+  "wide_moat_count": 169,
+  "narrow_moat_count": 158,
   "hg_rocket_count": 11,
-  "hg_high_count": 260
+  "hg_high_count": 255
 }
