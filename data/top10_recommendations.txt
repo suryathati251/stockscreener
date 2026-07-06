@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-07-03 09:23:10
+  Generated: 2026-07-06 10:27:36
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -30,7 +30,7 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 0.22
-  │     Beta           : 0.64
+  │     Beta           : 0.67
   │     PEG Ratio      : 0.78
   │
   │  🏷️  SIGNAL FLAGS
@@ -43,8 +43,8 @@
   │
   │  💰 PRICE & TARGET
   │     Current Price : $24.71
-  │     Analyst Target: $40.18  (11 analysts)
-  │     Upside        : +62.6%
+  │     Analyst Target: $38.60  (10 analysts)
+  │     Upside        : +56.2%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 35.0%
@@ -58,7 +58,7 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 0.08
-  │     Beta           : 1.35
+  │     Beta           : 1.41
   │     PEG Ratio      : 1.12
   │
   │  🏷️  SIGNAL FLAGS
@@ -71,8 +71,8 @@
   │
   │  💰 PRICE & TARGET
   │     Current Price : $434.16
-  │     Analyst Target: $487.56  (18 analysts)
-  │     Upside        : +12.3%
+  │     Analyst Target: $490.34  (18 analysts)
+  │     Upside        : +12.9%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 36.0%
@@ -87,7 +87,7 @@
   │  🛡️  RISK
   │     Debt/Equity    : 0.18
   │     Beta           : 1.25
-  │     PEG Ratio      : 1.40
+  │     PEG Ratio      : 1.37
   │
   │  🏷️  SIGNAL FLAGS
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💰 Income · 📐 Rule of 40
@@ -114,8 +114,8 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 0.07
-  │     Beta           : 2.20
-  │     PEG Ratio      : 0.61
+  │     Beta           : 2.21
+  │     PEG Ratio      : 0.60
   │
   │  🏷️  SIGNAL FLAGS
   │     🚀 Rocket · 🏰 Wide Moat · 🚀 Accel Growth · 📈 Analyst Conviction · 💰 Income · 📐 Rule of 40 Elite · ⚠️ High Beta
@@ -142,7 +142,7 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 2.98
-  │     Beta           : 0.75
+  │     Beta           : 0.73
   │     PEG Ratio      : 0.01
   │
   │  🏷️  SIGNAL FLAGS
@@ -155,8 +155,8 @@
   │
   │  💰 PRICE & TARGET
   │     Current Price : $82.39
-  │     Analyst Target: $116.02  (34 analysts)
-  │     Upside        : +40.8%
+  │     Analyst Target: $115.79  (34 analysts)
+  │     Upside        : +40.5%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 25.0%
@@ -170,8 +170,8 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 0.01
-  │     Beta           : -0.03
-  │     PEG Ratio      : 0.71
+  │     Beta           : -0.01
+  │     PEG Ratio      : 0.76
   │
   │  🏷️  SIGNAL FLAGS
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 📈 Analyst Conviction · ⚠️ Below 200 DMA
@@ -226,7 +226,7 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 0.01
-  │     Beta           : 0.89
+  │     Beta           : 0.85
   │     PEG Ratio      : 10.67
   │
   │  🏷️  SIGNAL FLAGS
@@ -239,7 +239,7 @@
   │
   │  💰 PRICE & TARGET
   │     Current Price : $582.90
-  │     Analyst Target: $828.13  (58 analysts)
+  │     Analyst Target: $828.17  (58 analysts)
   │     Upside        : +42.1%
   │
   │  📊 QUALITY & PROFITABILITY
@@ -254,8 +254,8 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 0.36
-  │     Beta           : 1.23
-  │     PEG Ratio      : 0.81
+  │     Beta           : 1.25
+  │     PEG Ratio      : 0.84
   │
   │  🏷️  SIGNAL FLAGS
   │     🔥 HG High · 🏰 Wide Moat · 📈 Analyst Conviction · 💰 Income · 📐 Rule of 40
@@ -282,7 +282,7 @@
   │
   │  🛡️  RISK
   │     Debt/Equity    : 0.02
-  │     Beta           : -0.27
+  │     Beta           : -0.25
   │     PEG Ratio      : 1.10
   │
   │  🏷️  SIGNAL FLAGS
@@ -295,11 +295,11 @@
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
   1   AU      AngloGold Ashanti PLC   80.9   39.9%    43%  0.22 Basic Materials       
-  2   KGC     Kinross Gold Corporat   79.8   62.6%    35%  0.08 Basic Materials       
-  3   TSM     Taiwan Semiconductor    83.0   12.3%    36%  0.18 Technology            
+  2   KGC     Kinross Gold Corporat   79.8   56.2%    35%  0.08 Basic Materials       
+  3   TSM     Taiwan Semiconductor    83.0   12.9%    36%  0.18 Technology            
   4   NVDA    NVIDIA Corporation      79.8   54.8%   114%  0.07 Technology            
   5   COLL    Collegium Pharmaceuti   71.6   46.7%    27%  2.98 Healthcare            
-  6   PDD     PDD Holdings Inc.       70.4   40.8%    25%  0.01 Consumer Cyclical     
+  6   PDD     PDD Holdings Inc.       70.4   40.5%    25%  0.01 Consumer Cyclical     
   7   HIG     The Hartford Insuranc   74.8    7.2%    23%  0.23 Financial Services    
   8   ZVRA    Zevra Therapeutics, I   66.0   99.5%   101%  0.01 Healthcare            
   9   META    Meta Platforms, Inc.    74.7   42.1%    33%  0.36 Communication Service 
