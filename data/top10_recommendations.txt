@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-07-08 08:33:19
+  Generated: 2026-07-09 09:44:09
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -11,16 +11,16 @@
 
   ┌─ #1 AU  —  AngloGold Ashanti PLC
   │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  81.6   Conviction Score: 125.6   Mkt Cap: $41.5B
+  │  Base Score:  81.1   Conviction Score: 125.1   Mkt Cap: $40.4B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $82.08
+  │     Current Price : $79.83
   │     Analyst Target: $118.38  (8 analysts)
-  │     Upside        : +44.2%
+  │     Upside        : +48.3%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 43.0%
-  │     FCF Yield      : 8.6%
+  │     FCF Yield      : 8.8%
   │     Operating Mgn  : 56.1%
   │     Gross Margin   : 53.5%
   │
@@ -39,16 +39,16 @@
 
   ┌─ #2 KGC  —  Kinross Gold Corporation
   │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  79.9   Conviction Score: 115.9   Mkt Cap: $28.5B
+  │  Base Score:  80.8   Conviction Score: 116.8   Mkt Cap: $27.5B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $23.88
+  │     Current Price : $23.06
   │     Analyst Target: $38.23  (10 analysts)
-  │     Upside        : +60.1%
+  │     Upside        : +65.8%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 35.0%
-  │     FCF Yield      : 10.0%
+  │     FCF Yield      : 10.3%
   │     Operating Mgn  : 55.1%
   │     Gross Margin   : 68.7%
   │
@@ -62,21 +62,21 @@
   │     PEG Ratio      : 1.12
   │
   │  🏷️  SIGNAL FLAGS
-  │     🚀 Rocket · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💰 Income · 📐 Rule of 40 Elite
+  │     🚀 Rocket · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💰 Income · 📐 Rule of 40 Elite · ⚠️ Below 200 DMA
   └────────────────────────────────────────────────────────────────────
 
   ┌─ #3 TSM  —  Taiwan Semiconductor Manufactur
   │  Sector: Technology                      Action: STRONG BUY
-  │  Base Score:  83.2   Conviction Score: 115.2   Mkt Cap: $2.2T
+  │  Base Score:  83.1   Conviction Score: 115.1   Mkt Cap: $2.3T
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $432.57
+  │     Current Price : $436.98
   │     Analyst Target: $490.34  (18 analysts)
-  │     Upside        : +13.4%
+  │     Upside        : +12.2%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 36.0%
-  │     FCF Yield      : 32.1%
+  │     FCF Yield      : 31.7%
   │     Operating Mgn  : 58.1%
   │     Gross Margin   : 61.9%
   │
@@ -93,29 +93,29 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💰 Income · 📐 Rule of 40
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #4 NVDA  —  NVIDIA Corporation
+  ┌─ #4 MU  —  Micron Technology, Inc.
   │  Sector: Technology                      Action: STRONG BUY
-  │  Base Score:  80.0   Conviction Score: 115.0   Mkt Cap: $4.8T
+  │  Base Score:  81.7   Conviction Score: 112.7   Mkt Cap: $1.1T
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $196.93
-  │     Analyst Target: $301.62  (58 analysts)
-  │     Upside        : +53.2%
+  │     Current Price : $948.80
+  │     Analyst Target: $1486.00  (42 analysts)
+  │     Upside        : +56.6%
   │
   │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 114.0%
-  │     FCF Yield      : 1.0%
-  │     Operating Mgn  : 65.6%
-  │     Gross Margin   : 74.1%
+  │     ROE            : 67.0%
+  │     FCF Yield      : 0.7%
+  │     Operating Mgn  : 80.4%
+  │     Gross Margin   : 72.6%
   │
   │  🚀 GROWTH
-  │     Revenue Growth : 85.2%  ▲ accelerating (+39.5pp)
+  │     Revenue Growth : 345.7%  ▲ accelerating (+234.8pp)
   │     EPS Surprise   : N/A
   │
   │  🛡️  RISK
-  │     Debt/Equity    : 0.07
-  │     Beta           : 2.21
-  │     PEG Ratio      : 0.60
+  │     Debt/Equity    : 0.06
+  │     Beta           : 2.14
+  │     PEG Ratio      : 0.15
   │
   │  🏷️  SIGNAL FLAGS
   │     🚀 Rocket · 🏰 Wide Moat · 🚀 Accel Growth · 📈 Analyst Conviction · 💰 Income · 📐 Rule of 40 Elite · ⚠️ High Beta
@@ -123,16 +123,16 @@
 
   ┌─ #5 COLL  —  Collegium Pharmaceutical, Inc.
   │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  72.2   Conviction Score: 105.2   Mkt Cap: $1.2B
+  │  Base Score:  72.3   Conviction Score: 109.3   Mkt Cap: $1.2B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $36.44
+  │     Current Price : $35.83
   │     Analyst Target: $54.33  (6 analysts)
-  │     Upside        : +49.1%
+  │     Upside        : +51.6%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 27.0%
-  │     FCF Yield      : 28.1%
+  │     FCF Yield      : 28.6%
   │     Operating Mgn  : 16.0%
   │     Gross Margin   : 89.2%
   │
@@ -149,18 +149,46 @@
   │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · 📐 Rule of 40 · ⚠️ High Leverage
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #6 PDD  —  PDD Holdings Inc.
-  │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  70.4   Conviction Score: 104.4   Mkt Cap: $117.5B
+  ┌─ #6 NFLX  —  Netflix, Inc.
+  │  Sector: Communication Services          Action: BUY
+  │  Base Score:  68.0   Conviction Score: 104.0   Mkt Cap: $318.3B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $82.53
-  │     Analyst Target: $115.71  (34 analysts)
-  │     Upside        : +40.2%
+  │     Current Price : $75.59
+  │     Analyst Target: $113.71  (44 analysts)
+  │     Upside        : +50.4%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 48.0%
+  │     FCF Yield      : 8.2%
+  │     Operating Mgn  : 32.3%
+  │     Gross Margin   : 49.0%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 16.2%  ▲ accelerating (+7.4pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 0.54
+  │     Beta           : 1.52
+  │     PEG Ratio      : 1.49
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 📈 Analyst Conviction · 📐 Rule of 40 Elite · ⚠️ Below 200 DMA
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #7 PDD  —  PDD Holdings Inc.
+  │  Sector: Consumer Cyclical               Action: BUY
+  │  Base Score:  69.8   Conviction Score: 103.8   Mkt Cap: $120.6B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $84.74
+  │     Analyst Target: $115.99  (34 analysts)
+  │     Upside        : +36.9%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 25.0%
-  │     FCF Yield      : 61.0%
+  │     FCF Yield      : 59.4%
   │     Operating Mgn  : 18.4%
   │     Gross Margin   : 56.0%
   │
@@ -177,18 +205,18 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 📈 Analyst Conviction · ⚠️ Below 200 DMA
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #7 HIG  —  The Hartford Insurance Group, I
+  ┌─ #8 HIG  —  The Hartford Insurance Group, I
   │  Sector: Financial Services              Action: BUY
-  │  Base Score:  74.8   Conviction Score: 103.8   Mkt Cap: $38.3B
+  │  Base Score:  74.7   Conviction Score: 103.7   Mkt Cap: $38.0B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $139.64
+  │     Current Price : $138.74
   │     Analyst Target: $147.85  (20 analysts)
-  │     Upside        : +5.9%
+  │     Upside        : +6.6%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 23.0%
-  │     FCF Yield      : 14.6%
+  │     FCF Yield      : 14.7%
   │     Operating Mgn  : 15.3%
   │     Gross Margin   : 38.2%
   │
@@ -205,74 +233,18 @@
   │     🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 💰 Income
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #8 ZVRA  —  Zevra Therapeutics, Inc.
-  │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  65.8   Conviction Score: 102.8   Mkt Cap: $854M
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $14.44
-  │     Analyst Target: $27.89  (9 analysts)
-  │     Upside        : +93.1%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 101.0%
-  │     FCF Yield      : 3.0%
-  │     Operating Mgn  : 24.4%
-  │     Gross Margin   : 86.1%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 77.5%  ▲ accelerating (+45.6pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.01
-  │     Beta           : 0.85
-  │     PEG Ratio      : 10.67
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🚀 Rocket · 🏰 Wide Moat · 🚀 Accel Growth · 📐 Rule of 40 Elite
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #9 TNK  —  Teekay Tankers Ltd.
-  │  Sector: Energy                          Action: BUY
-  │  Base Score:  76.7   Conviction Score: 101.7   Mkt Cap: $2.4B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $69.33
-  │     Analyst Target: $87.00  (5 analysts)
-  │     Upside        : +25.5%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 21.0%
-  │     FCF Yield      : 1.5%
-  │     Operating Mgn  : 43.7%
-  │     Gross Margin   : 43.4%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 23.5%  ▲ accelerating (+12.6pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.02
-  │     Beta           : -0.25
-  │     PEG Ratio      : 1.10
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · 🚀 Accel Growth · 💰 Income
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #10 META  —  Meta Platforms, Inc.
+  ┌─ #9 META  —  Meta Platforms, Inc.
   │  Sector: Communication Services          Action: BUY
-  │  Base Score:  73.5   Conviction Score: 101.5   Mkt Cap: $1.6T
+  │  Base Score:  73.7   Conviction Score: 101.7   Mkt Cap: $1.5T
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $615.58
+  │     Current Price : $603.12
   │     Analyst Target: $828.17  (58 analysts)
-  │     Upside        : +34.5%
+  │     Upside        : +37.3%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 33.0%
-  │     FCF Yield      : 1.6%
+  │     FCF Yield      : 1.7%
   │     Operating Mgn  : 40.6%
   │     Gross Margin   : 81.9%
   │
@@ -289,19 +261,47 @@
   │     🔥 HG High · 🏰 Wide Moat · 📈 Analyst Conviction · 💰 Income · 📐 Rule of 40
   └────────────────────────────────────────────────────────────────────
 
+  ┌─ #10 TREE  —  LendingTree, Inc.
+  │  Sector: Financial Services              Action: BUY
+  │  Base Score:  69.4   Conviction Score: 101.4   Mkt Cap: $626M
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $44.84
+  │     Analyst Target: $65.83  (6 analysts)
+  │     Upside        : +46.8%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 89.0%
+  │     FCF Yield      : 9.9%
+  │     Operating Mgn  : 9.8%
+  │     Gross Margin   : 96.3%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 36.5%  ▲ accelerating (+8.7pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 1.44
+  │     Beta           : 2.01
+  │     PEG Ratio      : 3.55
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · 📐 Rule of 40 · ⚠️ High Beta
+  └────────────────────────────────────────────────────────────────────
+
 
   SUMMARY TABLE
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   AU      AngloGold Ashanti PLC   81.6   44.2%    43%  0.22 Basic Materials       
-  2   KGC     Kinross Gold Corporat   79.9   60.1%    35%  0.08 Basic Materials       
-  3   TSM     Taiwan Semiconductor    83.2   13.4%    36%  0.18 Technology            
-  4   NVDA    NVIDIA Corporation      80.0   53.2%   114%  0.07 Technology            
-  5   COLL    Collegium Pharmaceuti   72.2   49.1%    27%  2.98 Healthcare            
-  6   PDD     PDD Holdings Inc.       70.4   40.2%    25%  0.01 Consumer Cyclical     
-  7   HIG     The Hartford Insuranc   74.8    5.9%    23%  0.23 Financial Services    
-  8   ZVRA    Zevra Therapeutics, I   65.8   93.1%   101%  0.01 Healthcare            
-  9   TNK     Teekay Tankers Ltd.     76.7   25.5%    21%  0.02 Energy                
-  10  META    Meta Platforms, Inc.    73.5   34.5%    33%  0.36 Communication Service 
+  1   AU      AngloGold Ashanti PLC   81.1   48.3%    43%  0.22 Basic Materials       
+  2   KGC     Kinross Gold Corporat   80.8   65.8%    35%  0.08 Basic Materials       
+  3   TSM     Taiwan Semiconductor    83.1   12.2%    36%  0.18 Technology            
+  4   MU      Micron Technology, In   81.7   56.6%    67%  0.06 Technology            
+  5   COLL    Collegium Pharmaceuti   72.3   51.6%    27%  2.98 Healthcare            
+  6   NFLX    Netflix, Inc.           68.0   50.4%    48%  0.54 Communication Service 
+  7   PDD     PDD Holdings Inc.       69.8   36.9%    25%  0.01 Consumer Cyclical     
+  8   HIG     The Hartford Insuranc   74.7    6.6%    23%  0.23 Financial Services    
+  9   META    Meta Platforms, Inc.    73.7   37.3%    33%  0.36 Communication Service 
+  10  TREE    LendingTree, Inc.       69.4   46.8%    89%  1.44 Financial Services    
   ────────────────────────────────────────────────────────────────────
