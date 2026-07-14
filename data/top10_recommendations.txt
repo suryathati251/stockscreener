@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-07-13 09:36:17
+  Generated: 2026-07-14 08:10:43
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -11,16 +11,16 @@
 
   ┌─ #1 AU  —  AngloGold Ashanti PLC
   │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  81.6   Conviction Score: 125.6   Mkt Cap: $41.5B
+  │  Base Score:  81.2   Conviction Score: 125.2   Mkt Cap: $40.3B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $82.10
+  │     Current Price : $79.76
   │     Analyst Target: $118.00  (8 analysts)
-  │     Upside        : +43.7%
+  │     Upside        : +47.9%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 43.0%
-  │     FCF Yield      : 8.6%
+  │     FCF Yield      : 8.8%
   │     Operating Mgn  : 56.1%
   │     Gross Margin   : 53.5%
   │
@@ -37,18 +37,46 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💎 Deep Value · 💰 Income · 📐 Rule of 40 Elite
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #2 KGC  —  Kinross Gold Corporation
-  │  Sector: Basic Materials                 Action: STRONG BUY
-  │  Base Score:  79.8   Conviction Score: 115.8   Mkt Cap: $28.8B
+  ┌─ #2 TSM  —  Taiwan Semiconductor Manufactur
+  │  Sector: Technology                      Action: STRONG BUY
+  │  Base Score:  84.1   Conviction Score: 120.1   Mkt Cap: $2.2T
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $24.14
+  │     Current Price : $421.58
+  │     Analyst Target: $498.24  (18 analysts)
+  │     Upside        : +18.2%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 36.0%
+  │     FCF Yield      : 32.9%
+  │     Operating Mgn  : 58.1%
+  │     Gross Margin   : 61.9%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 35.1%  ▲ accelerating (+23.1pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 0.18
+  │     Beta           : 1.25
+  │     PEG Ratio      : 1.36
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💰 Income · 📐 Rule of 40
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #3 KGC  —  Kinross Gold Corporation
+  │  Sector: Basic Materials                 Action: STRONG BUY
+  │  Base Score:  80.7   Conviction Score: 116.7   Mkt Cap: $28.0B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $23.48
   │     Analyst Target: $36.51  (10 analysts)
-  │     Upside        : +51.2%
+  │     Upside        : +55.5%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 35.0%
-  │     FCF Yield      : 9.8%
+  │     FCF Yield      : 10.1%
   │     Operating Mgn  : 55.1%
   │     Gross Margin   : 68.7%
   │
@@ -65,14 +93,14 @@
   │     🚀 Rocket · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💰 Income · 📐 Rule of 40 Elite
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #3 MU  —  Micron Technology, Inc.
+  ┌─ #4 MU  —  Micron Technology, Inc.
   │  Sector: Technology                      Action: STRONG BUY
-  │  Base Score:  81.1   Conviction Score: 112.1   Mkt Cap: $1.1T
+  │  Base Score:  81.3   Conviction Score: 112.3   Mkt Cap: $1.1T
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $979.30
+  │     Current Price : $937.00
   │     Analyst Target: $1486.00  (42 analysts)
-  │     Upside        : +51.7%
+  │     Upside        : +58.6%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 67.0%
@@ -93,46 +121,18 @@
   │     🚀 Rocket · 🏰 Wide Moat · 🚀 Accel Growth · 📈 Analyst Conviction · 💰 Income · 📐 Rule of 40 Elite · ⚠️ High Beta
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #4 NVDA  —  NVIDIA Corporation
-  │  Sector: Technology                      Action: STRONG BUY
-  │  Base Score:  79.8   Conviction Score: 110.8   Mkt Cap: $5.1T
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $210.96
-  │     Analyst Target: $301.62  (58 analysts)
-  │     Upside        : +43.0%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 114.0%
-  │     FCF Yield      : 0.9%
-  │     Operating Mgn  : 65.6%
-  │     Gross Margin   : 74.1%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 85.2%  ▲ accelerating (+39.5pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.07
-  │     Beta           : 2.21
-  │     PEG Ratio      : 0.65
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🚀 Rocket · 🏰 Wide Moat · 🚀 Accel Growth · 📈 Analyst Conviction · 💰 Income · 📐 Rule of 40 Elite · ⚠️ High Beta
-  └────────────────────────────────────────────────────────────────────
-
   ┌─ #5 COLL  —  Collegium Pharmaceutical, Inc.
   │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  71.5   Conviction Score: 108.5   Mkt Cap: $1.1B
+  │  Base Score:  71.8   Conviction Score: 108.8   Mkt Cap: $1.1B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $35.23
+  │     Current Price : $34.82
   │     Analyst Target: $54.33  (6 analysts)
-  │     Upside        : +54.2%
+  │     Upside        : +56.0%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 27.0%
-  │     FCF Yield      : 29.1%
+  │     FCF Yield      : 29.4%
   │     Operating Mgn  : 16.0%
   │     Gross Margin   : 89.2%
   │
@@ -151,12 +151,12 @@
 
   ┌─ #6 NFLX  —  Netflix, Inc.
   │  Sector: Communication Services          Action: BUY
-  │  Base Score:  68.0   Conviction Score: 104.0   Mkt Cap: $308.9B
+  │  Base Score:  68.0   Conviction Score: 104.0   Mkt Cap: $310.9B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $73.37
-  │     Analyst Target: $113.15  (44 analysts)
-  │     Upside        : +54.2%
+  │     Current Price : $73.83
+  │     Analyst Target: $112.17  (44 analysts)
+  │     Upside        : +51.9%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 48.0%
@@ -179,16 +179,16 @@
 
   ┌─ #7 PDD  —  PDD Holdings Inc.
   │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  69.8   Conviction Score: 103.8   Mkt Cap: $121.2B
+  │  Base Score:  69.9   Conviction Score: 103.9   Mkt Cap: $120.4B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $85.13
-  │     Analyst Target: $116.05  (34 analysts)
-  │     Upside        : +36.3%
+  │     Current Price : $84.56
+  │     Analyst Target: $116.18  (34 analysts)
+  │     Upside        : +37.4%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 25.0%
-  │     FCF Yield      : 59.1%
+  │     FCF Yield      : 59.5%
   │     Operating Mgn  : 18.4%
   │     Gross Margin   : 56.0%
   │
@@ -207,16 +207,16 @@
 
   ┌─ #8 HIG  —  The Hartford Insurance Group, I
   │  Sector: Financial Services              Action: BUY
-  │  Base Score:  74.7   Conviction Score: 103.7   Mkt Cap: $38.0B
+  │  Base Score:  74.7   Conviction Score: 103.7   Mkt Cap: $38.6B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $138.78
+  │     Current Price : $140.78
   │     Analyst Target: $149.05  (20 analysts)
-  │     Upside        : +7.4%
+  │     Upside        : +5.9%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 23.0%
-  │     FCF Yield      : 14.7%
+  │     FCF Yield      : 14.5%
   │     Operating Mgn  : 15.3%
   │     Gross Margin   : 38.2%
   │
@@ -235,12 +235,12 @@
 
   ┌─ #9 ZVRA  —  Zevra Therapeutics, Inc.
   │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  65.6   Conviction Score: 102.6   Mkt Cap: $789M
+  │  Base Score:  66.1   Conviction Score: 103.1   Mkt Cap: $779M
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $13.35
+  │     Current Price : $13.18
   │     Analyst Target: $27.89  (9 analysts)
-  │     Upside        : +108.9%
+  │     Upside        : +111.6%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 101.0%
@@ -261,32 +261,32 @@
   │     🚀 Rocket · 🏰 Wide Moat · 🚀 Accel Growth · 📐 Rule of 40 Elite
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #10 EXPE  —  Expedia Group, Inc.
-  │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  66.8   Conviction Score:  97.8   Mkt Cap: $32.5B
+  ┌─ #10 TREE  —  LendingTree, Inc.
+  │  Sector: Financial Services              Action: BUY
+  │  Base Score:  69.4   Conviction Score: 101.4   Mkt Cap: $631M
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $270.83
-  │     Analyst Target: $286.21  (34 analysts)
-  │     Upside        : +5.7%
+  │     Current Price : $45.24
+  │     Analyst Target: $63.83  (6 analysts)
+  │     Upside        : +41.1%
   │
   │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 71.0%
-  │     FCF Yield      : 10.7%
-  │     Operating Mgn  : 7.1%
-  │     Gross Margin   : 90.3%
+  │     ROE            : 89.0%
+  │     FCF Yield      : 9.8%
+  │     Operating Mgn  : 9.8%
+  │     Gross Margin   : 96.3%
   │
   │  🚀 GROWTH
-  │     Revenue Growth : 14.7%  ▲ accelerating (+21.0pp)
+  │     Revenue Growth : 36.5%  ▲ accelerating (+8.7pp)
   │     EPS Surprise   : N/A
   │
   │  🛡️  RISK
-  │     Debt/Equity    : 2.57
-  │     Beta           : 1.23
-  │     PEG Ratio      : 0.89
+  │     Debt/Equity    : 1.44
+  │     Beta           : 2.01
+  │     PEG Ratio      : 3.55
   │
   │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · ⚠️ High Leverage
+  │     🔥 HG High · 🏰 Wide Moat · 📐 Rule of 40 · ⚠️ High Beta
   └────────────────────────────────────────────────────────────────────
 
 
@@ -294,14 +294,14 @@
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   AU      AngloGold Ashanti PLC   81.6   43.7%    43%  0.22 Basic Materials       
-  2   KGC     Kinross Gold Corporat   79.8   51.2%    35%  0.08 Basic Materials       
-  3   MU      Micron Technology, In   81.1   51.7%    67%  0.06 Technology            
-  4   NVDA    NVIDIA Corporation      79.8   43.0%   114%  0.07 Technology            
-  5   COLL    Collegium Pharmaceuti   71.5   54.2%    27%  2.98 Healthcare            
-  6   NFLX    Netflix, Inc.           68.0   54.2%    48%  0.54 Communication Service 
-  7   PDD     PDD Holdings Inc.       69.8   36.3%    25%  0.01 Consumer Cyclical     
-  8   HIG     The Hartford Insuranc   74.7    7.4%    23%  0.23 Financial Services    
-  9   ZVRA    Zevra Therapeutics, I   65.6  108.9%   101%  0.01 Healthcare            
-  10  EXPE    Expedia Group, Inc.     66.8    5.7%    71%  2.57 Consumer Cyclical     
+  1   AU      AngloGold Ashanti PLC   81.2   47.9%    43%  0.22 Basic Materials       
+  2   TSM     Taiwan Semiconductor    84.1   18.2%    36%  0.18 Technology            
+  3   KGC     Kinross Gold Corporat   80.7   55.5%    35%  0.08 Basic Materials       
+  4   MU      Micron Technology, In   81.3   58.6%    67%  0.06 Technology            
+  5   COLL    Collegium Pharmaceuti   71.8   56.0%    27%  2.98 Healthcare            
+  6   NFLX    Netflix, Inc.           68.0   51.9%    48%  0.54 Communication Service 
+  7   PDD     PDD Holdings Inc.       69.9   37.4%    25%  0.01 Consumer Cyclical     
+  8   HIG     The Hartford Insuranc   74.7    5.9%    23%  0.23 Financial Services    
+  9   ZVRA    Zevra Therapeutics, I   66.1  111.6%   101%  0.01 Healthcare            
+  10  TREE    LendingTree, Inc.       69.4   41.1%    89%  1.44 Financial Services    
   ────────────────────────────────────────────────────────────────────
