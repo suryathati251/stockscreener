@@ -1,14 +1,14 @@
 {
-  "run_timestamp_utc": "2026-08-06 08:40 UTC",
-  "elapsed_minutes": 4.4,
-  "total_stocks": 343,
-  "strong_buy": 6,
-  "buy": 162,
-  "hold": 160,
-  "sell": 15,
-  "avg_score": 60.8,
-  "wide_moat_count": 176,
-  "narrow_moat_count": 147,
+  "run_timestamp_utc": "2026-08-07 07:20 UTC",
+  "elapsed_minutes": 4.6,
+  "total_stocks": 342,
+  "strong_buy": 7,
+  "buy": 159,
+  "hold": 162,
+  "sell": 14,
+  "avg_score": 60.9,
+  "wide_moat_count": 178,
+  "narrow_moat_count": 146,
   "hg_rocket_count": 14,
-  "hg_high_count": 263
+  "hg_high_count": 260
 }
