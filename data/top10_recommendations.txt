@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-08-27 17:27:48
+  Generated: 2026-08-28 18:21:15
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -11,16 +11,16 @@
 
   ┌─ #1 TSM  —  Taiwan Semiconductor Manufactur
   │  Sector: Technology                      Action: STRONG BUY
-  │  Base Score:  85.4   Conviction Score: 121.4   Mkt Cap: $2.2T
+  │  Base Score:  85.5   Conviction Score: 125.5   Mkt Cap: $2.2T
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $429.62
+  │     Current Price : $420.00
   │     Analyst Target: $554.45  (18 analysts)
-  │     Upside        : +29.1%
+  │     Upside        : +32.0%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 40.0%
-  │     FCF Yield      : 32.8%
+  │     FCF Yield      : 33.5%
   │     Operating Mgn  : 60.3%
   │     Gross Margin   : 64.2%
   │
@@ -39,16 +39,16 @@
 
   ┌─ #2 NXPI  —  NXP Semiconductors N.V.
   │  Sector: Technology                      Action: BUY
-  │  Base Score:  77.8   Conviction Score: 116.8   Mkt Cap: $57.4B
+  │  Base Score:  77.9   Conviction Score: 116.9   Mkt Cap: $56.2B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $227.44
+  │     Current Price : $222.72
   │     Analyst Target: $311.10  (29 analysts)
-  │     Upside        : +36.8%
+  │     Upside        : +39.7%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 28.0%
-  │     FCF Yield      : 6.2%
+  │     FCF Yield      : 6.3%
   │     Operating Mgn  : 30.4%
   │     Gross Margin   : 56.1%
   │
@@ -67,16 +67,16 @@
 
   ┌─ #3 HRMY  —  Harmony Biosciences Holdings, I
   │  Sector: Healthcare                      Action: STRONG BUY
-  │  Base Score:  80.3   Conviction Score: 116.3   Mkt Cap: $2.3B
+  │  Base Score:  80.2   Conviction Score: 116.2   Mkt Cap: $2.3B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $39.65
+  │     Current Price : $39.25
   │     Analyst Target: $47.36  (11 analysts)
-  │     Upside        : +19.4%
+  │     Upside        : +20.7%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 20.0%
-  │     FCF Yield      : 7.9%
+  │     FCF Yield      : 8.0%
   │     Operating Mgn  : 34.2%
   │     Gross Margin   : 75.4%
   │
@@ -95,12 +95,12 @@
 
   ┌─ #4 TNK  —  Teekay Tankers Ltd.
   │  Sector: Energy                          Action: STRONG BUY
-  │  Base Score:  83.6   Conviction Score: 112.6   Mkt Cap: $3.0B
+  │  Base Score:  83.6   Conviction Score: 112.6   Mkt Cap: $3.1B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $87.70
+  │     Current Price : $88.24
   │     Analyst Target: $93.80  (5 analysts)
-  │     Upside        : +7.0%
+  │     Upside        : +6.3%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 28.0%
@@ -123,16 +123,16 @@
 
   ┌─ #5 DECK  —  Deckers Outdoor Corporation
   │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  71.3   Conviction Score: 111.3   Mkt Cap: $11.8B
+  │  Base Score:  71.3   Conviction Score: 111.3   Mkt Cap: $11.9B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $86.91
+  │     Current Price : $87.64
   │     Analyst Target: $122.81  (21 analysts)
-  │     Upside        : +41.3%
+  │     Upside        : +40.1%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 43.0%
-  │     FCF Yield      : 7.4%
+  │     FCF Yield      : 7.3%
   │     Operating Mgn  : 15.2%
   │     Gross Margin   : 57.8%
   │
@@ -149,74 +149,18 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 📈 Analyst Conviction
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #6 TREE  —  LendingTree, Inc.
-  │  Sector: Financial Services              Action: BUY
-  │  Base Score:  71.0   Conviction Score: 110.0   Mkt Cap: $406M
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $28.89
-  │     Analyst Target: $56.00  (6 analysts)
-  │     Upside        : +93.9%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 83.0%
-  │     FCF Yield      : 15.6%
-  │     Operating Mgn  : 7.8%
-  │     Gross Margin   : 96.4%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 25.3%  ▲ accelerating (+19.0pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 1.36
-  │     Beta           : 2.08
-  │     PEG Ratio      : 3.55
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · 🚀 Accel Growth · ⚠️ High Beta · ⚠️ Below 200 DMA
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #7 APP  —  Applovin Corporation
-  │  Sector: Communication Services          Action: BUY
-  │  Base Score:  70.9   Conviction Score: 109.9   Mkt Cap: $104.5B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $311.13
-  │     Analyst Target: $525.58  (31 analysts)
-  │     Upside        : +68.9%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 204.0%
-  │     FCF Yield      : 3.0%
-  │     Operating Mgn  : 77.7%
-  │     Gross Margin   : 88.5%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 52.8%  ▲ accelerating (+21.7pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 1.11
-  │     Beta           : 2.53
-  │     PEG Ratio      : 0.88
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · 🚀 Accel Growth · 💎 Deep Value · 📈 Analyst Conviction · 📐 Rule of 40 Elite · ⚠️ High Beta · ⚠️ Below 200 DMA
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #8 ZVRA  —  Zevra Therapeutics, Inc.
+  ┌─ #6 ZVRA  —  Zevra Therapeutics, Inc.
   │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  68.5   Conviction Score: 109.5   Mkt Cap: $703M
+  │  Base Score:  69.6   Conviction Score: 110.6   Mkt Cap: $689M
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $11.83
+  │     Current Price : $11.60
   │     Analyst Target: $25.00  (9 analysts)
-  │     Upside        : +111.3%
+  │     Upside        : +115.6%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 35.0%
-  │     FCF Yield      : 6.9%
+  │     FCF Yield      : 7.0%
   │     Operating Mgn  : 42.3%
   │     Gross Margin   : 95.5%
   │
@@ -233,14 +177,42 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 📐 Rule of 40 Elite
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #9 GFF  —  Griffon Corporation
+  ┌─ #7 TREE  —  LendingTree, Inc.
+  │  Sector: Financial Services              Action: BUY
+  │  Base Score:  71.0   Conviction Score: 110.0   Mkt Cap: $408M
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $29.04
+  │     Analyst Target: $56.00  (6 analysts)
+  │     Upside        : +92.8%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 83.0%
+  │     FCF Yield      : 15.5%
+  │     Operating Mgn  : 7.8%
+  │     Gross Margin   : 96.4%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 25.3%  ▲ accelerating (+19.0pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 1.36
+  │     Beta           : 2.08
+  │     PEG Ratio      : 3.55
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · 🚀 Accel Growth · ⚠️ High Beta · ⚠️ Below 200 DMA
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #8 GFF  —  Griffon Corporation
   │  Sector: Industrials                     Action: BUY
   │  Base Score:  74.1   Conviction Score: 109.1   Mkt Cap: $4.5B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $99.05
+  │     Current Price : $98.54
   │     Analyst Target: $125.57  (7 analysts)
-  │     Upside        : +26.8%
+  │     Upside        : +27.4%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 228.0%
@@ -261,18 +233,46 @@
   │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · ⚠️ High Leverage
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #10 CVX  —  Chevron Corporation
-  │  Sector: Energy                          Action: BUY
-  │  Base Score:  77.9   Conviction Score: 105.9   Mkt Cap: $390.8B
+  ┌─ #9 BLBD  —  Blue Bird Corporation
+  │  Sector: Industrials                     Action: BUY
+  │  Base Score:  71.7   Conviction Score: 106.7   Mkt Cap: $1.9B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $199.25
+  │     Current Price : $59.37
+  │     Analyst Target: $89.12  (8 analysts)
+  │     Upside        : +50.1%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 64.0%
+  │     FCF Yield      : -0.6%
+  │     Operating Mgn  : 12.1%
+  │     Gross Margin   : 20.6%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 29.9%  ▲ accelerating (+43.8pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 0.18
+  │     Beta           : 1.39
+  │     PEG Ratio      : 0.03
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · 🚀 Accel Growth
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #10 CVX  —  Chevron Corporation
+  │  Sector: Energy                          Action: BUY
+  │  Base Score:  77.9   Conviction Score: 105.9   Mkt Cap: $395.1B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $201.40
   │     Analyst Target: $218.29  (24 analysts)
-  │     Upside        : +9.6%
+  │     Upside        : +8.4%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 12.0%
-  │     FCF Yield      : 5.6%
+  │     FCF Yield      : 5.5%
   │     Operating Mgn  : 21.9%
   │     Gross Margin   : 44.3%
   │
@@ -294,14 +294,14 @@
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   TSM     Taiwan Semiconductor    85.4   29.1%    40%  0.17 Technology            
-  2   NXPI    NXP Semiconductors N.   77.8   36.8%    28%  0.93 Technology            
-  3   HRMY    Harmony Biosciences H   80.3   19.4%    20%  0.16 Healthcare            
-  4   TNK     Teekay Tankers Ltd.     83.6    7.0%    28%  0.02 Energy                
-  5   DECK    Deckers Outdoor Corpo   71.3   41.3%    43%  0.21 Consumer Cyclical     
-  6   TREE    LendingTree, Inc.       71.0   93.9%    83%  1.36 Financial Services    
-  7   APP     Applovin Corporation    70.9   68.9%   204%  1.11 Communication Service 
-  8   ZVRA    Zevra Therapeutics, I   68.5  111.3%    35%  0.01 Healthcare            
-  9   GFF     Griffon Corporation     74.1   26.8%   228% 10.35 Industrials           
-  10  CVX     Chevron Corporation     77.9    9.6%    12%  0.19 Energy                
+  1   TSM     Taiwan Semiconductor    85.5   32.0%    40%  0.17 Technology            
+  2   NXPI    NXP Semiconductors N.   77.9   39.7%    28%  0.93 Technology            
+  3   HRMY    Harmony Biosciences H   80.2   20.7%    20%  0.16 Healthcare            
+  4   TNK     Teekay Tankers Ltd.     83.6    6.3%    28%  0.02 Energy                
+  5   DECK    Deckers Outdoor Corpo   71.3   40.1%    43%  0.21 Consumer Cyclical     
+  6   ZVRA    Zevra Therapeutics, I   69.6  115.6%    35%  0.01 Healthcare            
+  7   TREE    LendingTree, Inc.       71.0   92.8%    83%  1.36 Financial Services    
+  8   GFF     Griffon Corporation     74.1   27.4%   228% 10.35 Industrials           
+  9   BLBD    Blue Bird Corporation   71.7   50.1%    64%  0.18 Industrials           
+  10  CVX     Chevron Corporation     77.9    8.4%    12%  0.19 Energy                
   ────────────────────────────────────────────────────────────────────
