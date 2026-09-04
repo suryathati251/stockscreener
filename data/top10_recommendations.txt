@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-09-03 10:52:42
+  Generated: 2026-09-04 10:50:57
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -14,13 +14,13 @@
   │  Base Score:  86.3   Conviction Score: 130.3   Mkt Cap: $2.2T
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $415.50
+  │     Current Price : $417.01
   │     Analyst Target: $552.38  (19 analysts)
-  │     Upside        : +32.9%
+  │     Upside        : +32.5%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 40.0%
-  │     FCF Yield      : 33.9%
+  │     FCF Yield      : 33.8%
   │     Operating Mgn  : 60.3%
   │     Gross Margin   : 64.2%
   │
@@ -39,16 +39,16 @@
 
   ┌─ #2 NXPI  —  NXP Semiconductors N.V.
   │  Sector: Technology                      Action: BUY
-  │  Base Score:  77.6   Conviction Score: 116.6   Mkt Cap: $57.6B
+  │  Base Score:  77.8   Conviction Score: 116.8   Mkt Cap: $56.7B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $228.50
+  │     Current Price : $224.99
   │     Analyst Target: $311.10  (29 analysts)
-  │     Upside        : +36.1%
+  │     Upside        : +38.3%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 28.0%
-  │     FCF Yield      : 6.2%
+  │     FCF Yield      : 6.3%
   │     Operating Mgn  : 30.4%
   │     Gross Margin   : 56.1%
   │
@@ -65,42 +65,14 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💎 Deep Value · 📈 Analyst Conviction · 💰 Income · 📐 Rule of 40
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #3 GFF  —  Griffon Corporation
-  │  Sector: Industrials                     Action: BUY
-  │  Base Score:  75.1   Conviction Score: 114.1   Mkt Cap: $4.3B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $95.83
-  │     Analyst Target: $125.57  (7 analysts)
-  │     Upside        : +31.0%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 228.0%
-  │     FCF Yield      : 10.2%
-  │     Operating Mgn  : 23.6%
-  │     Gross Margin   : 41.3%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 7.0%  ▲ accelerating (+43.3pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 10.35
-  │     Beta           : 1.39
-  │     PEG Ratio      : 0.54
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · ⚠️ High Leverage
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #4 DECK  —  Deckers Outdoor Corporation
+  ┌─ #3 DECK  —  Deckers Outdoor Corporation
   │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  72.1   Conviction Score: 112.1   Mkt Cap: $11.4B
+  │  Base Score:  72.1   Conviction Score: 112.1   Mkt Cap: $11.5B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $83.76
+  │     Current Price : $84.50
   │     Analyst Target: $122.81  (21 analysts)
-  │     Upside        : +46.6%
+  │     Upside        : +45.3%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 43.0%
@@ -121,14 +93,70 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 📈 Analyst Conviction
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #5 TNK  —  Teekay Tankers Ltd.
-  │  Sector: Energy                          Action: STRONG BUY
-  │  Base Score:  82.8   Conviction Score: 111.8   Mkt Cap: $3.1B
+  ┌─ #4 HRMY  —  Harmony Biosciences Holdings, I
+  │  Sector: Healthcare                      Action: STRONG BUY
+  │  Base Score:  79.0   Conviction Score: 111.0   Mkt Cap: $2.4B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $90.75
+  │     Current Price : $41.86
+  │     Analyst Target: $47.36  (11 analysts)
+  │     Upside        : +13.1%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 20.0%
+  │     FCF Yield      : 7.5%
+  │     Operating Mgn  : 34.2%
+  │     Gross Margin   : 75.4%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 30.3%  ▲ accelerating (+40.4pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 0.16
+  │     Beta           : 0.91
+  │     PEG Ratio      : 0.07
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · 🚀 Accel Growth · 💎 Deep Value · 📐 Rule of 40
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #5 APP  —  Applovin Corporation
+  │  Sector: Communication Services          Action: BUY
+  │  Base Score:  71.7   Conviction Score: 110.7   Mkt Cap: $104.9B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $313.58
+  │     Analyst Target: $514.48  (31 analysts)
+  │     Upside        : +64.1%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 204.0%
+  │     FCF Yield      : 3.0%
+  │     Operating Mgn  : 77.7%
+  │     Gross Margin   : 88.5%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 52.8%  ▲ accelerating (+21.7pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 1.11
+  │     Beta           : 2.53
+  │     PEG Ratio      : 0.67
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · 🚀 Accel Growth · 💎 Deep Value · 📈 Analyst Conviction · 📐 Rule of 40 Elite · ⚠️ High Beta · ⚠️ Below 200 DMA
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #6 TNK  —  Teekay Tankers Ltd.
+  │  Sector: Energy                          Action: STRONG BUY
+  │  Base Score:  81.6   Conviction Score: 110.6   Mkt Cap: $3.2B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $91.83
   │     Analyst Target: $93.80  (5 analysts)
-  │     Upside        : +3.4%
+  │     Upside        : +2.1%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 28.0%
@@ -149,46 +177,18 @@
   │     🚀 Rocket · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💰 Income · 📐 Rule of 40 Elite
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #6 HRMY  —  Harmony Biosciences Holdings, I
-  │  Sector: Healthcare                      Action: STRONG BUY
-  │  Base Score:  79.0   Conviction Score: 111.0   Mkt Cap: $2.5B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $42.86
-  │     Analyst Target: $47.36  (11 analysts)
-  │     Upside        : +10.5%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 20.0%
-  │     FCF Yield      : 7.3%
-  │     Operating Mgn  : 34.2%
-  │     Gross Margin   : 75.4%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 30.3%  ▲ accelerating (+40.4pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.16
-  │     Beta           : 0.91
-  │     PEG Ratio      : 0.07
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · 🚀 Accel Growth · 💎 Deep Value · 📐 Rule of 40
-  └────────────────────────────────────────────────────────────────────
-
   ┌─ #7 TREE  —  LendingTree, Inc.
   │  Sector: Financial Services              Action: BUY
-  │  Base Score:  71.2   Conviction Score: 110.2   Mkt Cap: $391M
+  │  Base Score:  71.1   Conviction Score: 110.1   Mkt Cap: $393M
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $27.82
+  │     Current Price : $28.01
   │     Analyst Target: $56.00  (6 analysts)
-  │     Upside        : +101.3%
+  │     Upside        : +99.9%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 83.0%
-  │     FCF Yield      : 16.2%
+  │     FCF Yield      : 16.1%
   │     Operating Mgn  : 7.8%
   │     Gross Margin   : 96.4%
   │
@@ -205,18 +205,46 @@
   │     🔥 HG High · 🏰 Wide Moat · 🚀 Accel Growth · ⚠️ High Beta · ⚠️ Below 200 DMA
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #8 ZVRA  —  Zevra Therapeutics, Inc.
-  │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  68.0   Conviction Score: 109.0   Mkt Cap: $730M
+  ┌─ #8 GFF  —  Griffon Corporation
+  │  Sector: Industrials                     Action: BUY
+  │  Base Score:  75.0   Conviction Score: 110.0   Mkt Cap: $4.4B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $12.30
+  │     Current Price : $97.75
+  │     Analyst Target: $125.57  (7 analysts)
+  │     Upside        : +28.5%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 228.0%
+  │     FCF Yield      : 10.1%
+  │     Operating Mgn  : 23.6%
+  │     Gross Margin   : 41.3%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 7.0%  ▲ accelerating (+43.3pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 10.35
+  │     Beta           : 1.39
+  │     PEG Ratio      : 0.54
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · ⚠️ High Leverage
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #9 ZVRA  —  Zevra Therapeutics, Inc.
+  │  Sector: Healthcare                      Action: BUY
+  │  Base Score:  68.0   Conviction Score: 109.0   Mkt Cap: $745M
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $12.54
   │     Analyst Target: $25.00  (9 analysts)
-  │     Upside        : +103.2%
+  │     Upside        : +99.4%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 35.0%
-  │     FCF Yield      : 6.6%
+  │     FCF Yield      : 6.5%
   │     Operating Mgn  : 42.3%
   │     Gross Margin   : 95.5%
   │
@@ -233,60 +261,32 @@
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 📐 Rule of 40 Elite
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #9 APP  —  Applovin Corporation
-  │  Sector: Communication Services          Action: BUY
-  │  Base Score:  71.6   Conviction Score: 106.6   Mkt Cap: $106.8B
+  ┌─ #10 CVX  —  Chevron Corporation
+  │  Sector: Energy                          Action: BUY
+  │  Base Score:  75.7   Conviction Score: 103.7   Mkt Cap: $414.5B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $319.05
-  │     Analyst Target: $514.48  (31 analysts)
-  │     Upside        : +61.2%
+  │     Current Price : $211.32
+  │     Analyst Target: $218.29  (24 analysts)
+  │     Upside        : +3.3%
   │
   │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 204.0%
-  │     FCF Yield      : 3.0%
-  │     Operating Mgn  : 77.7%
-  │     Gross Margin   : 88.5%
+  │     ROE            : 12.0%
+  │     FCF Yield      : 5.3%
+  │     Operating Mgn  : 21.9%
+  │     Gross Margin   : 44.3%
   │
   │  🚀 GROWTH
-  │     Revenue Growth : 52.8%  ▲ accelerating (+21.7pp)
+  │     Revenue Growth : 53.5%  ▲ accelerating (+54.8pp)
   │     EPS Surprise   : N/A
   │
   │  🛡️  RISK
-  │     Debt/Equity    : 1.11
-  │     Beta           : 2.53
-  │     PEG Ratio      : 0.67
+  │     Debt/Equity    : 0.19
+  │     Beta           : 0.49
+  │     PEG Ratio      : 0.93
   │
   │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · 🚀 Accel Growth · 📈 Analyst Conviction · 📐 Rule of 40 Elite · ⚠️ High Beta · ⚠️ Below 200 DMA
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #10 AU  —  AngloGold Ashanti PLC
-  │  Sector: Basic Materials                 Action: BUY
-  │  Base Score:  75.8   Conviction Score: 105.8   Mkt Cap: $54.5B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $107.83
-  │     Analyst Target: $113.12  (8 analysts)
-  │     Upside        : +4.9%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 45.0%
-  │     FCF Yield      : 7.2%
-  │     Operating Mgn  : 51.2%
-  │     Gross Margin   : 54.8%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 27.0%  ▼ decelerating (-6.9pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.17
-  │     Beta           : 0.70
-  │     PEG Ratio      : 0.78
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 💰 Income · 📐 Rule of 40 Elite
+  │     🔥 HG High · 🏰 Wide Moat · 🚀 Accel Growth · 💎 Deep Value · 📐 Rule of 40 Elite
   └────────────────────────────────────────────────────────────────────
 
 
@@ -294,14 +294,14 @@
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   TSM     Taiwan Semiconductor    86.3   32.9%    40%  0.17 Technology            
-  2   NXPI    NXP Semiconductors N.   77.6   36.1%    28%  0.93 Technology            
-  3   GFF     Griffon Corporation     75.1   31.0%   228% 10.35 Industrials           
-  4   DECK    Deckers Outdoor Corpo   72.1   46.6%    43%  0.21 Consumer Cyclical     
-  5   TNK     Teekay Tankers Ltd.     82.8    3.4%    28%  0.02 Energy                
-  6   HRMY    Harmony Biosciences H   79.0   10.5%    20%  0.16 Healthcare            
-  7   TREE    LendingTree, Inc.       71.2  101.3%    83%  1.36 Financial Services    
-  8   ZVRA    Zevra Therapeutics, I   68.0  103.2%    35%  0.01 Healthcare            
-  9   APP     Applovin Corporation    71.6   61.2%   204%  1.11 Communication Service 
-  10  AU      AngloGold Ashanti PLC   75.8    4.9%    45%  0.17 Basic Materials       
+  1   TSM     Taiwan Semiconductor    86.3   32.5%    40%  0.17 Technology            
+  2   NXPI    NXP Semiconductors N.   77.8   38.3%    28%  0.93 Technology            
+  3   DECK    Deckers Outdoor Corpo   72.1   45.3%    43%  0.21 Consumer Cyclical     
+  4   HRMY    Harmony Biosciences H   79.0   13.1%    20%  0.16 Healthcare            
+  5   APP     Applovin Corporation    71.7   64.1%   204%  1.11 Communication Service 
+  6   TNK     Teekay Tankers Ltd.     81.6    2.1%    28%  0.02 Energy                
+  7   TREE    LendingTree, Inc.       71.1   99.9%    83%  1.36 Financial Services    
+  8   GFF     Griffon Corporation     75.0   28.5%   228% 10.35 Industrials           
+  9   ZVRA    Zevra Therapeutics, I   68.0   99.4%    35%  0.01 Healthcare            
+  10  CVX     Chevron Corporation     75.7    3.3%    12%  0.19 Energy                
   ────────────────────────────────────────────────────────────────────
