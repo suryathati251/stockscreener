@@ -1,9 +1,9 @@
 {
-  "run_timestamp_utc": "2026-09-29 12:21 UTC",
-  "elapsed_minutes": 4.9,
+  "run_timestamp_utc": "2026-09-30 12:06 UTC",
+  "elapsed_minutes": 4.5,
   "total_stocks": 342,
-  "strong_buy": 10,
-  "buy": 179,
+  "strong_buy": 9,
+  "buy": 180,
   "hold": 143,
   "sell": 10,
   "avg_score": 62.0,
