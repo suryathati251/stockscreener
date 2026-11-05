@@ -1,14 +1,14 @@
 {
-  "run_timestamp_utc": "2026-11-04 13:57 UTC",
-  "elapsed_minutes": 4.2,
+  "run_timestamp_utc": "2026-11-05 14:12 UTC",
+  "elapsed_minutes": 4.3,
   "total_stocks": 341,
-  "strong_buy": 8,
-  "buy": 177,
-  "hold": 144,
+  "strong_buy": 7,
+  "buy": 163,
+  "hold": 159,
   "sell": 12,
-  "avg_score": 61.6,
-  "wide_moat_count": 186,
+  "avg_score": 61.3,
+  "wide_moat_count": 185,
   "narrow_moat_count": 140,
-  "hg_rocket_count": 9,
-  "hg_high_count": 263
+  "hg_rocket_count": 7,
+  "hg_high_count": 262
 }
