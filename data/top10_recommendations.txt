@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-11-16 15:03:52
+  Generated: 2026-11-17 15:39:15
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -11,16 +11,16 @@
 
   ┌─ #1 TSM  —  Taiwan Semiconductor Manufactur
   │  Sector: Technology                      Action: STRONG BUY
-  │  Base Score:  86.5   Conviction Score: 134.5   Mkt Cap: $2.0T
+  │  Base Score:  86.0   Conviction Score: 134.0   Mkt Cap: $1.9T
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $376.73
+  │     Current Price : $360.02
   │     Analyst Target: $586.69  (20 analysts)
-  │     Upside        : +55.7%
+  │     Upside        : +63.0%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 42.0%
-  │     FCF Yield      : 61.6%
+  │     FCF Yield      : 55.8%
   │     Operating Mgn  : 58.0%
   │     Gross Margin   : 65.8%
   │
@@ -29,7 +29,7 @@
   │     EPS Surprise   : N/A
   │
   │  🛡️  RISK
-  │     Debt/Equity    : 0.12
+  │     Debt/Equity    : 0.15
   │     Beta           : 1.23
   │     PEG Ratio      : 0.72
   │
@@ -39,16 +39,16 @@
 
   ┌─ #2 MU  —  Micron Technology, Inc.
   │  Sector: Technology                      Action: STRONG BUY
-  │  Base Score:  83.1   Conviction Score: 118.1   Mkt Cap: $824.5B
+  │  Base Score:  82.2   Conviction Score: 117.2   Mkt Cap: $777.3B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $728.86
+  │     Current Price : $687.05
   │     Analyst Target: $1561.91  (45 analysts)
-  │     Upside        : +114.3%
+  │     Upside        : +127.3%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 88.0%
-  │     FCF Yield      : 3.5%
+  │     FCF Yield      : 3.8%
   │     Operating Mgn  : 74.6%
   │     Gross Margin   : 80.7%
   │
@@ -67,16 +67,16 @@
 
   ┌─ #3 TNK  —  Teekay Tankers Ltd.
   │  Sector: Energy                          Action: STRONG BUY
-  │  Base Score:  83.8   Conviction Score: 116.8   Mkt Cap: $3.0B
+  │  Base Score:  83.0   Conviction Score: 116.0   Mkt Cap: $3.0B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $87.51
-  │     Analyst Target: $110.40  (5 analysts)
-  │     Upside        : +26.2%
+  │     Current Price : $87.09
+  │     Analyst Target: $108.40  (5 analysts)
+  │     Upside        : +24.5%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 31.0%
-  │     FCF Yield      : 11.9%
+  │     FCF Yield      : 12.0%
   │     Operating Mgn  : 44.1%
   │     Gross Margin   : 54.7%
   │
@@ -95,12 +95,12 @@
 
   ┌─ #4 AU  —  AngloGold Ashanti PLC
   │  Sector: Basic Materials                 Action: BUY
-  │  Base Score:  74.3   Conviction Score: 115.3   Mkt Cap: $43.9B
+  │  Base Score:  73.4   Conviction Score: 114.4   Mkt Cap: $43.4B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $86.87
+  │     Current Price : $85.89
   │     Analyst Target: $113.85  (10 analysts)
-  │     Upside        : +31.1%
+  │     Upside        : +32.6%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 44.0%
@@ -123,16 +123,16 @@
 
   ┌─ #5 ZVRA  —  Zevra Therapeutics, Inc.
   │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  72.0   Conviction Score: 113.0   Mkt Cap: $572M
+  │  Base Score:  72.0   Conviction Score: 113.0   Mkt Cap: $550M
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $9.61
+  │     Current Price : $9.25
   │     Analyst Target: $23.00  (8 analysts)
-  │     Upside        : +139.3%
+  │     Upside        : +148.7%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 42.0%
-  │     FCF Yield      : 9.0%
+  │     FCF Yield      : 9.3%
   │     Operating Mgn  : 31.5%
   │     Gross Margin   : 95.4%
   │
@@ -151,16 +151,16 @@
 
   ┌─ #6 PDD  —  PDD Holdings Inc.
   │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  75.4   Conviction Score: 112.4   Mkt Cap: $112.2B
+  │  Base Score:  75.4   Conviction Score: 112.4   Mkt Cap: $111.3B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $78.81
-  │     Analyst Target: $113.85  (33 analysts)
-  │     Upside        : +44.5%
+  │     Current Price : $78.16
+  │     Analyst Target: $113.83  (33 analysts)
+  │     Upside        : +45.6%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 23.0%
-  │     FCF Yield      : 66.5%
+  │     FCF Yield      : 67.1%
   │     Operating Mgn  : 21.9%
   │     Gross Margin   : 56.3%
   │
@@ -179,16 +179,16 @@
 
   ┌─ #7 NESR  —  National Energy Services Reunit
   │  Sector: Energy                          Action: BUY
-  │  Base Score:  71.6   Conviction Score: 111.6   Mkt Cap: $2.1B
+  │  Base Score:  71.7   Conviction Score: 111.7   Mkt Cap: $2.0B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $20.34
-  │     Analyst Target: $37.44  (9 analysts)
-  │     Upside        : +84.1%
+  │     Current Price : $20.00
+  │     Analyst Target: $37.11  (9 analysts)
+  │     Upside        : +85.5%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 11.0%
-  │     FCF Yield      : 6.3%
+  │     FCF Yield      : 6.4%
   │     Operating Mgn  : 10.0%
   │     Gross Margin   : 13.6%
   │
@@ -207,16 +207,16 @@
 
   ┌─ #8 VRT  —  Vertiv Holdings, LLC
   │  Sector: Industrials                     Action: BUY
-  │  Base Score:  71.8   Conviction Score: 110.8   Mkt Cap: $73.6B
+  │  Base Score:  71.8   Conviction Score: 110.8   Mkt Cap: $72.6B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $191.07
+  │     Current Price : $188.53
   │     Analyst Target: $334.29  (30 analysts)
-  │     Upside        : +75.0%
+  │     Upside        : +77.3%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 47.0%
-  │     FCF Yield      : 4.0%
+  │     FCF Yield      : 4.1%
   │     Operating Mgn  : 21.1%
   │     Gross Margin   : 38.1%
   │
@@ -235,16 +235,16 @@
 
   ┌─ #9 GFF  —  Griffon Corporation
   │  Sector: Industrials                     Action: BUY
-  │  Base Score:  72.3   Conviction Score: 107.3   Mkt Cap: $4.7B
+  │  Base Score:  72.8   Conviction Score: 107.8   Mkt Cap: $4.7B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $104.03
+  │     Current Price : $103.57
   │     Analyst Target: $126.86  (7 analysts)
-  │     Upside        : +21.9%
+  │     Upside        : +22.5%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 228.0%
-  │     FCF Yield      : 9.4%
+  │     FCF Yield      : 9.5%
   │     Operating Mgn  : 17.3%
   │     Gross Margin   : 41.3%
   │
@@ -261,32 +261,32 @@
   │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · ⚠️ High Leverage
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #10 NFLX  —  Netflix, Inc.
-  │  Sector: Communication Services          Action: BUY
-  │  Base Score:  69.1   Conviction Score: 105.1   Mkt Cap: $253.1B
+  ┌─ #10 DECK  —  Deckers Outdoor Corporation
+  │  Sector: Consumer Cyclical               Action: BUY
+  │  Base Score:  70.9   Conviction Score: 106.9   Mkt Cap: $11.1B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $61.65
-  │     Analyst Target: $84.76  (43 analysts)
-  │     Upside        : +37.5%
+  │     Current Price : $83.31
+  │     Analyst Target: $96.98  (23 analysts)
+  │     Upside        : +16.4%
   │
   │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 53.0%
-  │     FCF Yield      : 10.1%
-  │     Operating Mgn  : 31.3%
-  │     Gross Margin   : 50.7%
+  │     ROE            : 44.0%
+  │     FCF Yield      : 7.3%
+  │     Operating Mgn  : 23.6%
+  │     Gross Margin   : 58.9%
   │
   │  🚀 GROWTH
-  │     Revenue Growth : 11.8%  ▲ accelerating (+7.6pp)
+  │     Revenue Growth : 3.5%  ▲ accelerating (+51.4pp)
   │     EPS Surprise   : N/A
   │
   │  🛡️  RISK
-  │     Debt/Equity    : 0.60
-  │     Beta           : 1.61
-  │     PEG Ratio      : 0.99
+  │     Debt/Equity    : 0.23
+  │     Beta           : 1.11
+  │     PEG Ratio      : 1.03
   │
   │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 📈 Analyst Conviction · 📐 Rule of 40 Elite · ⚠️ Below 200 DMA
+  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder
   └────────────────────────────────────────────────────────────────────
 
 
@@ -294,14 +294,14 @@
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   TSM     Taiwan Semiconductor    86.5   55.7%    42%  0.12 Technology            
-  2   MU      Micron Technology, In   83.1  114.3%    88%  0.04 Technology            
-  3   TNK     Teekay Tankers Ltd.     83.8   26.2%    31%  0.01 Energy                
-  4   AU      AngloGold Ashanti PLC   74.3   31.1%    44%  0.16 Basic Materials       
-  5   ZVRA    Zevra Therapeutics, I   72.0  139.3%    42%  0.01 Healthcare            
-  6   PDD     PDD Holdings Inc.       75.4   44.5%    23%  0.01 Consumer Cyclical     
-  7   NESR    National Energy Servi   71.6   84.1%    11%  0.28 Energy                
-  8   VRT     Vertiv Holdings, LLC    71.8   75.0%    47%  0.61 Industrials           
-  9   GFF     Griffon Corporation     72.3   21.9%   228% 10.35 Industrials           
-  10  NFLX    Netflix, Inc.           69.1   37.5%    53%  0.60 Communication Service 
+  1   TSM     Taiwan Semiconductor    86.0   63.0%    42%  0.15 Technology            
+  2   MU      Micron Technology, In   82.2  127.3%    88%  0.04 Technology            
+  3   TNK     Teekay Tankers Ltd.     83.0   24.5%    31%  0.01 Energy                
+  4   AU      AngloGold Ashanti PLC   73.4   32.6%    44%  0.16 Basic Materials       
+  5   ZVRA    Zevra Therapeutics, I   72.0  148.7%    42%  0.01 Healthcare            
+  6   PDD     PDD Holdings Inc.       75.4   45.6%    23%  0.01 Consumer Cyclical     
+  7   NESR    National Energy Servi   71.7   85.5%    11%  0.28 Energy                
+  8   VRT     Vertiv Holdings, LLC    71.8   77.3%    47%  0.61 Industrials           
+  9   GFF     Griffon Corporation     72.8   22.5%   228% 10.35 Industrials           
+  10  DECK    Deckers Outdoor Corpo   70.9   16.4%    44%  0.23 Consumer Cyclical     
   ────────────────────────────────────────────────────────────────────
