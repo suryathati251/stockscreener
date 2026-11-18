@@ -1,7 +1,7 @@
 
 ════════════════════════════════════════════════════════════════════════
   🏆  TOP 10 STOCK RECOMMENDATIONS
-  Generated: 2026-11-17 15:39:15
+  Generated: 2026-11-18 15:17:54
   Methodology: Base score + analyst upside + quality + growth momentum
                Max 2 stocks per sector for diversification
 ════════════════════════════════════════════════════════════════════════
@@ -11,16 +11,16 @@
 
   ┌─ #1 TSM  —  Taiwan Semiconductor Manufactur
   │  Sector: Technology                      Action: STRONG BUY
-  │  Base Score:  86.0   Conviction Score: 134.0   Mkt Cap: $1.9T
+  │  Base Score:  87.4   Conviction Score: 135.4   Mkt Cap: $1.9T
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $360.02
+  │     Current Price : $364.23
   │     Analyst Target: $586.69  (20 analysts)
-  │     Upside        : +63.0%
+  │     Upside        : +61.1%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 42.0%
-  │     FCF Yield      : 55.8%
+  │     FCF Yield      : 55.2%
   │     Operating Mgn  : 58.0%
   │     Gross Margin   : 65.8%
   │
@@ -31,7 +31,7 @@
   │  🛡️  RISK
   │     Debt/Equity    : 0.15
   │     Beta           : 1.23
-  │     PEG Ratio      : 0.72
+  │     PEG Ratio      : 0.68
   │
   │  🏷️  SIGNAL FLAGS
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💎 Deep Value · 📈 Analyst Conviction · 💰 Income · 📐 Rule of 40 Elite
@@ -39,16 +39,16 @@
 
   ┌─ #2 MU  —  Micron Technology, Inc.
   │  Sector: Technology                      Action: STRONG BUY
-  │  Base Score:  82.2   Conviction Score: 117.2   Mkt Cap: $777.3B
+  │  Base Score:  82.8   Conviction Score: 117.8   Mkt Cap: $803.2B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $687.05
+  │     Current Price : $709.87
   │     Analyst Target: $1561.91  (45 analysts)
-  │     Upside        : +127.3%
+  │     Upside        : +120.0%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 88.0%
-  │     FCF Yield      : 3.8%
+  │     FCF Yield      : 3.6%
   │     Operating Mgn  : 74.6%
   │     Gross Margin   : 80.7%
   │
@@ -67,16 +67,16 @@
 
   ┌─ #3 TNK  —  Teekay Tankers Ltd.
   │  Sector: Energy                          Action: STRONG BUY
-  │  Base Score:  83.0   Conviction Score: 116.0   Mkt Cap: $3.0B
+  │  Base Score:  83.7   Conviction Score: 116.7   Mkt Cap: $3.0B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $87.09
+  │     Current Price : $86.15
   │     Analyst Target: $108.40  (5 analysts)
-  │     Upside        : +24.5%
+  │     Upside        : +25.8%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 31.0%
-  │     FCF Yield      : 12.0%
+  │     FCF Yield      : 12.1%
   │     Operating Mgn  : 44.1%
   │     Gross Margin   : 54.7%
   │
@@ -95,16 +95,16 @@
 
   ┌─ #4 AU  —  AngloGold Ashanti PLC
   │  Sector: Basic Materials                 Action: BUY
-  │  Base Score:  73.4   Conviction Score: 114.4   Mkt Cap: $43.4B
+  │  Base Score:  75.0   Conviction Score: 116.0   Mkt Cap: $39.7B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $85.89
+  │     Current Price : $78.42
   │     Analyst Target: $113.85  (10 analysts)
-  │     Upside        : +32.6%
+  │     Upside        : +45.2%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 44.0%
-  │     FCF Yield      : 8.2%
+  │     FCF Yield      : 9.0%
   │     Operating Mgn  : 50.4%
   │     Gross Margin   : 54.8%
   │
@@ -123,16 +123,16 @@
 
   ┌─ #5 ZVRA  —  Zevra Therapeutics, Inc.
   │  Sector: Healthcare                      Action: BUY
-  │  Base Score:  72.0   Conviction Score: 113.0   Mkt Cap: $550M
+  │  Base Score:  71.9   Conviction Score: 112.9   Mkt Cap: $555M
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $9.25
+  │     Current Price : $9.32
   │     Analyst Target: $23.00  (8 analysts)
-  │     Upside        : +148.7%
+  │     Upside        : +146.7%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 42.0%
-  │     FCF Yield      : 9.3%
+  │     FCF Yield      : 9.2%
   │     Operating Mgn  : 31.5%
   │     Gross Margin   : 95.4%
   │
@@ -151,16 +151,16 @@
 
   ┌─ #6 PDD  —  PDD Holdings Inc.
   │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  75.4   Conviction Score: 112.4   Mkt Cap: $111.3B
+  │  Base Score:  75.4   Conviction Score: 112.4   Mkt Cap: $110.2B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $78.16
-  │     Analyst Target: $113.83  (33 analysts)
-  │     Upside        : +45.6%
+  │     Current Price : $77.43
+  │     Analyst Target: $113.80  (33 analysts)
+  │     Upside        : +47.0%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 23.0%
-  │     FCF Yield      : 67.1%
+  │     FCF Yield      : 67.7%
   │     Operating Mgn  : 21.9%
   │     Gross Margin   : 56.3%
   │
@@ -171,20 +171,48 @@
   │  🛡️  RISK
   │     Debt/Equity    : 0.01
   │     Beta           : -0.08
-  │     PEG Ratio      : 0.69
+  │     PEG Ratio      : 0.67
   │
   │  🏷️  SIGNAL FLAGS
   │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value · 📈 Analyst Conviction
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #7 NESR  —  National Energy Services Reunit
-  │  Sector: Energy                          Action: BUY
-  │  Base Score:  71.7   Conviction Score: 111.7   Mkt Cap: $2.0B
+  ┌─ #7 DECK  —  Deckers Outdoor Corporation
+  │  Sector: Consumer Cyclical               Action: BUY
+  │  Base Score:  71.8   Conviction Score: 111.8   Mkt Cap: $11.1B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $20.00
+  │     Current Price : $83.04
+  │     Analyst Target: $96.98  (23 analysts)
+  │     Upside        : +16.8%
+  │
+  │  📊 QUALITY & PROFITABILITY
+  │     ROE            : 44.0%
+  │     FCF Yield      : 7.4%
+  │     Operating Mgn  : 23.6%
+  │     Gross Margin   : 58.9%
+  │
+  │  🚀 GROWTH
+  │     Revenue Growth : 3.5%  ▲ accelerating (+51.4pp)
+  │     EPS Surprise   : N/A
+  │
+  │  🛡️  RISK
+  │     Debt/Equity    : 0.23
+  │     Beta           : 1.11
+  │     PEG Ratio      : 0.99
+  │
+  │  🏷️  SIGNAL FLAGS
+  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder · 💎 Deep Value
+  └────────────────────────────────────────────────────────────────────
+
+  ┌─ #8 NESR  —  National Energy Services Reunit
+  │  Sector: Energy                          Action: BUY
+  │  Base Score:  71.6   Conviction Score: 111.6   Mkt Cap: $2.0B
+  │
+  │  💰 PRICE & TARGET
+  │     Current Price : $19.98
   │     Analyst Target: $37.11  (9 analysts)
-  │     Upside        : +85.5%
+  │     Upside        : +85.7%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 11.0%
@@ -205,18 +233,18 @@
   │     🚀 Rocket · 🏰 Wide Moat · 🚀 Accel Growth · 💎 Deep Value · 💰 Income · 📐 Rule of 40 Elite · ⚠️ Below 200 DMA
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #8 VRT  —  Vertiv Holdings, LLC
+  ┌─ #9 VRT  —  Vertiv Holdings, LLC
   │  Sector: Industrials                     Action: BUY
-  │  Base Score:  71.8   Conviction Score: 110.8   Mkt Cap: $72.6B
+  │  Base Score:  70.5   Conviction Score: 109.5   Mkt Cap: $74.7B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $188.53
+  │     Current Price : $194.01
   │     Analyst Target: $334.29  (30 analysts)
-  │     Upside        : +77.3%
+  │     Upside        : +72.3%
   │
   │  📊 QUALITY & PROFITABILITY
   │     ROE            : 47.0%
-  │     FCF Yield      : 4.1%
+  │     FCF Yield      : 4.0%
   │     Operating Mgn  : 21.1%
   │     Gross Margin   : 38.1%
   │
@@ -227,66 +255,38 @@
   │  🛡️  RISK
   │     Debt/Equity    : 0.61
   │     Beta           : 2.11
-  │     PEG Ratio      : 0.60
+  │     PEG Ratio      : 0.56
   │
   │  🏷️  SIGNAL FLAGS
-  │     🚀 Rocket · 🏰 Wide Moat · ⭐ Compounder · 🚀 Accel Growth · 💎 Deep Value · 📈 Analyst Conviction · 💰 Income · 📐 Rule of 40 Elite · ⚠️ High Beta · ⚠️ Below 200 DMA
+  │     🚀 Rocket · 🏰 Wide Moat · 🚀 Accel Growth · 💎 Deep Value · 📈 Analyst Conviction · 💰 Income · 📐 Rule of 40 Elite · ⚠️ High Beta · ⚠️ Below 200 DMA
   └────────────────────────────────────────────────────────────────────
 
-  ┌─ #9 GFF  —  Griffon Corporation
+  ┌─ #10 BLBD  —  Blue Bird Corporation
   │  Sector: Industrials                     Action: BUY
-  │  Base Score:  72.8   Conviction Score: 107.8   Mkt Cap: $4.7B
+  │  Base Score:  71.4   Conviction Score: 106.4   Mkt Cap: $1.9B
   │
   │  💰 PRICE & TARGET
-  │     Current Price : $103.57
-  │     Analyst Target: $126.86  (7 analysts)
-  │     Upside        : +22.5%
+  │     Current Price : $54.66
+  │     Analyst Target: $90.14  (7 analysts)
+  │     Upside        : +64.9%
   │
   │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 228.0%
-  │     FCF Yield      : 9.5%
-  │     Operating Mgn  : 17.3%
-  │     Gross Margin   : 41.3%
+  │     ROE            : 64.0%
+  │     FCF Yield      : -0.6%
+  │     Operating Mgn  : 11.8%
+  │     Gross Margin   : 20.6%
   │
   │  🚀 GROWTH
-  │     Revenue Growth : 7.0%  ▲ accelerating (+43.3pp)
+  │     Revenue Growth : 29.9%  ▲ accelerating (+43.8pp)
   │     EPS Surprise   : N/A
   │
   │  🛡️  RISK
-  │     Debt/Equity    : 10.35
-  │     Beta           : 1.44
-  │     PEG Ratio      : 0.54
+  │     Debt/Equity    : 0.18
+  │     Beta           : 1.45
+  │     PEG Ratio      : 0.03
   │
   │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · 💎 Deep Value · ⚠️ High Leverage
-  └────────────────────────────────────────────────────────────────────
-
-  ┌─ #10 DECK  —  Deckers Outdoor Corporation
-  │  Sector: Consumer Cyclical               Action: BUY
-  │  Base Score:  70.9   Conviction Score: 106.9   Mkt Cap: $11.1B
-  │
-  │  💰 PRICE & TARGET
-  │     Current Price : $83.31
-  │     Analyst Target: $96.98  (23 analysts)
-  │     Upside        : +16.4%
-  │
-  │  📊 QUALITY & PROFITABILITY
-  │     ROE            : 44.0%
-  │     FCF Yield      : 7.3%
-  │     Operating Mgn  : 23.6%
-  │     Gross Margin   : 58.9%
-  │
-  │  🚀 GROWTH
-  │     Revenue Growth : 3.5%  ▲ accelerating (+51.4pp)
-  │     EPS Surprise   : N/A
-  │
-  │  🛡️  RISK
-  │     Debt/Equity    : 0.23
-  │     Beta           : 1.11
-  │     PEG Ratio      : 1.03
-  │
-  │  🏷️  SIGNAL FLAGS
-  │     🔥 HG High · 🏰 Wide Moat · ⭐ Compounder
+  │     🔥 HG High · 🏰 Wide Moat · 🚀 Accel Growth
   └────────────────────────────────────────────────────────────────────
 
 
@@ -294,14 +294,14 @@
   ────────────────────────────────────────────────────────────────────
   #   Ticker  Name                   Score  Upside   ROE%   D/E Sector                
   ────────────────────────────────────────────────────────────────────
-  1   TSM     Taiwan Semiconductor    86.0   63.0%    42%  0.15 Technology            
-  2   MU      Micron Technology, In   82.2  127.3%    88%  0.04 Technology            
-  3   TNK     Teekay Tankers Ltd.     83.0   24.5%    31%  0.01 Energy                
-  4   AU      AngloGold Ashanti PLC   73.4   32.6%    44%  0.16 Basic Materials       
-  5   ZVRA    Zevra Therapeutics, I   72.0  148.7%    42%  0.01 Healthcare            
-  6   PDD     PDD Holdings Inc.       75.4   45.6%    23%  0.01 Consumer Cyclical     
-  7   NESR    National Energy Servi   71.7   85.5%    11%  0.28 Energy                
-  8   VRT     Vertiv Holdings, LLC    71.8   77.3%    47%  0.61 Industrials           
-  9   GFF     Griffon Corporation     72.8   22.5%   228% 10.35 Industrials           
-  10  DECK    Deckers Outdoor Corpo   70.9   16.4%    44%  0.23 Consumer Cyclical     
+  1   TSM     Taiwan Semiconductor    87.4   61.1%    42%  0.15 Technology            
+  2   MU      Micron Technology, In   82.8  120.0%    88%  0.04 Technology            
+  3   TNK     Teekay Tankers Ltd.     83.7   25.8%    31%  0.01 Energy                
+  4   AU      AngloGold Ashanti PLC   75.0   45.2%    44%  0.16 Basic Materials       
+  5   ZVRA    Zevra Therapeutics, I   71.9  146.7%    42%  0.01 Healthcare            
+  6   PDD     PDD Holdings Inc.       75.4   47.0%    23%  0.01 Consumer Cyclical     
+  7   DECK    Deckers Outdoor Corpo   71.8   16.8%    44%  0.23 Consumer Cyclical     
+  8   NESR    National Energy Servi   71.6   85.7%    11%  0.28 Energy                
+  9   VRT     Vertiv Holdings, LLC    70.5   72.3%    47%  0.61 Industrials           
+  10  BLBD    Blue Bird Corporation   71.4   64.9%    64%  0.18 Industrials           
   ────────────────────────────────────────────────────────────────────
